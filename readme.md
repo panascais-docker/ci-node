@@ -8,6 +8,12 @@
 
 **CI-Node** is a docker image intended to be used in continuous integration services such as GitLab and Travis CI
 
+| **Tag:** | **Command:**                       | **Node Version:** |
+|----------|------------------------------------|-------------------|
+| `12`     | `docker pull panascais/ci-node:12` | `v12.x.x`         |
+| `11`     | `docker pull panascais/ci-node:11` | `v11.x.x`         |
+| `10`     | `docker pull panascais/ci-node:10` | `v10.x.x`         |
+
 ## Contributors
 
  - Silas Rech [(silas@panascais.net)](mailto:silas@panascais.net)
