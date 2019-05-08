@@ -5,7 +5,7 @@ ARG VCS_REF
 
 LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
 LABEL org.label-schema.build-date=$BUILD_DATE
-LABEL org.label-schema.vcs-ref=$VCS_REF \
+LABEL org.label-schema.vcs-ref=$VCS_REF
 LABEL org.label-schema.name="Node CI Image"
 LABEL org.label-schema.description="Panascais Node Continuous Integration Image"
 LABEL org.label-schema.vendor="Panascais Lda. / ehf."
