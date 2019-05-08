@@ -14,6 +14,7 @@
 | `12`     | `docker pull panascais/ci-node:12` | `v12.x.x`         |
 | `11`     | `docker pull panascais/ci-node:11` | `v11.x.x`         |
 | `10`     | `docker pull panascais/ci-node:10` | `v10.x.x`         |
+| `8`      | `docker pull panascais/ci-node:8`  | `v8.x.x`          |
 
 ## Contributors
 
