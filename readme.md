@@ -8,13 +8,13 @@
 
 **CI-Node** is a docker image intended to be used in continuous integration services such as GitLab and Travis CI
 
-| **Tag:** | **Command:**                       | **Node Version:** |
-|----------|------------------------------------|-------------------|
-| `latest` | `docker pull panascais/ci-node`    | `v12.x.x`         |
-| `12`     | `docker pull panascais/ci-node:12` | `v12.x.x`         |
-| `11`     | `docker pull panascais/ci-node:11` | `v11.x.x`         |
-| `10`     | `docker pull panascais/ci-node:10` | `v10.x.x`         |
-| `8`      | `docker pull panascais/ci-node:8`  | `v8.x.x`          |
+| **Tag:** | **Command:**                       | **Node Version:** | **Labels:**                                                                                                                                                                                                                                                                                                                                 |
+|----------|------------------------------------|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `latest` | `docker pull panascais/ci-node`    | `v12.x.x`         | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/latest.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/latest.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) |
+| `12`     | `docker pull panascais/ci-node:12` | `v12.x.x`         | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/12.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/12.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)         |
+| `11`     | `docker pull panascais/ci-node:11` | `v11.x.x`         | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/11.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/11.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)         |
+| `10`     | `docker pull panascais/ci-node:10` | `v10.x.x`         | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/10.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/10.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)         |
+| `8`      | `docker pull panascais/ci-node:8`  | `v8.x.x`          | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/8.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/8.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)           |
 
 ## Contributors
 
