@@ -19,7 +19,7 @@ RUN apk add --update \
     gzip \
     make \
     python2 \
-    && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing vips
+    && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing vips \
     && rm -rf /var/cache/apk/* \
     && yarn global add \
     typescript \
