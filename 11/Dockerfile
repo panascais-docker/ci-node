@@ -26,4 +26,6 @@ RUN apk add --update \
     eslint \
     ava \
     gulp \
+    @babel/cli \
+    pnpm \
     && yarn cache clean
