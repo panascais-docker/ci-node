@@ -15,10 +15,13 @@ LABEL maintainer="Panascais Open Source <oss@panascais.net>"
 RUN apk add --update \
     g++ \
     gcc \
+    autoconf \
+    automake \
     git \
     gzip \
     make \
     python2 \
+    libjpeg-turbo-dev \
     && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing vips \
     && rm -rf /var/cache/apk/* \
     && yarn global add \
