@@ -18,7 +18,7 @@ RUN apk add --update \
     git \
     gzip \
     make \
-    python \
+    python2 \
     && rm -rf /var/cache/apk/* \
     && yarn global add \
     typescript \
