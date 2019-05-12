@@ -17,6 +17,7 @@ RUN apk add --update \
     gcc \
     autoconf \
     automake \
+    curl-dev \
     git \
     gzip \
     make \
