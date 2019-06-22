@@ -23,7 +23,7 @@ RUN apk add --update \
     make \
     python2 \
     libjpeg-turbo-dev \
-    && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing vips \
+    vips \
     && rm -rf /var/cache/apk/* \
     && yarn global add \
     typescript \
