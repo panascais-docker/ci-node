@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM panascais/node:10
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -25,12 +25,11 @@ RUN apk add --update \
     libjpeg-turbo-dev \
     vips \
     && rm -rf /var/cache/apk/* \
-    && yarn global add \
+    && pnpm i -g \
     typescript \
     tslint \
     eslint \
     ava \
     gulp-cli \
     @babel/core @babel/cli \
-    pnpm \
-    && yarn cache clean
+    yarn
