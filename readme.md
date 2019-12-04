@@ -1,6 +1,4 @@
-[![Docker Cloud Automated Build](https://img.shields.io/docker/cloud/automated/panascais/ci-node.svg?style=flat-square)](https://hub.docker.com/r/panascais/ci-node)
-[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/panascais/ci-node.svg?style=flat-square)](https://hub.docker.com/r/panascais/ci-node)
-[![Docker Pulls](https://img.shields.io/docker/pulls/panascais/ci-node.svg?style=flat-square)](https://hub.docker.com/r/panascais/ci-node)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/panascais-docker/ci-node/main?style=flat-square)](https://github.com/panascais-docker/ci-node/actions?query=workflow%3Amain)[![Docker Pulls](https://img.shields.io/docker/pulls/panascais/ci-node.svg?style=flat-square)](https://hub.docker.com/r/panascais/ci-node)
 [![Docker Stars](https://img.shields.io/docker/stars/panascais/ci-node.svg?style=flat-square)](https://hub.docker.com/r/panascais/ci-node)
 [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)
 [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)
