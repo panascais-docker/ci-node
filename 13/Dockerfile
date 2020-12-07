@@ -12,7 +12,8 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
     org.label-schema.schema-version="1.0.0-rc1" \
     maintainer="Panascais Open Source <oss@panascais.net>"
 
-RUN apk add --update \
+RUN node -v && \
+    apk add --update \
     g++ \
     gcc \
     autoconf \
