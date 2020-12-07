@@ -27,7 +27,6 @@ RUN apk add --update \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
     typescript \
-    tslint \
     eslint \
     ava \
     gulp-cli \

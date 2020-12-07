@@ -27,7 +27,6 @@
 | `pnpm`       | [github.com/pnpm/pnpm](https://github.com/pnpm/pnpm)                       | [npmjs.com/package/pnpm](https://www.npmjs.com/package/pnpm)             |
 | `yarn`       | [github.com/yarnpkg/yarn](https://github.com/yarnpkg/yarn)                 | [npmjs.com/package/yarn](https://www.npmjs.com/package/yarn)             |
 | `typescript` | [github.com/microsoft/typescript](https://github.com/Microsoft/TypeScript) | [npmjs.com/package/typescript](https://www.npmjs.com/package/typescript) |
-| `tslint`     | [github.com/palantir/tslint](https://github.com/palantir/tslint)           | [npmjs.com/package/tslint](https://www.npmjs.com/package/tslint)         |
 | `eslint`     | [github.com/eslint/eslint](https://github.com/eslint/eslint)               | [npmjs.com/package/eslint](https://www.npmjs.com/package/eslint)         |
 | `ava`        | [github.com/avajs/ava](https://github.com/avajs/ava)                       | [npmjs.com/package/ava](https://www.npmjs.com/package/ava)               |
 | `babel`      | [github.com/babel/babel](https://github.com/babel/babel)                   | [npmjs.com/package/@babel/cli](https://www.npmjs.com/package/@babel/cli) |
