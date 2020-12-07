@@ -1,4 +1,4 @@
-FROM panascais/node:14
+FROM panascais/node:15
 
 ARG BUILD_DATE
 ARG VCS_REF
