@@ -5,7 +5,7 @@
 [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)
 [![License](https://img.shields.io/github/license/panascais-docker/ci-node.svg?style=flat-square)](https://hub.docker.com/r/panascais/ci-node)
 
-**CI-Node** is a docker image intended to be used in continuous integration services such as GitLab CI
+**CI-Node** is a docker image intended to be used in continuous integration services such as [GitLab CI](https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/), [GitHub Actions](https://github.com/features/actions), [Semaphore CI](https://semaphoreci.com) and [Circle CI](https://circleci.com)
 
 | **Tag:** | **Command:**                       | **Node Version:** | **Labels:**                                                                                                                                                                                                                                                                                                                                 |
 |----------|------------------------------------|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
