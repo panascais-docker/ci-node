@@ -14,9 +14,9 @@
 | `16`     | `docker pull panascais/ci-node:16` | `v16.x.x`         | ✓              | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/16.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/16.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)         |
 | `15`     | `docker pull panascais/ci-node:15` | `v15.x.x`         | ✓              | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/15.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/15.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)         |
 | `14`     | `docker pull panascais/ci-node:14` | `v14.x.x`         | ✓              | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/14.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/14.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)         |
-| `12`     | `docker pull panascais/ci-node:12` | `v12.x.x`         | ×              | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/12.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/12.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)         |
-| `10`     | `docker pull panascais/ci-node:10` | `v10.x.x`         | ×              | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/10.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/10.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)         |
-| `8`      | `docker pull panascais/ci-node:8`  | `v8.x.x`          | ×              | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/8.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/8.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)           |
+| `12`     | `docker pull panascais/ci-node:12` | `v12.x.x`         | ✓              | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/12.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/12.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)         |
+| `10`     | `docker pull panascais/ci-node:10` | `v10.x.x`         | ✓              | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/10.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/10.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)         |
+| `8`      | `docker pull panascais/ci-node:8`  | `v8.x.x`          | ✓              | [![Docker Image Layers](https://img.shields.io/microbadger/layers/panascais/ci-node/8.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node) [![Docker Image Size](https://img.shields.io/microbadger/image-size/panascais/ci-node/8.svg?style=flat-square)](https://microbadger.com/images/panascais/ci-node)           |
 
 ## Included CLIs
 
@@ -50,6 +50,7 @@
 ## Contributors
 
  - Silas Rech [(silas@panascais.net)](mailto:silas@panascais.net)
+ - Maximilian Schagginger [(max@panascais.net)](mailto:max@panascais.net)
 
 ## Contributing:
 
