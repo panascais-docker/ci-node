@@ -23,6 +23,7 @@ RUN node -v && \
     gzip \
     make \
     python2 \
+    python3 \
     libjpeg-turbo-dev \
     vips \
     && rm -rf /var/cache/apk/* \
