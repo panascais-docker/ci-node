@@ -37,6 +37,7 @@
 | `g++`               | [pkgs.alpinelinux.org/package/g++](https://pkgs.alpinelinux.org/package/edge/main/x86_64/g++)                             |
 | `gcc`               | [pkgs.alpinelinux.org/package/gcc](https://pkgs.alpinelinux.org/package/edge/main/x86_64/gcc)                             |
 | `git`               | [pkgs.alpinelinux.org/package/git](https://pkgs.alpinelinux.org/package/edge/main/x86_64/git)                             |
+| `openssl`           | [pkgs.alpinelinux.org/package/openssl](https://pkgs.alpinelinux.org/package/edge/main/x86_64/openssl)                     |
 | `gzip`              | [pkgs.alpinelinux.org/package/gzip](https://pkgs.alpinelinux.org/package/edge/main/x86_64/gzip)                           |
 | `make`              | [pkgs.alpinelinux.org/package/make](https://pkgs.alpinelinux.org/package/edge/main/x86_64/make)                           |
 | `python2`           | [pkgs.alpinelinux.org/package/python2](https://pkgs.alpinelinux.org/package/edge/main/x86_64/python2)                     |

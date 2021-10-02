@@ -26,6 +26,7 @@ RUN node -v && \
     python3 \
     libjpeg-turbo-dev \
     vips \
+    openssl \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
     typescript \
