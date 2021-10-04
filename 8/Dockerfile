@@ -26,7 +26,7 @@ RUN node -v && \
     python3 \
     libjpeg-turbo-dev \
     vips \
-    && apk add --update --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main openssl \
+    openssl \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
     typescript \
