@@ -1,4 +1,4 @@
-FROM panascais/node:16
+FROM panascais/node:latest
 
 ARG BUILD_DATE
 ARG VCS_REF

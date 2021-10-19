@@ -1,9 +1,9 @@
 name: main
-on: 
+on:
   workflow_dispatch:
   push:
     branches:
-    - master
+      - master
 
 jobs:
   push:
@@ -14,46 +14,46 @@ jobs:
       matrix:
         node: [8, 10, 12, 14, 15, 16, latest, lts]
     steps:
-    - name: pull repository
-      id: repository
-      uses: actions/checkout@master
+      - name: pull repository
+        id: repository
+        uses: actions/checkout@master
 
-    - name: update repository
-      id: update-repository
-      run: |
-        git pull origin master
+      - name: update repository
+        id: update-repository
+        run: |
+          git pull origin master
 
-    - name: build the docker container image
-      id: build
-      working-directory: ./${{ matrix.node }}
-      run: |
-        docker build --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` --build-arg VCS_REF=`git rev-parse --short HEAD` -t panascais/ci-node:${{ matrix.node }} .
-        docker tag panascais/ci-node:${{ matrix.node }} docker.pkg.github.com/panascais-docker/ci-node/ci-node:${{ matrix.node }}
-        docker tag panascais/ci-node:${{ matrix.node }} quay.io/panascais/ci-node:${{ matrix.node }}
+      - name: build the docker container image
+        id: build
+        working-directory: ./${{ matrix.node }}
+        run: |
+          docker build --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` --build-arg VCS_REF=`git rev-parse --short HEAD` -t panascais/ci-node:${{ matrix.node }} .
+          docker tag panascais/ci-node:${{ matrix.node }} docker.pkg.github.com/panascais-docker/ci-node/ci-node:${{ matrix.node }}
+          docker tag panascais/ci-node:${{ matrix.node }} quay.io/panascais/ci-node:${{ matrix.node }}
 
-    - name: push the image to the GitHub Registry
-      id: push-github
-      run: |
-        echo "${GITHUB_PACKAGE_REGISTRY_TOKEN}" | docker login docker.pkg.github.com -u "${GITHUB_PACKAGE_REGISTRY_USERNAME}" --password-stdin
-        docker push docker.pkg.github.com/panascais-docker/ci-node/ci-node:${{ matrix.node }}
-      env:
-        GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
-        GITHUB_PACKAGE_REGISTRY_USERNAME: ${{ secrets.GITHUB_PACKAGE_REGISTRY_USERNAME }}
+      - name: push the image to the GitHub Registry
+        id: push-github
+        run: |
+          echo "${GITHUB_PACKAGE_REGISTRY_TOKEN}" | docker login docker.pkg.github.com -u "${GITHUB_PACKAGE_REGISTRY_USERNAME}" --password-stdin
+          docker push docker.pkg.github.com/panascais-docker/ci-node/ci-node:${{ matrix.node }}
+        env:
+          GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
+          GITHUB_PACKAGE_REGISTRY_USERNAME: ${{ secrets.GITHUB_PACKAGE_REGISTRY_USERNAME }}
 
-    - name: push the image to the Docker Registry
-      id: push-docker
-      run: |
-        echo "${DOCKER_REGISTRY_TOKEN}" | docker login -u "${DOCKER_REGISTRY_USERNAME}" --password-stdin
-        docker push panascais/ci-node:${{ matrix.node }}
-      env:
-        DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
-        DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+      - name: push the image to the Docker Registry
+        id: push-docker
+        run: |
+          echo "${DOCKER_REGISTRY_TOKEN}" | docker login -u "${DOCKER_REGISTRY_USERNAME}" --password-stdin
+          docker push panascais/ci-node:${{ matrix.node }}
+        env:
+          DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+          DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
 
-    - name: push the image to the Quay Registry
-      id: push-quay
-      run: |
-        echo "${QUAY_REGISTRY_TOKEN}" | docker login quay.io -u "${QUAY_REGISTRY_USERNAME}" --password-stdin
-        docker push quay.io/panascais/ci-node:${{ matrix.node }}
-      env:
-        QUAY_REGISTRY_TOKEN: ${{ secrets.QUAY_REGISTRY_TOKEN }}
-        QUAY_REGISTRY_USERNAME: ${{ secrets.QUAY_REGISTRY_USERNAME }}
+      - name: push the image to the Quay Registry
+        id: push-quay
+        run: |
+          echo "${QUAY_REGISTRY_TOKEN}" | docker login quay.io -u "${QUAY_REGISTRY_USERNAME}" --password-stdin
+          docker push quay.io/panascais/ci-node:${{ matrix.node }}
+        env:
+          QUAY_REGISTRY_TOKEN: ${{ secrets.QUAY_REGISTRY_TOKEN }}
+          QUAY_REGISTRY_USERNAME: ${{ secrets.QUAY_REGISTRY_USERNAME }}
