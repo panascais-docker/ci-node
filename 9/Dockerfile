@@ -31,6 +31,7 @@ RUN node -v && \
     && pnpm i -g \
     typescript \
     eslint \
+    prettier \
     ava \
     gulp-cli \
     @babel/core @babel/cli \
