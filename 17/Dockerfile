@@ -18,12 +18,17 @@ RUN node -v && \
     gcc \
     autoconf \
     automake \
+    bash \
     curl-dev \
+    curl \
     git \
+    git-lfs \
     gzip \
     make \
     python2 \
     python3 \
+    jo \
+    jq \
     libjpeg-turbo-dev \
     vips \
     openssl \
