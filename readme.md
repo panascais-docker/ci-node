@@ -20,17 +20,17 @@
 
 ## Included CLIs
 
-| **Name:**    | **GitHub:**                                                                | **npm:**                                                                 |
-| ------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `npm`        | [github.com/npm/cli](https://github.com/npm/cli)                           | [npmjs.com/package/npm](https://www.npmjs.com/package/npm)               |
-| `pnpm`       | [github.com/pnpm/pnpm](https://github.com/pnpm/pnpm)                       | [npmjs.com/package/pnpm](https://www.npmjs.com/package/pnpm)             |
-| `yarn`       | [github.com/yarnpkg/yarn](https://github.com/yarnpkg/yarn)                 | [npmjs.com/package/yarn](https://www.npmjs.com/package/yarn)             |
-| `typescript` | [github.com/microsoft/typescript](https://github.com/microsoft/typescript) | [npmjs.com/package/typescript](https://www.npmjs.com/package/typescript) |
-| `eslint`     | [github.com/eslint/eslint](https://github.com/eslint/eslint)               | [npmjs.com/package/eslint](https://www.npmjs.com/package/eslint)         |
-| `prettier`   | [github.com/prettier/prettier](https://github.com/prettier/prettier)       | [npmjs.com/package/prettier](https://www.npmjs.com/package/prettier)     |
-| `ava`        | [github.com/avajs/ava](https://github.com/avajs/ava)                       | [npmjs.com/package/ava](https://www.npmjs.com/package/ava)               |
-| `babel`      | [github.com/babel/babel](https://github.com/babel/babel)                   | [npmjs.com/package/@babel/cli](https://www.npmjs.com/package/@babel/cli) |
-| `gulp`       | [github.com/gulpjs/gulp-cli](https://github.com/gulpjs/gulp-cli)           | [npmjs.com/package/gulp-cli](https://www.npmjs.com/package/gulp-cli)     |
+| **Name:**    | **GitHub:**                                                                | **npm:**                                                                                     |
+| ------------ | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `npm`        | [github.com/npm/cli](https://github.com/npm/cli)                           | [npmjs.com/package/npm](https://www.npmjs.com/package/npm)                                   |
+| `pnpm`       | [github.com/pnpm/pnpm](https://github.com/pnpm/pnpm)                       | [npmjs.com/package/pnpm](https://www.npmjs.com/package/pnpm)                                 |
+| `yarn`       | [github.com/yarnpkg/yarn](https://github.com/yarnpkg/yarn)                 | [npmjs.com/package/yarn](https://www.npmjs.com/package/yarn)                                 |
+| `typescript` | [github.com/microsoft/typescript](https://github.com/microsoft/typescript) | [npmjs.com/package/typescript](https://www.npmjs.com/package/typescript)                     |
+| `eslint`     | [github.com/eslint/eslint](https://github.com/eslint/eslint)               | [npmjs.com/package/eslint](https://www.npmjs.com/package/eslint)                             |
+| `prettier`   | [github.com/prettier/prettier](https://github.com/prettier/prettier)       | [npmjs.com/package/prettier](https://www.npmjs.com/package/prettier)                         |
+| `ava`        | [github.com/avajs/ava](https://github.com/avajs/ava)                       | [npmjs.com/package/ava](https://www.npmjs.com/package/ava)                                   |
+| `babel`      | [github.com/babel/babel](https://github.com/babel/babel)                   | [npmjs.com/package/@babel/cli](https://www.npmjs.com/package/@babel/cli)                     |
+| `gulp`       | [github.com/gulpjs/gulp-cli](https://github.com/gulpjs/gulp-cli)           | [npmjs.com/package/gulp-cli](https://www.npmjs.com/package/gulp-cli)                         |
 
 ## Included Packages
 
