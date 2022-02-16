@@ -40,4 +40,7 @@ RUN node -v && \
     ava \
     gulp-cli \
     @babel/core @babel/cli \
-    yarn
+    yarn \
+    depcheck \
+    @cloudflare/wrangler \
+    zx
