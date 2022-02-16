@@ -22,6 +22,7 @@
 
 | **Name:**    | **GitHub:**                                                                | **npm:**                                                                                     |
 | ------------ | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `fly`        | [github.com/superfly/flyctl](https://github.com/superfly/flyctl)           | ×                                                                                            |
 | `npm`        | [github.com/npm/cli](https://github.com/npm/cli)                           | [npmjs.com/package/npm](https://www.npmjs.com/package/npm)                                   |
 | `pnpm`       | [github.com/pnpm/pnpm](https://github.com/pnpm/pnpm)                       | [npmjs.com/package/pnpm](https://www.npmjs.com/package/pnpm)                                 |
 | `yarn`       | [github.com/yarnpkg/yarn](https://github.com/yarnpkg/yarn)                 | [npmjs.com/package/yarn](https://www.npmjs.com/package/yarn)                                 |

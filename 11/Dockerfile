@@ -43,4 +43,6 @@ RUN node -v && \
     yarn \
     depcheck \
     @cloudflare/wrangler \
-    zx
+    zx \
+    && export FLYCTL_INSTALL=/usr/local \
+    && curl -L https://fly.io/install.sh | sh
