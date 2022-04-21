@@ -1,0 +1,48 @@
+FROM panascais/node:18
+
+ARG BUILD_DATE
+ARG VCS_REF
+
+LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git" \
+    org.label-schema.build-date=$BUILD_DATE \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.name="Node CI Image" \
+    org.label-schema.description="Panascais Node Continuous Integration Image" \
+    org.label-schema.vendor="Panascais Inc." \
+    org.label-schema.schema-version="1.0.0-rc1" \
+    maintainer="Panascais Open Source <oss@panascais.net>"
+
+RUN node -v && \
+    apk add --update \
+    g++ \
+    gcc \
+    autoconf \
+    automake \
+    bash \
+    curl-dev \
+    curl \
+    git \
+    git-lfs \
+    gzip \
+    make \
+    python2 \
+    python3 \
+    jo \
+    jq \
+    libjpeg-turbo-dev \
+    vips \
+    openssl \
+    && rm -rf /var/cache/apk/* \
+    && pnpm i -g \
+    typescript \
+    eslint \
+    prettier \
+    ava \
+    gulp-cli \
+    @babel/core @babel/cli \
+    yarn \
+    depcheck \
+    @cloudflare/wrangler \
+    zx \
+    && export FLYCTL_INSTALL=/usr/local \
+    && curl -L https://fly.io/install.sh | sh
