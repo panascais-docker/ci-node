@@ -34,7 +34,6 @@ RUN node -v && \
     git-lfs \
     gzip \
     make \
-    python2 \
     python3 \
     jo \
     jq \
