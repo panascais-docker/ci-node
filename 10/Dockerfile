@@ -48,8 +48,6 @@ RUN node -v && \
     ava \
     gulp-cli \
     @babel/core @babel/cli \
-    node-gyp \
-    yarn \
     depcheck \
     zx \
     && export FLYCTL_INSTALL=/usr/local \
