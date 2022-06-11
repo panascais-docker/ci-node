@@ -13,8 +13,7 @@ jobs:
     timeout-minutes: 360
     strategy:
       matrix:
-        # node: [8, 10, 12, 14, 15, 16, 17, 18, latest, lts]
-        node: [10]
+        node: [8, 10, 12, 14, 15, 16, 17, 18, latest, lts]
     steps:
       - name: pull repository
         id: repository
