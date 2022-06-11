@@ -13,11 +13,19 @@ jobs:
     timeout-minutes: 360
     strategy:
       matrix:
-        node: [8, 10, 12, 14, 15, 16, 17, 18, latest, lts]
+        # node: [8, 10, 12, 14, 15, 16, 17, 18, latest, lts]
+        node: [10]
     steps:
       - name: pull repository
         id: repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: install dependencies
         id: dependencies
