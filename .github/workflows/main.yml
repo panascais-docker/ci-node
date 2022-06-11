@@ -6,17 +6,23 @@ on:
       - master
 
 jobs:
-  push:
+  deploy:
     name: ${{ matrix.node }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
+    timeout-minutes: 360
     strategy:
       matrix:
-        node: [10, 12, 14, 15, 16, 17, 18, latest, lts]
+        node: [8, 10, 12, 14, 15, 16, 17, 18, latest, lts]
     steps:
       - name: pull repository
         id: repository
         uses: actions/checkout@master
+
+      - name: install dependencies
+        id: dependencies
+        run: |
+          sudo apt install jq -y
 
       - name: update repository
         id: update-repository
@@ -29,17 +35,18 @@ jobs:
         run: |
           echo "${DOCKER_REGISTRY_TOKEN}" | docker login -u "${DOCKER_REGISTRY_USERNAME}" --password-stdin
           echo "${QUAY_REGISTRY_TOKEN}" | docker login quay.io -u "${QUAY_REGISTRY_USERNAME}" --password-stdin
-          # echo "${CONTAINER_REGISTRY_TOKEN}" | docker login ghcr.io -u "${CONTAINER_REGISTRY_USERNAME}" --password-stdin
+          echo "${CONTAINER_REGISTRY_TOKEN}" | docker login ghcr.io -u "${CONTAINER_REGISTRY_USERNAME}" --password-stdin
 
           docker buildx create --use
           docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/arm/v7,linux/ppc64le,linux/s390x \
+            --platform linux/amd64,linux/arm64 \
             --push \
             --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
             --build-arg VCS_REF=`git rev-parse --short HEAD` \
-            -t panascais/node:${{ matrix.node }} \
-            -t quay.io/panascais/node:${{ matrix.node }} \
-            .
+            -t panascais/ci-node:${{ matrix.node }} \
+            -t quay.io/panascais/ci-node:${{ matrix.node }} \
+            -t ghcr.io/panascais-docker/ci-node/ci-node:${{ matrix.node }} \
+            .;
         env:
           CONTAINER_REGISTRY_TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
           CONTAINER_REGISTRY_USERNAME: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
