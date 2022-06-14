@@ -33,7 +33,7 @@
 | `ava`        | [github.com/avajs/ava](https://github.com/avajs/ava)                       | [npmjs.com/package/ava](https://www.npmjs.com/package/ava)                                   |
 | `babel`      | [github.com/babel/babel](https://github.com/babel/babel)                   | [npmjs.com/package/@babel/cli](https://www.npmjs.com/package/@babel/cli)                     |
 | `gulp`       | [github.com/gulpjs/gulp-cli](https://github.com/gulpjs/gulp-cli)           | [npmjs.com/package/gulp-cli](https://www.npmjs.com/package/gulp-cli)                         |
-| `wrangler`   | [github.com/cloudflare/wrangler](https://github.com/cloudflare/wrangler)   | [npmjs.com/package/@cloudflare/wrangler](https://www.npmjs.com/package/@cloudflare/wrangler) |
+| `wrangler`   | [github.com/cloudflare/wrangler2](https://github.com/cloudflare/wrangler2) | [npmjs.com/package/wrangler](https://www.npmjs.com/package/wrangler)                         |
 | `depcheck`   | [github.com/depcheck/depcheck](https://github.com/depcheck/depcheck)       | [npmjs.com/package/depcheck](https://www.npmjs.com/package/depcheck)                         |
 | `zx`         | [github.com/google/zx](https://github.com/google/zx)                       | [npmjs.com/package/zx](https://www.npmjs.com/package/zx)                                     |
 
