@@ -61,24 +61,24 @@
 
 ## Build
 
-**Example for bash and node version 14:**
+**Example for bash and node version 18:**
 
 ```sh
 docker build \
     --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
     --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    -t panascais/ci-node:14 \
-    ./14
+    -t panascais/ci-node:18 \
+    ./18
 ```
 
-**Example for fish and node version 14:**
+**Example for fish and node version 18:**
 
 ```fish
 docker build \
     --build-arg BUILD_DATE=(date -u +"%Y-%m-%dT%H:%M:%SZ") \
     --build-arg VCS_REF=(git rev-parse --short HEAD) \
-    -t panascais/ci-node:14 \
-    ./14
+    -t panascais/ci-node:18 \
+    ./18
 ```
 
 ## Contributors
