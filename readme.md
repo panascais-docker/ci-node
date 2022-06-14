@@ -49,7 +49,6 @@
 | `openssl`           | [pkgs.alpinelinux.org/package/openssl](https://pkgs.alpinelinux.org/package/edge/main/x86_64/openssl)                     |
 | `gzip`              | [pkgs.alpinelinux.org/package/gzip](https://pkgs.alpinelinux.org/package/edge/main/x86_64/gzip)                           |
 | `make`              | [pkgs.alpinelinux.org/package/make](https://pkgs.alpinelinux.org/package/edge/main/x86_64/make)                           |
-| `python2`           | [pkgs.alpinelinux.org/package/python2](https://pkgs.alpinelinux.org/package/edge/main/x86_64/python2)                     |
 | `python3`           | [pkgs.alpinelinux.org/package/python3](https://pkgs.alpinelinux.org/package/edge/main/x86_64/python3)                     |
 | `jo`                | [pkgs.alpinelinux.org/package/jo](https://pkgs.alpinelinux.org/package/edge/community/x86_64/jo)                          |
 | `jq`                | [pkgs.alpinelinux.org/package/jq](https://pkgs.alpinelinux.org/package/edge/main/x86_64/jq)                               |
