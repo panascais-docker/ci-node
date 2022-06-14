@@ -24,7 +24,8 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
 ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
     PATH="/root/.local/share/pnpm/bin:$PATH"
 
-RUN node -v && \
+RUN mkdir -p /root/.local/share/pnpm/bin \
+    && node -v && \
     apk add --update \
     g++ \
     gcc \
