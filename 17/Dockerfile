@@ -50,6 +50,7 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     eslint \
     prettier \
     ava \
+    tap-junit \
     wrangler \
     gulp-cli \
     @babel/core @babel/cli \
