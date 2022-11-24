@@ -47,6 +47,7 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
     typescript \
+    ts-node \
     eslint \
     prettier \
     ava \
