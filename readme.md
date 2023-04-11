@@ -1,4 +1,4 @@
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/panascais-docker/ci-node/main?style=flat-square)](https://github.com/panascais-docker/ci-node/actions?query=workflow%3Amain)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/panascais-docker/ci-node/main.yml?branch=master&style=flat-square)](https://github.com/panascais-docker/ci-node/actions?query=workflow%3Amain)
 [![Docker Pulls](https://img.shields.io/docker/pulls/panascais/ci-node.svg?style=flat-square)](https://hub.docker.com/r/panascais/ci-node)
 [![Docker Stars](https://img.shields.io/docker/stars/panascais/ci-node.svg?style=flat-square)](https://hub.docker.com/r/panascais/ci-node)
 [![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node.svg?style=flat-square)](https://hub.docker.com/r/panascais/ci-node)
