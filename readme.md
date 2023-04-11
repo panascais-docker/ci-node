@@ -29,13 +29,17 @@
 | `pnpm`       | [github.com/pnpm/pnpm](https://github.com/pnpm/pnpm)                       | [npmjs.com/package/pnpm](https://www.npmjs.com/package/pnpm)                                 |
 | `yarn`       | [github.com/yarnpkg/yarn](https://github.com/yarnpkg/yarn)                 | [npmjs.com/package/yarn](https://www.npmjs.com/package/yarn)                                 |
 | `typescript` | [github.com/microsoft/typescript](https://github.com/microsoft/typescript) | [npmjs.com/package/typescript](https://www.npmjs.com/package/typescript)                     |
+| `rome`       | [github.com/rome/tools](https://github.com/rome/tools)                     | [npmjs.com/package/rome](https://www.npmjs.com/package/rome)                                 |
 | `eslint`     | [github.com/eslint/eslint](https://github.com/eslint/eslint)               | [npmjs.com/package/eslint](https://www.npmjs.com/package/eslint)                             |
+| `stylelint`  | [github.com/stylelint/stylelint](https://github.com/stylelint/stylelint)   | [npmjs.com/package/stylelint](https://www.npmjs.com/package/stylelint)                       |
 | `prettier`   | [github.com/prettier/prettier](https://github.com/prettier/prettier)       | [npmjs.com/package/prettier](https://www.npmjs.com/package/prettier)                         |
 | `ava`        | [github.com/avajs/ava](https://github.com/avajs/ava)                       | [npmjs.com/package/ava](https://www.npmjs.com/package/ava)                                   |
 | `babel`      | [github.com/babel/babel](https://github.com/babel/babel)                   | [npmjs.com/package/@babel/cli](https://www.npmjs.com/package/@babel/cli)                     |
+| `parcel`     | [github.com/parcel-bundler/parcel](https://github.com/parcel-bundler/parcel) | [npmjs.com/package/parcel](https://www.npmjs.com/package/parcel)                           |
 | `gulp`       | [github.com/gulpjs/gulp-cli](https://github.com/gulpjs/gulp-cli)           | [npmjs.com/package/gulp-cli](https://www.npmjs.com/package/gulp-cli)                         |
 | `wrangler`   | [github.com/cloudflare/wrangler2](https://github.com/cloudflare/wrangler2) | [npmjs.com/package/wrangler](https://www.npmjs.com/package/wrangler)                         |
 | `depcheck`   | [github.com/depcheck/depcheck](https://github.com/depcheck/depcheck)       | [npmjs.com/package/depcheck](https://www.npmjs.com/package/depcheck)                         |
+| `ts-node`    | [github.com/typestrong/ts-node](https://github.com/typestrong/ts-node)     | [npmjs.com/package/ts-node](https://www.npmjs.com/package/ts-node)                           |
 | `zx`         | [github.com/google/zx](https://github.com/google/zx)                       | [npmjs.com/package/zx](https://www.npmjs.com/package/zx)                                     |
 
 ## Included Packages
