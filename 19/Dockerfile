@@ -61,5 +61,11 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     parcel \
     stylelint \
     rome \
+    tsup \
+    @rspack/cli \
+    @swc/core \
+    @swc/cli \
+    esbuild \
+    turbo \
     && export FLYCTL_INSTALL=/usr/local \
     && curl -L https://fly.io/install.sh | sh
