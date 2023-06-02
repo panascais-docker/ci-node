@@ -46,6 +46,7 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     openssl \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
+    pnpm@6 \
     typescript \
     ts-node \
     eslint \
