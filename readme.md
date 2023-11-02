@@ -10,8 +10,9 @@
 
 | **Tag:** | **Command:**                       | **Node Version:** | **Supported:** | **Labels:**                                                                                                   |
 | -------- | ---------------------------------- | ----------------- | -------------- | ------------------------------------------------------------------------------------------------------------- |
-| `lts`    | `docker pull panascais/ci-node`    | `v18.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/lts.svg?style=flat-square)    |
-| `latest` | `docker pull panascais/ci-node`    | `v20.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/latest.svg?style=flat-square) |
+| `lts`    | `docker pull panascais/ci-node`    | `v20.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/lts.svg?style=flat-square)    |
+| `latest` | `docker pull panascais/ci-node`    | `v21.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/latest.svg?style=flat-square) |
+| `21`     | `docker pull panascais/ci-node:21` | `v21.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/21.svg?style=flat-square)     |
 | `20`     | `docker pull panascais/ci-node:20` | `v20.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/20.svg?style=flat-square)     |
 | `19`     | `docker pull panascais/ci-node:19` | `v19.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/19.svg?style=flat-square)     |
 | `18`     | `docker pull panascais/ci-node:18` | `v18.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/18.svg?style=flat-square)     |
