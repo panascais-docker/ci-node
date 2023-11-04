@@ -51,6 +51,8 @@
 | `ts-node`    | [github.com/typestrong/ts-node](https://github.com/typestrong/ts-node)       | [npmjs.com/package/ts-node](https://www.npmjs.com/package/ts-node)       |
 | `tsup`       | [github.com/egoist/tsup](https://github.com/egoist/tsup)                     | [npmjs.com/package/tsup](https://www.npmjs.com/package/tsup)             |
 | `zx`         | [github.com/google/zx](https://github.com/google/zx)                         | [npmjs.com/package/zx](https://www.npmjs.com/package/zx)                 |
+| `pkg`        | [github.com/yao-pkg/pkg](https://github.com/yao-pkg/pkg)                     | [npmjs.com/package/pkg](https://www.npmjs.com/package/@yao-pkg/pkg)      |
+| `rollup`     | [github.com/rollup/rollup](https://github.com/rollup/rollup)                 | [npmjs.com/package/rollup](https://www.npmjs.com/package/rollup)         |
 
 ## Included Packages
 

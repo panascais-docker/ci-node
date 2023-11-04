@@ -67,5 +67,7 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     @swc/cli \
     esbuild \
     turbo \
+    rollup \
+    @yao-pkg/pkg \
     && export FLYCTL_INSTALL=/usr/local \
     && curl -L https://fly.io/install.sh | sh
