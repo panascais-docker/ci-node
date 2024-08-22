@@ -73,4 +73,3 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     && for i in {1..5}; do curl -L https://fly.io/install.sh | sh && break || sleep 5; done \
     # smoke tests
     && fly version
-
