@@ -10,11 +10,11 @@ on:
 jobs:
   deploy:
     name: ${{ matrix.node }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
       matrix:
-        node: [12, 14, 15, 16, 17, 18, 19, 20, 21, 22, latest, lts]
+        node: [ 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, latest, lts ]
     steps:
       - name: pull repository
         uses: actions/checkout@v4

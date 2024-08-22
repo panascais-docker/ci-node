@@ -11,7 +11,6 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
     org.label-schema.vendor="Panascais ehf." \
     org.label-schema.schema-version="1.0.0" \
     org.opencontainers.image.revision=$VCS_REF \
-    org.opencontainers.image.version=$VERSION \
     org.opencontainers.image.title="Node CI Image" \
     org.opencontainers.image.description="Panascais Node Continuous Integration Image" \
     org.opencontainers.image.url=https://nodejs.org \
@@ -27,48 +26,51 @@ ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
 RUN mkdir -p /root/.local/share/pnpm/bin \
     && node -v && \
     apk add --update \
-    g++ \
-    gcc \
     autoconf \
     automake \
     bash \
-    curl-dev \
     curl \
+    curl-dev \
+    g++ \
+    gcc \
     git \
     git-lfs \
     gzip \
-    make \
-    python3 \
     jo \
     jq \
     libjpeg-turbo-dev \
-    vips \
+    make \
     openssl \
+    python3 \
+    vips \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
-    pnpm \
-    typescript \
-    ts-node \
-    eslint \
-    prettier \
-    ava \
-    tap-junit \
-    wrangler \
-    gulp-cli \
     @babel/core @babel/cli \
-    yarn \
-    depcheck \
-    zx \
-    parcel \
-    stylelint \
-    rome \
-    tsup \
     @rspack/cli \
-    @swc/core \
     @swc/cli \
-    esbuild \
-    turbo \
-    rollup \
+    @swc/core \
     @yao-pkg/pkg \
+    ava \
+    depcheck \
+    esbuild \
+    eslint \
+    gulp-cli \
+    parcel \
+    pnpm@8 \
+    prettier \
+    rollup \
+    rome \
+    stylelint \
+    tap-junit \
+    ts-node \
+    tsup \
+    turbo \
+    typescript \
+    wrangler \
+    yarn \
+    zx \
     && export FLYCTL_INSTALL=/usr/local \
-    && curl -L https://fly.io/install.sh | sh
+    && curl -L https://fly.io/install.sh | sh \
+    # smoke tests
+    && fly version
+
