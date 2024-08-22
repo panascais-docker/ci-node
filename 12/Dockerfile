@@ -69,7 +69,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     yarn \
     zx \
     && export FLYCTL_INSTALL=/usr/local \
-    && curl -L https://fly.io/install.sh | sh \
+    && for i in {1..5}; do curl -L https://fly.io/install.sh | sh && break || sleep 5; done \
     # smoke tests
     && fly version
-
