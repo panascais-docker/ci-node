@@ -59,7 +59,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     pnpm@6 \
     prettier \
     rollup \
-    rome \
     stylelint \
     tap-junit \
     ts-node \
