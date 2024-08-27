@@ -1,4 +1,4 @@
-FROM panascais/node:20
+FROM ghcr.io/panascais-docker/node/node:20
 
 ARG BUILD_DATE
 ARG VCS_REF
