@@ -45,10 +45,12 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     vips \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
-    @babel/core @babel/cli \
-    @rspack/cli \
+    @babel/cli \
+    @babel/core \
+    @rspack/cli@0 \
     @swc/cli \
     @swc/core \
+    @types/node \
     @yao-pkg/pkg \
     ava \
     depcheck \
@@ -59,7 +61,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     pnpm@8 \
     prettier \
     rollup \
-    rome \
     stylelint \
     tap-junit \
     ts-node \

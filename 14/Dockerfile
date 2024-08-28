@@ -45,28 +45,23 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     vips \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
-    @babel/core @babel/cli \
-    @rspack/cli \
-    @swc/cli \
-    @swc/core \
+    @babel/cli \
+    @babel/core \
+    @types/node \
     @yao-pkg/pkg \
     ava \
     depcheck \
-    esbuild \
     eslint \
     gulp-cli \
     parcel \
     pnpm@7 \
     prettier \
     rollup \
-    rome \
     stylelint \
     tap-junit \
     ts-node \
-    tsup \
     turbo \
     typescript \
-    wrangler \
     yarn \
     zx \
     && export FLYCTL_INSTALL=/usr/local \

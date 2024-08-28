@@ -25,7 +25,7 @@ ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
 
 RUN mkdir -p /root/.local/share/pnpm/bin \
     && node -v && \
-    apk add --update \
+    apk add --no-cache --update \
     autoconf \
     automake \
     bash \
@@ -45,14 +45,12 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     vips \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
-    @babel/core @babel/cli \
-    @rspack/cli \
-    @swc/cli \
-    @swc/core \
+    @babel/cli \
+    @babel/core \
+    @types/node \
     @yao-pkg/pkg \
     ava \
     depcheck \
-    esbuild \
     eslint \
     gulp-cli \
     parcel \
@@ -62,10 +60,8 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     stylelint \
     tap-junit \
     ts-node \
-    tsup \
     turbo \
     typescript \
-    wrangler \
     yarn \
     zx \
     && export FLYCTL_INSTALL=/usr/local \
