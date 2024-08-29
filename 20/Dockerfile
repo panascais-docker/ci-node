@@ -1,6 +1,7 @@
-FROM ghcr.io/panascais-docker/node/node:20
+FROM ghcr.io/panascais-docker/node/node:20.17.0
 
 ARG BUILD_DATE
+ARG NODE_VERSION
 ARG VCS_REF
 
 LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git" \
