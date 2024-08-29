@@ -64,7 +64,7 @@ if (true as boolean) {
 
 for (const line of dockerfile.split('\n')) {
     if (line.startsWith("FROM")) {
-        lines.push(`FROM ghcr.io/panascais-docker/node/ci-node:${tag}`)
+        lines.push(`FROM ghcr.io/panascais-docker/node/node:${tag}`)
         continue;
     }
     if (line.startsWith('    pnpm')) {
