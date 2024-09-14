@@ -73,7 +73,8 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     wrangler \
     yarn \
     zx \
+    && curl -fsSL https://bun.sh/install | bash \
     && export FLYCTL_INSTALL=/usr/local \
-    && for i in {1..5}; do curl -L https://fly.io/install.sh | sh && break || sleep 5; done \
+    && for i in {1..5}; do curl -fsSL https://fly.io/install.sh | bash && break || sleep 5; done \
     # smoke tests
     && fly version
