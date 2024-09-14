@@ -44,6 +44,8 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     openssl \
     python3 \
     vips \
+    && apk add --no-cache --update libc6-compat libstdc++ ca-certificates \
+    && update-ca-certificates \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
     @babel/cli \
