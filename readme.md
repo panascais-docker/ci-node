@@ -51,6 +51,8 @@
 | `zx`         | [github.com/google/zx](https://github.com/google/zx)                         | [npmjs.com/package/zx](https://www.npmjs.com/package/zx)                 |
 | `pkg`        | [github.com/yao-pkg/pkg](https://github.com/yao-pkg/pkg)                     | [npmjs.com/package/pkg](https://www.npmjs.com/package/@yao-pkg/pkg)      |
 | `rollup`     | [github.com/rollup/rollup](https://github.com/rollup/rollup)                 | [npmjs.com/package/rollup](https://www.npmjs.com/package/rollup)         |
+| `knip`       | [github.com/webpro-nl/knip](https://github.com/webpro-nl/knip)               | [npmjs.com/package/knip](https://www.npmjs.com/package/knip)             |
+| `tsx`        | [github.com/privatenumber/tsx](https://github.com/privatenumber/tsx)         | [npmjs.com/package/tsx](https://www.npmjs.com/package/tsx)               |
 
 ## Included Packages
 

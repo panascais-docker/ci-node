@@ -56,12 +56,14 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     ava \
     esbuild \
     eslint \
+    knip \
     pnpm@8 \
     prettier \
     rollup \
     stylelint \
     ts-node \
     tsup \
+    tsx \
     turbo \
     typescript \
     wrangler \
