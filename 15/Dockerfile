@@ -70,4 +70,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     && export FLYCTL_INSTALL=/usr/local \
     && for i in {1..5}; do curl -fsSL https://fly.io/install.sh | bash && break || sleep 5; done \
     # smoke tests
+    && node --version \
+    && bun --version \
     && fly version
