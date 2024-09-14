@@ -40,15 +40,12 @@
 | `prettier`   | [github.com/prettier/prettier](https://github.com/prettier/prettier)         | [npmjs.com/package/prettier](https://www.npmjs.com/package/prettier)     |
 | `ava`        | [github.com/avajs/ava](https://github.com/avajs/ava)                         | [npmjs.com/package/ava](https://www.npmjs.com/package/ava)               |
 | `babel`      | [github.com/babel/babel](https://github.com/babel/babel)                     | [npmjs.com/package/@babel/cli](https://www.npmjs.com/package/@babel/cli) |
-| `parcel`     | [github.com/parcel-bundler/parcel](https://github.com/parcel-bundler/parcel) | [npmjs.com/package/parcel](https://www.npmjs.com/package/parcel)         |
 | `esbuild`    | [github.com/evanw/esbuild](https://github.com/evanw/esbuild)                 | [npmjs.com/package/esbuild](https://www.npmjs.com/package/esbuild)       |
 | `swc`        | [github.com/swc-project/swc](https://github.com/swc-project/swc)             | [npmjs.com/package/swc](https://www.npmjs.com/package/swc)               |
 | `rspack`     | [github.com/web-infra-dev/rspack](https://github.com/web-infra-dev/rspack)   | [npmjs.com/package/rspack](https://www.npmjs.com/package/rspack)         |
 | `turbo`      | [github.com/vercel/turbo](https://github.com/vercel/turbo)                   | [npmjs.com/package/turbo](https://www.npmjs.com/package/turbo)           |
 | `vite`       | [github.com/vitejs/vite](https://github.com/vitejs/vite)                     | [npmjs.com/package/vite](https://www.npmjs.com/package/vite)             |
-| `gulp`       | [github.com/gulpjs/gulp-cli](https://github.com/gulpjs/gulp-cli)             | [npmjs.com/package/gulp-cli](https://www.npmjs.com/package/gulp-cli)     |
 | `wrangler`   | [github.com/cloudflare/wrangler2](https://github.com/cloudflare/wrangler2)   | [npmjs.com/package/wrangler](https://www.npmjs.com/package/wrangler)     |
-| `depcheck`   | [github.com/depcheck/depcheck](https://github.com/depcheck/depcheck)         | [npmjs.com/package/depcheck](https://www.npmjs.com/package/depcheck)     |
 | `ts-node`    | [github.com/typestrong/ts-node](https://github.com/typestrong/ts-node)       | [npmjs.com/package/ts-node](https://www.npmjs.com/package/ts-node)       |
 | `tsup`       | [github.com/egoist/tsup](https://github.com/egoist/tsup)                     | [npmjs.com/package/tsup](https://www.npmjs.com/package/tsup)             |
 | `zx`         | [github.com/google/zx](https://github.com/google/zx)                         | [npmjs.com/package/zx](https://www.npmjs.com/package/zx)                 |

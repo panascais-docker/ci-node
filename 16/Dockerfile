@@ -54,16 +54,12 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     @types/node \
     @yao-pkg/pkg \
     ava \
-    depcheck \
     esbuild \
     eslint \
-    gulp-cli \
-    parcel \
     pnpm@8 \
     prettier \
     rollup \
     stylelint \
-    tap-junit \
     ts-node \
     tsup \
     turbo \

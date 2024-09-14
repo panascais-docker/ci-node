@@ -51,15 +51,11 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     @types/node \
     @yao-pkg/pkg \
     ava \
-    depcheck \
     eslint \
-    gulp-cli \
-    parcel \
     pnpm@7 \
     prettier \
     rollup \
     stylelint \
-    tap-junit \
     ts-node \
     turbo \
     typescript \
