@@ -34,7 +34,7 @@
 | `pnpm`       | [github.com/pnpm/pnpm](https://github.com/pnpm/pnpm)                         | [npmjs.com/package/pnpm](https://www.npmjs.com/package/pnpm)             |
 | `yarn`       | [github.com/yarnpkg/yarn](https://github.com/yarnpkg/yarn)                   | [npmjs.com/package/yarn](https://www.npmjs.com/package/yarn)             |
 | `typescript` | [github.com/microsoft/typescript](https://github.com/microsoft/typescript)   | [npmjs.com/package/typescript](https://www.npmjs.com/package/typescript) |
-| `rome`       | [github.com/rome/tools](https://github.com/rome/tools)                       | [npmjs.com/package/rome](https://www.npmjs.com/package/rome)             |
+| `biome`      | [github.com/biomejs/biome](https://github.com/biomejs/biome)                 | [npmjs.com/package/@biomejs/biome](https://www.npmjs.com/package/@biomejs/biome) |
 | `eslint`     | [github.com/eslint/eslint](https://github.com/eslint/eslint)                 | [npmjs.com/package/eslint](https://www.npmjs.com/package/eslint)         |
 | `stylelint`  | [github.com/stylelint/stylelint](https://github.com/stylelint/stylelint)     | [npmjs.com/package/stylelint](https://www.npmjs.com/package/stylelint)   |
 | `prettier`   | [github.com/prettier/prettier](https://github.com/prettier/prettier)         | [npmjs.com/package/prettier](https://www.npmjs.com/package/prettier)     |

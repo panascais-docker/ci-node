@@ -48,6 +48,7 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     && pnpm i -g \
     @babel/cli \
     @babel/core \
+    @biomejs/biome \
     @rspack/cli@0 \
     @swc/cli \
     @swc/core \
@@ -60,7 +61,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     pnpm@9 \
     prettier \
     rollup \
-    rome \
     stylelint \
     ts-node \
     tsup \
