@@ -51,7 +51,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     @types/node \
     @yao-pkg/pkg \
     ava \
-    bun \
     depcheck \
     eslint \
     gulp-cli \
