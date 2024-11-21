@@ -78,4 +78,5 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     && for i in {1..5}; do curl -fsSL https://fly.io/install.sh | bash && break || sleep 5; done \
     # smoke tests
     && node --version \
+    && bun --version \
     && fly version
