@@ -60,7 +60,7 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     esbuild \
     eslint \
     knip \
-    pnpm@9 \
+    pnpm@10 \
     prettier \
     rollup \
     stylelint \
