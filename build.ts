@@ -2,8 +2,8 @@ import { $ } from 'bun'
 
 // constants
 
-const pnpmFile = './configuration/pnpm.json';
-const tagsFile = './configuration/tags.json';
+const pnpmFile = 'https://raw.githubusercontent.com/panascais-docker/node/master/configuration/pnpm.json';
+const versionsFile = 'https://raw.githubusercontent.com/panascais-docker/node/master/configuration/versions.json';
 const [, , distribution] = Bun.argv;
 
 // utilities
@@ -19,7 +19,7 @@ const fetchJson = async <T>(url: string) => {
 };
 
 const getPnpmVersion = async () => {
-    const json = await fetchJson<Record<string, string>>('https://raw.githubusercontent.com/panascais-docker/node/master/configuration/pnpm.json')
+    const json = await fetchJson<Record<string, string>>(pnpmFile)
 
     const version = json[distribution] as string;
     if (typeof version !== 'string' || !version?.length) {
@@ -30,7 +30,7 @@ const getPnpmVersion = async () => {
 }
 
 const getImageTag = async () => {
-    const json = await fetchJson<Record<string, string>>('https://raw.githubusercontent.com/panascais-docker/node/master/configuration/versions.json')
+    const json = await fetchJson<Record<string, string>>(versionsFile)
 
     const tag = json[distribution] as string;
     if (typeof tag !== 'string' || !tag?.length) {
