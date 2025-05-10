@@ -1,4 +1,4 @@
-FROM ghcr.io/panascais-docker/node/node:24.0.0
+FROM ghcr.io/panascais-docker/node/node:24.0.1
 
 ARG BUILD_DATE
 ARG NODE_VERSION
