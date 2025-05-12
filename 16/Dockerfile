@@ -30,10 +30,13 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     autoconf \
     automake \
     bash \
+    build-base \
+    cairo-dev \
     curl \
     curl-dev \
     g++ \
     gcc \
+    giflib-dev \
     git \
     git-lfs \
     gzip \
@@ -42,6 +45,8 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     libjpeg-turbo-dev \
     make \
     openssl \
+    pango-dev \
+    py-setuptools \
     python3 \
     vips \
     && apk add --no-cache --update libc6-compat libstdc++ ca-certificates gcompat \
