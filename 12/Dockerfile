@@ -26,7 +26,7 @@ ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
 
 RUN mkdir -p /root/.local/share/pnpm/bin \
     && node -v && \
-    apk add --no-cache --update \
+    apk add --update \
     autoconf \
     automake \
     bash \
