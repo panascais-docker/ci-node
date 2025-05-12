@@ -34,6 +34,7 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     cairo-dev \
     curl \
     curl-dev \
+    deno \
     g++ \
     gcc \
     giflib-dev \
@@ -77,4 +78,5 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     # smoke tests
     && node --version \
     && bun --version \
+    && deno --version \
     && fly version
