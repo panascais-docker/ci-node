@@ -12,6 +12,7 @@
 | -------- | ---------------------------------- | ----------------- | -------------- | ------------------------------------------------------------------------------------------------------------- |
 | `lts`    | `docker pull panascais/ci-node`    | `v22.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/lts.svg?style=flat-square)    |
 | `latest` | `docker pull panascais/ci-node`    | `v23.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/latest.svg?style=flat-square) |
+| `24`     | `docker pull panascais/ci-node:24` | `v24.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/24.svg?style=flat-square)     |
 | `23`     | `docker pull panascais/ci-node:23` | `v23.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/23.svg?style=flat-square)     |
 | `22`     | `docker pull panascais/ci-node:22` | `v22.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/22.svg?style=flat-square)     |
 | `21`     | `docker pull panascais/ci-node:21` | `v21.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/21.svg?style=flat-square)     |
@@ -79,24 +80,24 @@
 
 ## Build
 
-**Example for bash and node version 22:**
+**Example for bash and node version 24:**
 
 ```sh
 docker build \
     --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
     --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    -t panascais/ci-node:22 \
-    ./22
+    -t panascais/ci-node:24 \
+    ./24
 ```
 
-**Example for fish and node version 22:**
+**Example for fish and node version 24:**
 
 ```fish
 docker build \
     --build-arg BUILD_DATE=(date -u +"%Y-%m-%dT%H:%M:%SZ") \
     --build-arg VCS_REF=(git rev-parse --short HEAD) \
-    -t panascais/ci-node:22 \
-    ./22
+    -t panascais/ci-node:24 \
+    ./24
 ```
 
 ## Contributors
