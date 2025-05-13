@@ -25,8 +25,10 @@ ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
     PATH="/root/.local/share/pnpm/bin:$PATH"
 
 RUN mkdir -p /root/.local/share/pnpm/bin \
-    && node -v && \
-    apk add --update \
+    && node -v \
+    && echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories \
+    && echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+    && apk add --no-cache --update \
     autoconf \
     automake \
     bash \
@@ -34,6 +36,7 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     cairo-dev \
     curl \
     curl-dev \
+    deno \
     g++ \
     gcc \
     giflib-dev \
@@ -58,7 +61,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     python3 \
     simdutf \
     vips \
-    && apk add --no-cache --update deno --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
     && apk add --no-cache --update libc6-compat libstdc++ ca-certificates gcompat \
     && update-ca-certificates \
     && rm -rf /var/cache/apk/* \
