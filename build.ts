@@ -118,13 +118,9 @@ if (Bun.env.GITHUB_ACTIONS === 'true') {
         -t panascais/ci-node:${major} \
         -t panascais/ci-node:${minor} \
         -t panascais/ci-node:${patch} \
-        -t quay.io/panascais/ci-node:${distribution} \
-        -t quay.io/panascais/ci-node:${major} \
-        -t quay.io/panascais/ci-node:${minor} \
-        -t quay.io/panascais/ci-node:${patch} \
         ./${distribution}`;
 } else {
-    await $`docker buildx create --name orb --use &> /dev/null && docker buildx inspect --bootstrap &> /dev/null  && docker buildx install &> /dev/null || true && docker buildx build \
+    await $`docker buildx create --name orb --use &> /dev/null && docker buildx inspect --bootstrap &> /dev/null && docker buildx install &> /dev/null || true && docker buildx build \
         --build-arg BUILD_DATE=${await $`date -u +"%Y-%m-%dT%H:%M:%SZ"`.text()} \
         --build-arg NODE_VERSION=${patch} \
         --build-arg VCS_REF=${await $`git rev-parse --short HEAD`.text()} \
