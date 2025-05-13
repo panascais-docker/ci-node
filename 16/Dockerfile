@@ -34,22 +34,31 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     cairo-dev \
     curl \
     curl-dev \
-    deno \
     g++ \
     gcc \
     giflib-dev \
     git \
     git-lfs \
     gzip \
+    icu \
+    icu-libs \
     jo \
     jq \
+    libgcc \
     libjpeg-turbo-dev \
+    libstdc++ \
+    linux-headers \
     make \
+    musl \
+    musl-dev \
+    musl-utils \
     openssl \
     pango-dev \
     py-setuptools \
     python3 \
+    simdutf \
     vips \
+    && apk add --no-cache --update deno --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
     && apk add --no-cache --update libc6-compat libstdc++ ca-certificates gcompat \
     && update-ca-certificates \
     && rm -rf /var/cache/apk/* \
