@@ -66,6 +66,7 @@
 | `git`               | [pkgs.alpinelinux.org/package/git](https://pkgs.alpinelinux.org/package/edge/main/x86_64/git)                             |
 | `git-lfs`           | [pkgs.alpinelinux.org/package/git-lfs](https://pkgs.alpinelinux.org/package/edge/community/x86_64/git-lfs)                |
 | `openssl`           | [pkgs.alpinelinux.org/package/openssl](https://pkgs.alpinelinux.org/package/edge/main/x86_64/openssl)                     |
+| `ffmpeg`            | [pkgs.alpinelinux.org/package/ffmpeg](https://pkgs.alpinelinux.org/package/edge/community/x86_64/ffmpeg)                  |
 | `gzip`              | [pkgs.alpinelinux.org/package/gzip](https://pkgs.alpinelinux.org/package/edge/main/x86_64/gzip)                           |
 | `make`              | [pkgs.alpinelinux.org/package/make](https://pkgs.alpinelinux.org/package/edge/main/x86_64/make)                           |
 | `python3`           | [pkgs.alpinelinux.org/package/python3](https://pkgs.alpinelinux.org/package/edge/main/x86_64/python3)                     |

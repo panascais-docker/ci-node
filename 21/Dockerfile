@@ -43,6 +43,7 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     git \
     git-lfs \
     gzip \
+    ffmpeg \
     icu \
     icu-libs \
     jo \
