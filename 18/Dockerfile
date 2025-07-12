@@ -26,8 +26,6 @@ ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
 
 RUN mkdir -p /root/.local/share/pnpm/bin \
     && node -v \
-    && echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories \
-    && echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
     && apk add --no-cache --update \
     autoconf \
     automake \
