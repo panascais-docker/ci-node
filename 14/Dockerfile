@@ -72,7 +72,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     @yao-pkg/pkg \
     ava \
     eslint \
-    knip \
     pnpm@7 \
     prettier \
     rollup \
