@@ -31,21 +31,26 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     automake \
     bash \
     build-base \
+    ca-certificates \
     cairo-dev \
     curl \
     curl-dev \
     deno \
+    ffmpeg \
     g++ \
     gcc \
+    gcompat \
     giflib-dev \
     git \
     git-lfs \
     gzip \
-    ffmpeg \
     icu \
+    icu-data-full \
     icu-libs \
     jo \
     jq \
+    libc++ \
+    libc6-compat \
     libgcc \
     libjpeg-turbo-dev \
     libstdc++ \
@@ -60,7 +65,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     python3 \
     simdutf \
     vips \
-    && apk add --no-cache --update libc6-compat libstdc++ ca-certificates gcompat \
     && update-ca-certificates \
     && rm -rf /var/cache/apk/* \
     && pnpm i -g \
