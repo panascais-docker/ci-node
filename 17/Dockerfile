@@ -45,7 +45,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     git-lfs \
     gzip \
     icu \
-    icu-data-full \
     icu-libs \
     jo \
     jq \
