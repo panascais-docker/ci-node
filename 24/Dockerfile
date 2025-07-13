@@ -90,6 +90,12 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     wrangler \
     yarn \
     zx \
+    --allow-build=@swc/core \
+    --allow-build=esbuild \
+    --allow-build=oxc-resolver \
+    --allow-build=sharp \
+    --allow-build=workerd \
+    --allow-build=yarn \
     && export BUN_INSTALL=/usr/local \
     && curl -fsSL https://bun.sh/install | bash \
     && export FLYCTL_INSTALL=/usr/local \
