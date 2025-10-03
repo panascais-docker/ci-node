@@ -97,7 +97,7 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     --allow-build=workerd \
     --allow-build=yarn \
     && export BUN_INSTALL=/usr/local \
-    && curl -fsSL https://bun.sh/install | bash \
+    && curl -fsSL https://bun.com/install | bash -s "bun-v1.2.22" \
     && export FLYCTL_INSTALL=/usr/local \
     && for i in {1..5}; do curl -fsSL https://fly.io/install.sh | bash && break || sleep 5; done \
     # smoke tests
