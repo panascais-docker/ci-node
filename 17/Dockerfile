@@ -1,4 +1,17 @@
+FROM golang:1.25-alpine AS flyctl
+
+ENV CGO_ENABLED=0
+ENV GOEXPERIMENT=greenteagc
+ENV GOOS=linux
+
+RUN --mount=type=cache,id=go,target=/go/pkg/mod \
+    go install -ldflags="-s -w" -tags kqueue -trimpath -v github.com/superfly/flyctl@v0.3.236 \
+    && chmod +x $(which flyctl)
+
 FROM ghcr.io/panascais-docker/node/node:17.9.1
+
+COPY --from=flyctl /go/bin/flyctl /usr/local/bin/flyctl
+RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
 
 ARG BUILD_DATE
 ARG NODE_VERSION
@@ -24,9 +37,7 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
 ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
     PATH="/root/.local/share/pnpm/bin:$PATH"
 
-RUN mkdir -p /root/.local/share/pnpm/bin \
-    && node -v \
-    && apk add --no-cache --update \
+RUN apk add --no-cache --update \
     autoconf \
     automake \
     bash \
@@ -48,7 +59,6 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     icu-libs \
     jo \
     jq \
-    libc++ \
     libc6-compat \
     libgcc \
     libjpeg-turbo-dev \
@@ -65,38 +75,33 @@ RUN mkdir -p /root/.local/share/pnpm/bin \
     simdutf \
     vips \
     && update-ca-certificates \
-    && rm -rf /var/cache/apk/* \
+    && rm -rf /var/cache/apk/*
+
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/bin/store \
+    mkdir -p /root/.local/share/pnpm/bin \
     && pnpm i -g \
     @babel/cli \
     @babel/core \
-    @biomejs/biome \
-    @rspack/cli@0 \
-    @swc/cli \
-    @swc/core \
     @types/node \
     @yao-pkg/pkg \
     ava \
-    esbuild \
     eslint \
-    knip \
     pnpm@8 \
     prettier \
     rollup \
     stylelint \
     ts-node \
-    tsup \
     tsx \
     turbo \
     typescript \
-    wrangler \
     yarn \
-    zx \
-    && export BUN_INSTALL=/usr/local \
-    && curl -fsSL https://bun.com/install | bash -s "bun-v1.2.22" \
-    && export FLYCTL_INSTALL=/usr/local \
-    && for i in {1..5}; do curl -fsSL https://fly.io/install.sh | bash && break || sleep 5; done \
-    # smoke tests
-    && node --version \
-    && bun --version \
+    zx
+
+RUN export BUN_INSTALL=/usr/local \
+    && curl -fsSL https://bun.com/install | bash -s "bun-v1.2.22"
+
+# smoke tests
+RUN bun --version \
     && deno --version \
+    && node --version \
     && fly version

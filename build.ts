@@ -63,7 +63,7 @@ if (true as boolean) {
 }
 
 for (const line of dockerfile.split('\n')) {
-    if (line.startsWith("FROM")) {
+    if (line.startsWith("FROM") && !line.endsWith('flyctl')) {
         lines.push(`FROM ghcr.io/panascais-docker/node/node:${tag}`)
         continue;
     }
