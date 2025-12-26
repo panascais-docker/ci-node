@@ -1,16 +1,15 @@
-FROM golang:1.25-alpine AS flyctl
+FROM alpine:3.23 AS flyctl
 
-ENV CGO_ENABLED=0
-ENV GOEXPERIMENT=greenteagc
-ENV GOOS=linux
+ARG ARCHITECTURE=x86_64
+ARG VERSION=0.4.0
 
-RUN --mount=type=cache,id=go,target=/go/pkg/mod \
-    go install -ldflags="-s -w" -tags kqueue -trimpath -v github.com/superfly/flyctl@v0.3.236 \
-    && chmod +x $(which flyctl)
+RUN if [ "$TARGETARCH" = "arm64" ]; then ARCHITECTURE=arm64; fi \
+    && wget -qO- "https://github.com/superfly/flyctl/releases/download/v${VERSION}/flyctl_${VERSION}_Linux_${ARCHITECTURE}.tar.gz" \
+    | tar -xz -C / flyctl
 
 FROM ghcr.io/panascais-docker/node/node:12.22.12
 
-COPY --from=flyctl /go/bin/flyctl /usr/local/bin/flyctl
+COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
 
 ARG BUILD_DATE
