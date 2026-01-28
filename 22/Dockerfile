@@ -100,6 +100,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/bin/store \
     tsx \
     turbo \
     typescript \
+    vite \
     wrangler \
     yarn \
     zx \
