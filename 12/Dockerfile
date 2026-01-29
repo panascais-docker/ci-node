@@ -33,9 +33,7 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
     org.opencontainers.image.source="https://github.com/panascais-docker/ci-node" \
     maintainer="Panascais Open Source <oss@panascais.net>"
 
-ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
-    PATH="/root/.local/share/pnpm/bin:$PATH" \
-    NPM_CONFIG_PACKAGE_IMPORT_METHOD="copy"
+ENV NPM_CONFIG_PACKAGE_IMPORT_METHOD="copy"
 
 RUN apk add --no-cache --update \
     autoconf \
@@ -94,6 +92,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/bin/store \
     tsx \
     turbo \
     typescript \
+    vite@2 \
     yarn \
     zx
 

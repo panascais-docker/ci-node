@@ -93,6 +93,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/bin/store \
     tsx \
     turbo \
     typescript \
+    vite@5 \
     yarn \
     zx
 
