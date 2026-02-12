@@ -7,7 +7,7 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then ARCHITECTURE=arm64; fi \
     && wget -qO- "https://github.com/superfly/flyctl/releases/download/v${VERSION}/flyctl_${VERSION}_Linux_${ARCHITECTURE}.tar.gz" \
     | tar -xz -C / flyctl
 
-FROM ghcr.io/panascais-docker/node/node:24.13.0
+FROM ghcr.io/panascais-docker/node/node:24.13.1
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
