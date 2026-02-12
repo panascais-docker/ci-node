@@ -89,7 +89,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/bin/store \
     @yao-pkg/pkg \
     ava \
     esbuild \
-    eslint \
+    eslint@9 \
     knip \
     pnpm@10 \
     prettier \

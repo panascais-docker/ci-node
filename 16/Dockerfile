@@ -84,7 +84,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/bin/store \
     @types/node \
     @yao-pkg/pkg \
     ava \
-    eslint \
+    eslint@9 \
     pnpm@8 \
     prettier \
     rollup \
