@@ -1,13 +1,13 @@
 FROM alpine:3.23 AS flyctl
 
 ARG ARCHITECTURE=x86_64
-ARG VERSION=0.4.0
+ARG VERSION=0.4.49
 
 RUN if [ "$TARGETARCH" = "arm64" ]; then ARCHITECTURE=arm64; fi \
     && wget -qO- "https://github.com/superfly/flyctl/releases/download/v${VERSION}/flyctl_${VERSION}_Linux_${ARCHITECTURE}.tar.gz" \
     | tar -xz -C / flyctl
 
-FROM ghcr.io/panascais-docker/node/node:25.9.0
+FROM ghcr.io/panascais-docker/node/node:26.1.0
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
@@ -91,7 +91,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/bin/store \
     esbuild \
     eslint@9 \
     knip \
-    pnpm@10 \
+    pnpm@11 \
     prettier \
     rollup \
     stylelint \

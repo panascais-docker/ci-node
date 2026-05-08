@@ -1,7 +1,7 @@
 FROM alpine:3.23 AS flyctl
 
 ARG ARCHITECTURE=x86_64
-ARG VERSION=0.4.0
+ARG VERSION=0.4.49
 
 RUN if [ "$TARGETARCH" = "arm64" ]; then ARCHITECTURE=arm64; fi \
     && wget -qO- "https://github.com/superfly/flyctl/releases/download/v${VERSION}/flyctl_${VERSION}_Linux_${ARCHITECTURE}.tar.gz" \
