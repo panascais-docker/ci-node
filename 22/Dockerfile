@@ -33,7 +33,7 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
     org.opencontainers.image.source="https://github.com/panascais-docker/ci-node" \
     maintainer="Panascais Open Source <oss@panascais.net>"
 
-ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
+ENV PNPM_HOME="/root/.local/share/pnpm" \
     PATH="/root/.local/share/pnpm/bin:$PATH"
 
 RUN apk add --no-cache --update \
@@ -76,7 +76,7 @@ RUN apk add --no-cache --update \
     && update-ca-certificates \
     && rm -rf /var/cache/apk/*
 
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/bin/store \
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
     mkdir -p /root/.local/share/pnpm/bin \
     && pnpm i -g \
     @babel/cli \
@@ -91,7 +91,7 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/bin/store \
     esbuild \
     eslint@9 \
     knip \
-    pnpm@10 \
+    pnpm@11 \
     prettier \
     rollup \
     stylelint \
