@@ -34,7 +34,7 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
     maintainer="Panascais Open Source <oss@panascais.net>"
 
 ENV PNPM_HOME="/root/.local/share/pnpm" \
-    PATH="/root/.local/share/pnpm/bin:$PATH"
+    PATH="/root/.local/share/pnpm:$PATH"
 
 RUN apk add --no-cache --update \
     autoconf \
@@ -76,9 +76,7 @@ RUN apk add --no-cache --update \
     && update-ca-certificates \
     && rm -rf /var/cache/apk/*
 
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
-    mkdir -p /root/.local/share/pnpm/bin \
-    && pnpm i -g \
+RUN pnpm i -g \
     @babel/cli \
     @babel/core \
     @biomejs/biome \
@@ -118,4 +116,6 @@ RUN export BUN_INSTALL=/usr/local \
 RUN bun --version \
     && deno --version \
     && node --version \
+    && tsc --version \
+    && eslint --version \
     && fly version
