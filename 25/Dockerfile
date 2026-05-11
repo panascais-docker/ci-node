@@ -76,7 +76,7 @@ RUN apk add --no-cache --update \
     && update-ca-certificates \
     && rm -rf /var/cache/apk/*
 
-RUN pnpm i -g \
+RUN pnpm add -g \
     @babel/cli \
     @babel/core \
     @biomejs/biome \
