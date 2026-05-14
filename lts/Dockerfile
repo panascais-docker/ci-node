@@ -110,7 +110,7 @@ RUN pnpm add -g \
     --allow-build=yarn
 
 RUN export BUN_INSTALL=/usr/local \
-    && curl -fsSL https://bun.com/install | bash -s "bun-v1.3.13"
+    && curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"
 
 # smoke tests
 RUN bun --version \
