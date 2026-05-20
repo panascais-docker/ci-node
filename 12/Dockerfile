@@ -45,9 +45,7 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
     org.opencontainers.image.source="https://github.com/panascais-docker/ci-node" \
     maintainer="Panascais Open Source <oss@panascais.net>"
 
-ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
-    PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH" \
-    NPM_CONFIG_PACKAGE_IMPORT_METHOD="copy"
+ENV NPM_CONFIG_PACKAGE_IMPORT_METHOD="copy"
 
 RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/cache \
     apk update --cache-dir /apk/cache \
@@ -95,29 +93,37 @@ RUN --mount=type=cache,id=ci-node-pnpm-6-${TARGETARCH},sharing=locked,target=/ro
     @babel/cli \
     @babel/core \
     @types/node \
-    @yao-pkg/pkg \
-    ava \
-    eslint@9 \
+    ava@3 \
+    esbuild@0.17 \
+    eslint@8 \
     pnpm@6 \
-    prettier \
-    rollup \
-    stylelint \
-    ts-node \
-    tsx \
-    turbo \
-    typescript \
+    prettier@2 \
+    rollup@2 \
+    stylelint@14 \
+    ts-node@10 \
+    tsx@3 \
+    typescript@4 \
     vite@2 \
     yarn \
-    zx \
     " \
-    && mkdir -p /root/.pnpm-store /root/.local/share/pnpm/bin \
     && pnpm i -g $packages
 
 RUN export BUN_INSTALL=/usr/local \
     && curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"
 
 # smoke tests
-RUN bun --version \
+RUN ava --version \
+    && babel --version \
+    && bun --version \
     && deno --version \
+    && esbuild --version \
+    && eslint --version \
+    && fly --version \
     && node --version \
-    && fly version
+    && pnpm --version \
+    && prettier --version \
+    && rollup --version \
+    && stylelint --version \
+    && tsc --version \
+    && tsx --version \
+    && vite --version

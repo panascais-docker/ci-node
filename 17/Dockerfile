@@ -15,6 +15,9 @@ RUN set -eu \
     download_version=$(echo "$location" | sed -n 's|.*/download/v\([^/]*\)/.*|\1|p'); \
   fi \
   && wget -qO- "https://github.com/superfly/flyctl/releases/download/v$(echo "$download_version")/flyctl_$(echo "$download_version")_Linux_$(echo "$download_architecture").tar.gz" \
+  | tar -xz -C / flyctl
+
+
 FROM ghcr.io/panascais-docker/node/node:17.9.1
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
@@ -86,25 +89,30 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     vips \
     && update-ca-certificates
 
-RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
+RUN --mount=type=cache,id=ci-node-pnpm-17-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
     packages=" \
     @babel/cli \
     @babel/core \
+    @biomejs/biome@1 \
+    @rspack/cli@0.7.5 \
+    @rspack/core@0.7.5 \
     @types/node \
-    @yao-pkg/pkg \
-    ava \
-    eslint@9 \
+    @yao-pkg/pkg@5 \
+    ava@5 \
+    esbuild@0.19 \
+    eslint@8 \
     pnpm@8 \
-    prettier \
-    rollup \
-    stylelint \
-    ts-node \
-    tsx \
-    turbo \
-    typescript \
+    prettier@3 \
+    rollup@3 \
+    stylelint@15 \
+    ts-node@10 \
+    tsx@3 \
+    turbo@1 \
+    typescript@5 \
     vite@3 \
+    wrangler@3 \
     yarn \
-    zx \
+    zx@7 \
     " \
     && mkdir -p /root/.local/share/pnpm/bin \
     && pnpm i -g $packages
@@ -113,7 +121,24 @@ RUN export BUN_INSTALL=/usr/local \
     && curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"
 
 # smoke tests
-RUN bun --version \
+RUN ava --version \
+    && babel --version \
+    && biome --version \
+    && bun --version \
     && deno --version \
+    && esbuild --version \
+    && eslint --version \
+    && fly --version \
     && node --version \
-    && fly version
+    && pkg --version \
+    && pnpm --version \
+    && prettier --version \
+    && rollup --version \
+    && rspack --version \
+    && stylelint --version \
+    && tsc --version \
+    && tsx --version \
+    && turbo --version \
+    && vite --version \
+    && wrangler --version \
+    && zx --version

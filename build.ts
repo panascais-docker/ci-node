@@ -55,22 +55,16 @@ const setDockerfile = async (dockerfile: string) => {
 
 // business logic
 
-const [pnpm, tag, dockerfile] = await Promise.all([getPnpmVersion(), getImageTag(), getDockerfile()]);
-const lines = new Array<string>()
+const [tag, dockerfile] = await Promise.all([getImageTag(), getDockerfile()]);
 
-if (true as boolean) {
-    // process.exit(0)
+const updated = dockerfile.replace(
+    /^FROM ghcr\.io\/panascais-docker\/node\/node:[^\n]+$/m,
+    `FROM ghcr.io/panascais-docker/node/node:${tag}`,
+);
+
+if (updated !== dockerfile) {
+    await setDockerfile(updated);
 }
-
-for (const line of dockerfile.split('\n')) {
-    if (line.startsWith("FROM") && !line.endsWith('flyctl')) {
-        lines.push(`FROM ghcr.io/panascais-docker/node/node:${tag}`)
-        continue;
-    }
-    lines.push(line);
-}
-
-await setDockerfile(lines.join('\n'));
 
 const [major, min, pat] = tag.split('.')
 const minor = `${major}.${min}`

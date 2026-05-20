@@ -86,19 +86,19 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     vips \
     && update-ca-certificates
 
-RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
+RUN --mount=type=cache,id=ci-node-pnpm-24-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
     packages=" \
     @babel/cli \
     @babel/core \
     @biomejs/biome \
-    @rspack/cli@0 \
+    @rspack/cli \
     @swc/cli \
     @swc/core \
     @types/node \
     @yao-pkg/pkg \
     ava \
     esbuild \
-    eslint@9 \
+    eslint@10 \
     knip \
     prettier \
     rollup \
@@ -128,9 +128,27 @@ RUN export BUN_INSTALL=/usr/local \
     && curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"
 
 # smoke tests
-RUN bun --version \
+RUN ava --version \
+    && babel --version \
+    && biome --version \
+    && bun --version \
     && deno --version \
-    && node --version \
-    && tsc --version \
+    && esbuild --version \
     && eslint --version \
-    && fly version
+    && fly --version \
+    && knip --version \
+    && node --version \
+    && pkg --version \
+    && pnpm --version \
+    && prettier --version \
+    && rollup --version \
+    && rspack --version \
+    && stylelint --version \
+    && swc --version \
+    && tsc --version \
+    && tsup --version \
+    && tsx --version \
+    && turbo --version \
+    && vite --version \
+    && wrangler --version \
+    && zx --version

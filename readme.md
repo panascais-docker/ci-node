@@ -126,15 +126,14 @@ Alpine 3.23 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-
 
 | pnpm | `PNPM_HOME` in ci-node | `pnpm store path` | Cache mount `target=` | Cache id |
 |------|------------------------|-------------------|------------------------|----------|
-| 6 (Node 12) | `.../pnpm/bin` | `/root/.pnpm-store/v3` | `/root/.pnpm-store` | `ci-node-pnpm-6-${TARGETARCH}` |
+| 6 (Node 12) | (none; bins in `/usr/local/bin`) | `/root/.pnpm-store/v3` | `/root/.pnpm-store` | `ci-node-pnpm-6-${TARGETARCH}` |
 | 7–10 (Node 14–21) | `.../pnpm/bin` | `.../pnpm/bin/store/v3` or `.../v10` | `/root/.local/share/pnpm/bin/store` | `ci-node-pnpm-${TARGETARCH}` |
 | 11 (Node 22+) | `/root/.local/share/pnpm` | `.../pnpm/store/v10` | `/root/.local/share/pnpm/store` | `ci-node-pnpm-${TARGETARCH}` |
 
 ```dockerfile
-# Node 12 (pnpm 6)
+# Node 12 (pnpm 6; store at ~/.pnpm-store, global bins in /usr/local/bin)
 RUN --mount=type=cache,id=ci-node-pnpm-6-${TARGETARCH},sharing=locked,target=/root/.pnpm-store \
     packages=" ... " \
-    && mkdir -p /root/.pnpm-store /root/.local/share/pnpm/bin \
     && pnpm i -g $packages
 
 # Node 14–21 (pnpm 7–10)

@@ -15,6 +15,9 @@ RUN set -eu \
     download_version=$(echo "$location" | sed -n 's|.*/download/v\([^/]*\)/.*|\1|p'); \
   fi \
   && wget -qO- "https://github.com/superfly/flyctl/releases/download/v$(echo "$download_version")/flyctl_$(echo "$download_version")_Linux_$(echo "$download_architecture").tar.gz" \
+  | tar -xz -C / flyctl
+
+
 FROM ghcr.io/panascais-docker/node/node:18.20.8
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
@@ -86,35 +89,36 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     vips \
     && update-ca-certificates
 
-RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
+RUN --mount=type=cache,id=ci-node-pnpm-18-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
     packages=" \
     @babel/cli \
     @babel/core \
-    @biomejs/biome \
-    @rspack/cli@0 \
+    @biomejs/biome@1 \
+    @rspack/cli \
     @swc/cli \
     @swc/core \
     @types/node \
-    @yao-pkg/pkg \
-    ava \
+    @yao-pkg/pkg@5 \
+    ava@5 \
     esbuild \
-    eslint@9 \
-    knip \
+    eslint@10 \
+    knip@5 \
     pnpm@10 \
     prettier \
     rollup \
-    stylelint \
+    stylelint@16 \
     ts-node \
     tsup \
     tsx \
     turbo \
     typescript \
     vite@6 \
-    wrangler \
+    wrangler@3 \
     yarn \
-    zx \
+    zx@7 \
     " \
     buildable=" \
+    --allow-build=@biomejs/biome \
     --allow-build=@swc/core \
     --allow-build=esbuild \
     --allow-build=oxc-resolver \
@@ -129,7 +133,26 @@ RUN export BUN_INSTALL=/usr/local \
     && curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"
 
 # smoke tests
-RUN bun --version \
+RUN ava --version \
+    && babel --version \
+    && biome --version \
+    && bun --version \
     && deno --version \
+    && esbuild --version \
+    && eslint --version \
+    && fly --version \
+    && knip --version \
     && node --version \
-    && fly version
+    && pkg --version \
+    && pnpm --version \
+    && prettier --version \
+    && rollup --version \
+    && stylelint --version \
+    && swc --version \
+    && tsc --version \
+    && tsup --version \
+    && tsx --version \
+    && turbo --version \
+    && vite --version \
+    && wrangler --version \
+    && zx --version
