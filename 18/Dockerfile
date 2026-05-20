@@ -89,7 +89,7 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     vips \
     && update-ca-certificates
 
-RUN --mount=type=cache,id=ci-node-pnpm-18-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
+RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
     packages=" \
     @babel/cli \
     @babel/core \
