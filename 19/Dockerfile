@@ -87,8 +87,7 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     && update-ca-certificates
 
 RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
-    mkdir -p /root/.local/share/pnpm/bin \
-    && pnpm i -g \
+    packages=" \
     @babel/cli \
     @babel/core \
     @biomejs/biome \
@@ -114,12 +113,17 @@ RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root
     wrangler \
     yarn \
     zx \
+    " \
+    buildable=" \
     --allow-build=@swc/core \
     --allow-build=esbuild \
     --allow-build=oxc-resolver \
     --allow-build=sharp \
     --allow-build=workerd \
-    --allow-build=yarn
+    --allow-build=yarn \
+    " \
+    && mkdir -p /root/.local/share/pnpm/bin \
+    && pnpm i -g $packages $buildable
 
 RUN export BUN_INSTALL=/usr/local \
     && curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"

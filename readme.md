@@ -133,18 +133,23 @@ Alpine 3.23 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-
 ```dockerfile
 # Node 12 (pnpm 6)
 RUN --mount=type=cache,id=ci-node-pnpm-6-${TARGETARCH},sharing=locked,target=/root/.pnpm-store \
-    mkdir -p /root/.pnpm-store /root/.local/share/pnpm/bin \
-    && pnpm i -g ...
+    packages=" ... " \
+    && mkdir -p /root/.pnpm-store /root/.local/share/pnpm/bin \
+    && pnpm i -g $packages
 
 # Node 14–21 (pnpm 7–10)
 RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
-    mkdir -p /root/.local/share/pnpm/bin \
-    && pnpm i -g ...
+    packages=" ... " \
+    buildable=" --allow-build=... " \
+    && mkdir -p /root/.local/share/pnpm/bin \
+    && pnpm i -g $packages $buildable
 
 # Node 22+ (pnpm 11; inherits enableGlobalVirtualStore: false from base node image)
 RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
-    mkdir -p /root/.local/share/pnpm/bin \
-    && pnpm add -g ...
+    packages=" ... " \
+    buildable=" --allow-build=... " \
+    && mkdir -p /root/.local/share/pnpm/bin \
+    && pnpm add -g $packages $buildable
 ```
 
 Mount the parent directory (pnpm creates `v3` / `v10` subdirs inside). `${TARGETARCH}` and `sharing=locked` avoid cross-arch mixing and parallel-build store corruption.

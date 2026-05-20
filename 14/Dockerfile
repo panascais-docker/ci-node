@@ -88,8 +88,7 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     && update-ca-certificates
 
 RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
-    mkdir -p /root/.local/share/pnpm/bin \
-    && pnpm i -g \
+    packages=" \
     @babel/cli \
     @babel/core \
     @types/node \
@@ -106,7 +105,10 @@ RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root
     typescript \
     vite@3 \
     yarn \
-    zx
+    zx \
+    " \
+    && mkdir -p /root/.local/share/pnpm/bin \
+    && pnpm i -g $packages
 
 RUN export BUN_INSTALL=/usr/local \
     && curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"

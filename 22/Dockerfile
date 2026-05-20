@@ -86,7 +86,6 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     vips \
     && update-ca-certificates
 
-# enableGlobalVirtualStore is off in the base node image config so globals work with a cached store mount.
 RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
     packages=" \
     @babel/cli \
