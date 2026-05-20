@@ -56,7 +56,6 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     cairo-dev \
     curl \
     curl-dev \
-    deno \
     ffmpeg \
     g++ \
     gcc \
@@ -85,6 +84,13 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     simdutf \
     vips \
     && update-ca-certificates
+
+RUN --mount=type=cache,id=ci-node-apk-edge-${TARGETARCH},sharing=locked,target=/apk/cache \
+    apk update --cache-dir /apk/cache \
+    && apk add --cache-dir /apk/cache --cache-predownload \
+    --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main \
+    --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
+    deno
 
 RUN --mount=type=cache,id=ci-node-pnpm-11-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
     packages=" \
