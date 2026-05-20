@@ -101,6 +101,60 @@ docker build \
     ./24
 ```
 
+## pnpm and Docker cache mounts
+
+BuildKit cache mounts speed up rebuilds by reusing downloaded packages between builds. Both apk and pnpm use them in this image.
+
+### apk
+
+The large apk install layer mounts `/apk/cache` so `.apk` files are reused across builds. Cache IDs include `${TARGETARCH}` so amd64 and arm64 packages do not mix during multi-platform builds. `sharing=locked` avoids races when matrix jobs build in parallel.
+
+```dockerfile
+RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/cache \
+    apk update --cache-dir /apk/cache \
+    && apk add --cache-dir /apk/cache --cache-predownload \
+    ...
+```
+
+Alpine 3.23 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-age 0` (always refetch). Do not use it with cache mounts. Pass 1 writes into `/apk/cache`; when the apk layer re-runs, `--cache-predownload` reuses cached `.apk` files. The mount never lands in the final image.
+
+### pnpm
+
+**pnpm v11 (Node 22+):** global CLIs hardlink into a content store. **Do not** mount BuildKit cache over `$PNPM_HOME/store` — it breaks global installs (ae38d12). Those images use two `pnpm add -g` passes: pass 1 writes into a cached `/pnpm/store` (`id=ci-node-pnpm-${TARGETARCH},sharing=locked`), then the store is copied into the image and pass 2 recreates global shims.
+
+**pnpm v10 and below (Node 21 and older):** single-pass global install with the store cache-mounted at pnpm’s default path for that image (no `--store-dir` override). Measure with the same `ENV` as the Dockerfile (`pnpm store path`).
+
+| pnpm | `PNPM_HOME` in ci-node | `pnpm store path` | Cache mount `target=` | Cache id |
+|------|------------------------|-------------------|------------------------|----------|
+| 6 (Node 12) | `.../pnpm/bin` | `/root/.pnpm-store/v3` | `/root/.pnpm-store` | `ci-node-pnpm-6-${TARGETARCH}` |
+| 7–10 (Node 14–21) | `.../pnpm/bin` | `.../pnpm/bin/store/v3` or `.../v10` | `/root/.local/share/pnpm/bin/store` | `ci-node-pnpm-${TARGETARCH}` |
+
+```dockerfile
+# Node 12 (pnpm 6)
+RUN --mount=type=cache,id=ci-node-pnpm-6-${TARGETARCH},sharing=locked,target=/root/.pnpm-store \
+    mkdir -p /root/.pnpm-store /root/.local/share/pnpm/bin \
+    && pnpm i -g ...
+
+# Node 14–21 (pnpm 7–10)
+RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
+    mkdir -p /root/.local/share/pnpm/bin \
+    && pnpm i -g ...
+```
+
+Mount the parent directory (pnpm creates `v3` / `v10` subdirs inside). `${TARGETARCH}` and `sharing=locked` avoid cross-arch mixing and parallel-build store corruption.
+
+When building application images on top of `ci-node`, use a separate project store ([pnpm Docker docs](https://pnpm.io/docker)):
+
+```dockerfile
+ENV PNPM_HOME=/pnpm
+ENV PATH=${PNPM_HOME}:${PATH}
+
+RUN --mount=type=cache,id=pnpm-${TARGETARCH},sharing=locked,target=/pnpm/store \
+    pnpm install --frozen-lockfile
+```
+
+`pnpm` itself comes from `/usr/local/bin/pnpm` on the base `node` image.
+
 ## Contributors
 
 - Silas Rech [(silas@panascais.net)](mailto:silas@panascais.net)

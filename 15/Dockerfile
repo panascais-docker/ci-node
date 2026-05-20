@@ -1,12 +1,20 @@
 FROM alpine:3.23 AS flyctl
 
-ARG ARCHITECTURE=x86_64
-ARG VERSION=0.4.49
+ARG BUILD_DATE
+ARG TARGETARCH
+ARG FLYCTL_VERSION=latest
 
-RUN if [ "$TARGETARCH" = "arm64" ]; then ARCHITECTURE=arm64; fi \
-    && wget -qO- "https://github.com/superfly/flyctl/releases/download/v${VERSION}/flyctl_${VERSION}_Linux_${ARCHITECTURE}.tar.gz" \
-    | tar -xz -C / flyctl
-
+RUN set -eu \
+  && echo "flyctl:${BUILD_DATE}" \
+  && download_architecture=x86_64 \
+  && if [ "${TARGETARCH}" = "arm64" ]; then download_architecture=arm64; fi \
+  && download_version="${FLYCTL_VERSION}" \
+  && if [ "$download_version" = "latest" ]; then \
+    location=$(wget -qSO- "https://github.com/superfly/flyctl/releases/latest/download/flyctl_Linux_$(echo "$download_architecture").tar.gz" 2>&1 \
+      | awk '/^[[:space:]]*Location:/{gsub(/\r/,""); print $2; exit}'); \
+    download_version=$(echo "$location" | sed -n 's|.*/download/v\([^/]*\)/.*|\1|p'); \
+  fi \
+  && wget -qO- "https://github.com/superfly/flyctl/releases/download/v$(echo "$download_version")/flyctl_$(echo "$download_version")_Linux_$(echo "$download_architecture").tar.gz" \
 FROM ghcr.io/panascais-docker/node/node:15.14.0
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
@@ -14,6 +22,7 @@ RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
 
 ARG BUILD_DATE
 ARG NODE_VERSION
+ARG TARGETARCH
 ARG VCS_REF
 
 LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git" \
@@ -34,10 +43,12 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
     maintainer="Panascais Open Source <oss@panascais.net>"
 
 ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
-    PATH="/root/.local/share/pnpm/bin:$PATH" \
+    PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH" \
     NPM_CONFIG_PACKAGE_IMPORT_METHOD="copy"
 
-RUN apk add --no-cache --update \
+RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/cache \
+    apk update --cache-dir /apk/cache \
+    && apk add --cache-dir /apk/cache --cache-predownload \
     autoconf \
     automake \
     bash \
@@ -74,10 +85,9 @@ RUN apk add --no-cache --update \
     python3 \
     simdutf \
     vips \
-    && update-ca-certificates \
-    && rm -rf /var/cache/apk/*
+    && update-ca-certificates
 
-RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/bin/store \
+RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
     mkdir -p /root/.local/share/pnpm/bin \
     && pnpm i -g \
     @babel/cli \

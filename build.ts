@@ -67,10 +67,6 @@ for (const line of dockerfile.split('\n')) {
         lines.push(`FROM ghcr.io/panascais-docker/node/node:${tag}`)
         continue;
     }
-    if (line.startsWith('    pnpm')) {
-        lines.push(`    pnpm@${pnpm} \\`);
-        continue;
-    }
     lines.push(line);
 }
 
