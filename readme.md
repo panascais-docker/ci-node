@@ -120,7 +120,7 @@ Alpine 3.23 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-
 
 ### pnpm
 
-**pnpm v11 (Node 22+):** global CLIs hardlink into a content store. **Do not** mount BuildKit cache over `$PNPM_HOME/store` — it breaks global installs (ae38d12). Those images use two `pnpm add -g` passes: pass 1 writes into a cached `/pnpm/store` (`id=ci-node-pnpm-${TARGETARCH},sharing=locked`), then the store is copied into the image and pass 2 recreates global shims.
+**pnpm v11 (Node 22+):** the base `node` image disables the global virtual store (`enableGlobalVirtualStore: false` in `/root/.config/pnpm/config.yaml`) so global installs behave like pnpm v10. A single `pnpm add -g` pass cache-mounts the store at `/root/.local/share/pnpm/store` (`id=ci-node-pnpm-${TARGETARCH},sharing=locked`). Without that setting, mounting the store cache breaks global CLIs at runtime (ae38d12).
 
 **pnpm v10 and below (Node 21 and older):** single-pass global install with the store cache-mounted at pnpm’s default path for that image (no `--store-dir` override). Measure with the same `ENV` as the Dockerfile (`pnpm store path`).
 
@@ -128,6 +128,7 @@ Alpine 3.23 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-
 |------|------------------------|-------------------|------------------------|----------|
 | 6 (Node 12) | `.../pnpm/bin` | `/root/.pnpm-store/v3` | `/root/.pnpm-store` | `ci-node-pnpm-6-${TARGETARCH}` |
 | 7–10 (Node 14–21) | `.../pnpm/bin` | `.../pnpm/bin/store/v3` or `.../v10` | `/root/.local/share/pnpm/bin/store` | `ci-node-pnpm-${TARGETARCH}` |
+| 11 (Node 22+) | `/root/.local/share/pnpm` | `.../pnpm/store/v10` | `/root/.local/share/pnpm/store` | `ci-node-pnpm-${TARGETARCH}` |
 
 ```dockerfile
 # Node 12 (pnpm 6)
@@ -139,6 +140,11 @@ RUN --mount=type=cache,id=ci-node-pnpm-6-${TARGETARCH},sharing=locked,target=/ro
 RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
     mkdir -p /root/.local/share/pnpm/bin \
     && pnpm i -g ...
+
+# Node 22+ (pnpm 11; inherits enableGlobalVirtualStore: false from base node image)
+RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
+    mkdir -p /root/.local/share/pnpm/bin \
+    && pnpm add -g ...
 ```
 
 Mount the parent directory (pnpm creates `v3` / `v10` subdirs inside). `${TARGETARCH}` and `sharing=locked` avoid cross-arch mixing and parallel-build store corruption.

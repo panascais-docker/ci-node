@@ -86,8 +86,8 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     vips \
     && update-ca-certificates
 
-# Do not cache-mount $PNPM_HOME/store (ae38d12). Pass 1 warms /pnpm/store; pass 2 links globals into the image.
-RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/pnpm/store \
+# enableGlobalVirtualStore is off in the base node image config so globals work with a cached store mount.
+RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
     packages=" \
     @babel/cli \
     @babel/core \
@@ -122,9 +122,7 @@ RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/pnpm
     --allow-build=workerd \
     --allow-build=yarn \
     " \
-    && pnpm --store-dir /pnpm/store add -g $packages $buildable \
-    && cp -a /pnpm/store/. "${PNPM_HOME}/store/" \
-    && rm -rf "${PNPM_HOME}/global" "${PNPM_HOME}/bin"/* \
+    && mkdir -p /root/.local/share/pnpm/bin \
     && pnpm add -g $packages $buildable
 
 RUN export BUN_INSTALL=/usr/local \
