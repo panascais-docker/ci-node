@@ -18,7 +18,7 @@ RUN set -eu \
   | tar -xz -C / flyctl
 
 
-FROM ghcr.io/panascais-docker/node/node:26.2.0
+FROM ghcr.io/panascais-docker/node/node:26.3.0
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
