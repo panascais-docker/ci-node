@@ -135,7 +135,7 @@ RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root
     && pnpm i -g $packages $buildable
 
 RUN export BUN_INSTALL=/usr/local \
-    && curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"
+    && curl -fsSL https://bun.com/install | bash -s -- canary
 
 # smoke tests
 RUN ava --version \

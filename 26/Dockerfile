@@ -18,7 +18,7 @@ RUN set -eu \
   | tar -xz -C / flyctl
 
 
-FROM ghcr.io/panascais-docker/node/node:26.4.0
+FROM ghcr.io/panascais-docker/node/node:26.5.0
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
@@ -131,7 +131,7 @@ RUN --mount=type=cache,id=ci-node-pnpm-11-${TARGETARCH},sharing=locked,target=/r
     && pnpm add -g $packages $buildable
 
 RUN export BUN_INSTALL=/usr/local \
-    && curl -fsSL https://bun.com/install | bash -s "bun-v1.3.14"
+    && curl -fsSL https://bun.com/install | bash -s -- canary
 
 # smoke tests
 RUN ava --version \
