@@ -96,8 +96,8 @@ RUN --mount=type=cache,id=ci-node-apk-edge-${TARGETARCH},sharing=locked,target=/
 
 RUN --mount=type=cache,id=ci-node-pnpm-6-${TARGETARCH},sharing=locked,target=/root/.pnpm-store \
     packages=" \
-    @babel/cli \
-    @babel/core \
+    @babel/cli@7 \
+    @babel/core@7 \
     @types/node \
     ava@3 \
     esbuild@0.17 \

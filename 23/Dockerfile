@@ -94,8 +94,8 @@ RUN --mount=type=cache,id=ci-node-apk-edge-${TARGETARCH},sharing=locked,target=/
 
 RUN --mount=type=cache,id=ci-node-pnpm-11-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
     packages=" \
-    @babel/cli \
-    @babel/core \
+    @babel/cli@7 \
+    @babel/core@7 \
     @biomejs/biome \
     @rspack/cli \
     @swc/cli \
@@ -113,7 +113,7 @@ RUN --mount=type=cache,id=ci-node-pnpm-11-${TARGETARCH},sharing=locked,target=/r
     tsup \
     tsx \
     turbo \
-    typescript \
+    typescript@6 \
     vite \
     wrangler \
     yarn \

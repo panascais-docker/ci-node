@@ -98,8 +98,8 @@ RUN --mount=type=cache,id=ci-node-apk-edge-${TARGETARCH},sharing=locked,target=/
 
 RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
     packages=" \
-    @babel/cli \
-    @babel/core \
+    @babel/cli@7 \
+    @babel/core@7 \
     @biomejs/biome@1 \
     @types/node \
     @yao-pkg/pkg@5 \

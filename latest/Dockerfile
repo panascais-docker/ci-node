@@ -18,7 +18,7 @@ RUN set -eu \
   | tar -xz -C / flyctl
 
 
-FROM ghcr.io/panascais-docker/node/node:26.4.0
+FROM ghcr.io/panascais-docker/node/node:26.5.0
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
@@ -113,7 +113,7 @@ RUN --mount=type=cache,id=ci-node-pnpm-11-${TARGETARCH},sharing=locked,target=/r
     tsup \
     tsx \
     turbo \
-    typescript \
+    typescript@6 \
     vite \
     wrangler \
     yarn \

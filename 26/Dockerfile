@@ -113,7 +113,7 @@ RUN --mount=type=cache,id=ci-node-pnpm-11-${TARGETARCH},sharing=locked,target=/r
     tsup \
     tsx \
     turbo \
-    typescript \
+    typescript@6 \
     vite \
     wrangler \
     yarn \
