@@ -137,6 +137,8 @@ RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root
 RUN export BUN_INSTALL=/usr/local \
     && curl -fsSL https://bun.com/install | bash -s -- canary
 
+RUN curl -fsSL https://nubjs.com/install.sh | bash
+
 # smoke tests
 RUN ava --version \
     && babel --version \
