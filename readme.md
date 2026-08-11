@@ -116,7 +116,7 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     ...
 ```
 
-Alpine 3.23 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-age 0` (always refetch). Do not use it with cache mounts. Pass 1 writes into `/apk/cache`; when the apk layer re-runs, `--cache-predownload` reuses cached `.apk` files. The mount never lands in the final image.
+Alpine 3.24 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-age 0` (always refetch). Do not use it with cache mounts. Pass 1 writes into `/apk/cache`; when the apk layer re-runs, `--cache-predownload` reuses cached `.apk` files. The mount never lands in the final image.
 
 ### pnpm
 

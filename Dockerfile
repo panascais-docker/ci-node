@@ -1,5 +1,5 @@
-# Use the alpine:3.20 as the base image
-FROM alpine:3.20
+# Use the alpine:3.24 as the base image
+FROM alpine:3.24
 
 # Install necessary packages for building Node.js
 RUN apk add --no-cache \

@@ -1,4 +1,4 @@
-FROM alpine:3.23 AS flyctl
+FROM alpine:3.24 AS flyctl
 
 ARG BUILD_DATE
 ARG TARGETARCH
