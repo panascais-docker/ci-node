@@ -67,6 +67,7 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     git-lfs \
     gzip \
     icu \
+    icu-data-full \
     icu-libs \
     jo \
     jq \
