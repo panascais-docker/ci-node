@@ -30,10 +30,10 @@ IMAGE="node:${NODE_TAG}-alpine"
 : > "$OUT"
 echo "=== probe ${VER} node:${NODE_TAG} pnpm:${PNPM} setup:${SETUP} ===" | tee "$OUT"
 
-docker run --rm -i -e SETUP="$SETUP" -e PNPM_VER="$PNPM" "$IMAGE" sh -s <<'SCRIPT' 2>&1 | tee -a "$OUT"
+docker run --rm -i -e SETUP="$SETUP" -e PNPM_VERSION="$PNPM" "$IMAGE" sh -s <<'SCRIPT' 2>&1 | tee -a "$OUT"
 set -eu
 apk add --no-cache curl >/dev/null
-curl -fsSL https://get.pnpm.io/v6.js | node - add --global "pnpm@${PNPM_VER}"
+curl -fsSL https://get.pnpm.io/v6.js | node - add --global "pnpm@${PNPM_VERSION}"
 export NPM_CONFIG_PACKAGE_IMPORT_METHOD=copy
 
 MODERN_PKGS='@babel/cli @babel/core @biomejs/biome @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg ava esbuild eslint@10 knip prettier rollup stylelint ts-node tsup tsx turbo typescript vite wrangler yarn zx'
@@ -43,55 +43,55 @@ LEGACY_EXT_INSTALL='pnpm i -g'
 case "$SETUP" in
   legacy12)
     export PATH="/usr/local/bin:$PATH"
-    PKGS='@babel/cli @babel/core @types/node ava@3 esbuild@0.17 eslint@8 pnpm@'"${PNPM_VER}"' prettier@2 rollup@2 stylelint@14 ts-node@10 tsx@3 typescript@4 vite@2 yarn'
+    PKGS='@babel/cli @babel/core @types/node ava@3 esbuild@0.17 eslint@8 pnpm@'"${PNPM_VERSION}"' prettier@2 rollup@2 stylelint@14 ts-node@10 tsx@3 typescript@4 vite@2 yarn'
     INSTALL="pnpm i -g"
     ;;
   legacy14)
     export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
     mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli@0.5.9 @rspack/core@0.5.9 @types/node @yao-pkg/pkg@5 ava@4 esbuild@0.17 eslint@8 pnpm@'"${PNPM_VER}"' prettier@3 rollup@2 stylelint@14 ts-node@10 tsx@3 turbo@1 typescript@4 vite@3 yarn zx@5'
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli@0.5.9 @rspack/core@0.5.9 @types/node @yao-pkg/pkg@5 ava@4 esbuild@0.17 eslint@8 pnpm@'"${PNPM_VERSION}"' prettier@3 rollup@2 stylelint@14 ts-node@10 tsx@3 turbo@1 typescript@4 vite@3 yarn zx@5'
     INSTALL="$LEGACY_EXT_INSTALL"
     ;;
   legacy15)
     export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
     mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @types/node @yao-pkg/pkg@5 ava@4 esbuild@0.17 eslint@8 pnpm@'"${PNPM_VER}"' prettier@3 rollup@2 stylelint@14 ts-node@10 tsx@3 turbo@1 typescript@4 vite@3 yarn zx@5'
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @types/node @yao-pkg/pkg@5 ava@4 esbuild@0.17 eslint@8 pnpm@'"${PNPM_VERSION}"' prettier@3 rollup@2 stylelint@14 ts-node@10 tsx@3 turbo@1 typescript@4 vite@3 yarn zx@5'
     INSTALL="$LEGACY_EXT_INSTALL"
     ;;
   legacy16)
     export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
     mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli@0.7.5 @rspack/core@0.7.5 @types/node @yao-pkg/pkg@5 ava@5 esbuild@0.19 eslint@8 pnpm@'"${PNPM_VER}"' prettier@3 rollup@3 stylelint@15 ts-node@10 tsx@3 turbo@1 typescript@5 vite@3 yarn zx@6'
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli@0.7.5 @rspack/core@0.7.5 @types/node @yao-pkg/pkg@5 ava@5 esbuild@0.19 eslint@8 pnpm@'"${PNPM_VERSION}"' prettier@3 rollup@3 stylelint@15 ts-node@10 tsx@3 turbo@1 typescript@5 vite@3 yarn zx@6'
     INSTALL="$LEGACY_EXT_INSTALL"
     ;;
   legacy17)
     export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
     mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli@0.7.5 @rspack/core@0.7.5 @types/node @yao-pkg/pkg@5 ava@5 esbuild@0.19 eslint@8 pnpm@'"${PNPM_VER}"' prettier@3 rollup@3 stylelint@15 ts-node@10 tsx@3 turbo@1 typescript@5 vite@3 wrangler@3 yarn zx@7'
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli@0.7.5 @rspack/core@0.7.5 @types/node @yao-pkg/pkg@5 ava@5 esbuild@0.19 eslint@8 pnpm@'"${PNPM_VERSION}"' prettier@3 rollup@3 stylelint@15 ts-node@10 tsx@3 turbo@1 typescript@5 vite@3 wrangler@3 yarn zx@7'
     INSTALL="$LEGACY_EXT_INSTALL"
     ;;
   extended18)
     export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
     mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@5 esbuild eslint@10 knip@5 pnpm@'"${PNPM_VER}"' prettier rollup stylelint@16 ts-node tsup tsx turbo typescript vite@6 wrangler@3 yarn zx@7'
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@5 esbuild eslint@10 knip@5 pnpm@'"${PNPM_VERSION}"' prettier rollup stylelint@16 ts-node tsup tsx turbo typescript vite@6 wrangler@3 yarn zx@7'
     INSTALL="pnpm i -g --allow-build=@biomejs/biome --allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn"
     ;;
   extended19)
     export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
     mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 pnpm@'"${PNPM_VER}"' prettier rollup stylelint@16 ts-node tsup tsx turbo typescript vite@6 wrangler@3 yarn zx@7'
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 pnpm@'"${PNPM_VERSION}"' prettier rollup stylelint@16 ts-node tsup tsx turbo typescript vite@6 wrangler@3 yarn zx@7'
     INSTALL="pnpm i -g --allow-build=@biomejs/biome --allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn"
     ;;
   extended20)
     export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
     mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg ava@6 esbuild eslint@10 knip pnpm@'"${PNPM_VER}"' prettier rollup stylelint ts-node tsup tsx turbo typescript vite wrangler@3 yarn zx@8'
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg ava@6 esbuild eslint@10 knip pnpm@'"${PNPM_VERSION}"' prettier rollup stylelint ts-node tsup tsx turbo typescript vite wrangler@3 yarn zx@8'
     INSTALL="pnpm i -g --allow-build=@biomejs/biome --allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn"
     ;;
   extended21)
     export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
     mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 pnpm@'"${PNPM_VER}"' prettier rollup stylelint@16 ts-node tsup tsx turbo typescript vite@6 wrangler@3 yarn zx@8'
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 pnpm@'"${PNPM_VERSION}"' prettier rollup stylelint@16 ts-node tsup tsx turbo typescript vite@6 wrangler@3 yarn zx@8'
     INSTALL="pnpm i -g --allow-build=@biomejs/biome --allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn"
     ;;
   modern)
