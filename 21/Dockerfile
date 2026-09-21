@@ -25,6 +25,7 @@ RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
 
 ARG BUILD_DATE
 ARG NODE_VERSION
+ARG PNPM_VERSION
 ARG TARGETARCH
 ARG VCS_REF
 
@@ -45,7 +46,7 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
     org.opencontainers.image.source="https://github.com/panascais-docker/ci-node" \
     maintainer="Panascais Open Source <oss@panascais.net>"
 
-ENV PNPM_HOME="/root/.local/share/pnpm/bin" \
+ENV PNPM_HOME="/root/.local/share/pnpm" \
     PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
 
 RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/cache \
@@ -96,10 +97,10 @@ RUN --mount=type=cache,id=ci-node-apk-edge-${TARGETARCH},sharing=locked,target=/
     --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
     deno
 
-RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
+RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
     packages=" \
-    @babel/cli@7 \
-    @babel/core@7 \
+    @babel/cli \
+    @babel/core \
     @biomejs/biome@1 \
     @swc/cli \
     @swc/core \
@@ -109,7 +110,6 @@ RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root
     esbuild \
     eslint@10 \
     knip@5 \
-    pnpm@10 \
     prettier \
     rollup \
     stylelint@16 \
@@ -133,7 +133,7 @@ RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root
     --allow-build=yarn \
     " \
     && mkdir -p /root/.local/share/pnpm/bin \
-    && pnpm i -g $packages $buildable
+    && pnpm add -g $packages $buildable
 
 RUN export BUN_INSTALL=/usr/local \
     && curl -fsSL https://bun.com/install | bash -s -- canary

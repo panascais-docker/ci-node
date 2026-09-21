@@ -25,6 +25,7 @@ RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
 
 ARG BUILD_DATE
 ARG NODE_VERSION
+ARG PNPM_VERSION
 ARG TARGETARCH
 ARG VCS_REF
 
@@ -93,10 +94,10 @@ RUN --mount=type=cache,id=ci-node-apk-edge-${TARGETARCH},sharing=locked,target=/
     --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
     deno
 
-RUN --mount=type=cache,id=ci-node-pnpm-11-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
+RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
     packages=" \
-    @babel/cli@7 \
-    @babel/core@7 \
+    @babel/cli \
+    @babel/core \
     @biomejs/biome \
     @rspack/cli \
     @swc/cli \
