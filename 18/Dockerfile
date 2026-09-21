@@ -46,9 +46,6 @@ LABEL org.label-schema.vcs-url="https://github.com/panascais-docker/ci-node.git"
     org.opencontainers.image.source="https://github.com/panascais-docker/ci-node" \
     maintainer="Panascais Open Source <oss@panascais.net>"
 
-ENV PNPM_HOME="/root/.local/share/pnpm" \
-    PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
-
 RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/cache \
     apk update --cache-dir /apk/cache \
     && apk add --cache-dir /apk/cache --cache-predownload \

@@ -126,7 +126,7 @@ Alpine 3.24 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-
 
 Node patch tags and the pnpm major come from the base image repository: [`configuration/versions.json`](https://github.com/panascais-docker/node/blob/master/configuration/versions.json) and [`configuration/pnpm.json`](https://github.com/panascais-docker/node/blob/master/configuration/pnpm.json). `build.ts` fetches both and passes `--build-arg PNPM_VERSION=<upstream major>`. ci-node does not keep a local pnpm config copy, and it does not reinstall `pnpm@N` in the global package list — every supported base already ships that executable.
 
-**pnpm 12 (Node 18+):** global binaries live under `$PNPM_HOME/bin`. ci-node sets `PNPM_HOME=/root/.local/share/pnpm` and puts `/root/.local/share/pnpm/bin` on `PATH` (Node 22+ inherit the same layout from the base image). Install with `pnpm add -g`. Cache-mount the store at `/root/.local/share/pnpm/store`. Node 22+ inherit `enableGlobalVirtualStore: false` from the base image (`/root/.config/pnpm/config.yaml`); without that setting, a store cache mount can break global CLIs at runtime (ae38d12).
+**pnpm 12 (Node 18+):** global binaries live under `$PNPM_HOME/bin`. Every Node 18+ image inherits `PNPM_HOME=/root/.local/share/pnpm`, `/root/.local/share/pnpm/bin` on `PATH`, and `enableGlobalVirtualStore: false` (`/root/.config/pnpm/config.yaml`) from the authoritative base image. Install with `pnpm add -g`. Cache-mount the store at `/root/.local/share/pnpm/store`. Without that setting, a store cache mount can break global CLIs at runtime (ae38d12).
 
 **pnpm 8 and below (Node 17 and older):** single-pass `pnpm i -g` with the store cache-mounted at pnpm’s default path for that image (no `--store-dir` override). Measure with the same `ENV` as the Dockerfile (`pnpm store path`).
 
@@ -150,7 +150,7 @@ RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=loc
     && mkdir -p /root/.local/share/pnpm/bin \
     && pnpm i -g $packages
 
-# Node 18+ (pnpm 12; Node 22+ inherit enableGlobalVirtualStore: false from the base node image)
+# Node 18+ (pnpm 12; inherit PNPM_HOME/bin PATH and enableGlobalVirtualStore: false from the base node image)
 RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
     packages=" ... " \
     buildable=" --allow-build=... " \

@@ -3,8 +3,15 @@
 # Usage: ./scripts/probe-version.sh 12
 set -eu
 
-VER="${1:?usage: probe-version.sh <distribution>}"
-OUT="/tmp/ci-node-probe-${VER}.txt"
+DISTRIBUTION="${1:?usage: probe-version.sh <distribution>}"
+case "$DISTRIBUTION" in
+  latest|lts) ;;
+  ''|*[!0-9]*)
+    echo "invalid distribution: ${DISTRIBUTION}" >&2
+    exit 1
+    ;;
+esac
+OUTPUT="/tmp/ci-node-probe-${DISTRIBUTION}.txt"
 
 VERSIONS_URL='https://raw.githubusercontent.com/panascais-docker/node/master/configuration/versions.json'
 PNPM_URL='https://raw.githubusercontent.com/panascais-docker/node/master/configuration/pnpm.json'
@@ -47,8 +54,8 @@ if [ -z "${CI_NODE_PNPM_FILE:-}" ] || [ ! -f "${CI_NODE_PNPM_FILE}" ]; then
   curl -fsSL "$PNPM_URL" > "$CI_NODE_PNPM_FILE"
 fi
 
-NODE_TAG=$(json_string "$CI_NODE_VERSIONS_FILE" "$VER")
-PNPM=$(json_string "$CI_NODE_PNPM_FILE" "$VER")
+NODE_TAG=$(json_string "$CI_NODE_VERSIONS_FILE" "$DISTRIBUTION")
+PNPM=$(json_string "$CI_NODE_PNPM_FILE" "$DISTRIBUTION")
 NODE_MAJOR=${NODE_TAG%%.*}
 
 case "$NODE_MAJOR" in
@@ -77,8 +84,8 @@ case "$PNPM" in
 esac
 
 IMAGE="node:${NODE_TAG}-alpine"
-: > "$OUT"
-echo "=== probe ${VER} node:${NODE_TAG} pnpm:${PNPM} setup:${SETUP} ===" | tee "$OUT"
+: > "$OUTPUT"
+echo "=== probe ${DISTRIBUTION} node:${NODE_TAG} pnpm:${PNPM} setup:${SETUP} ===" | tee "$OUTPUT"
 
 DOCKER_LOG=$(mktemp)
 PROBE_EXIT=0
@@ -268,6 +275,6 @@ esac
 exit $FAIL
 SCRIPT
 
-tee -a "$OUT" < "$DOCKER_LOG"
-echo "=== exit: $PROBE_EXIT ===" | tee -a "$OUT"
+tee -a "$OUTPUT" < "$DOCKER_LOG"
+echo "=== exit: $PROBE_EXIT ===" | tee -a "$OUTPUT"
 exit "$PROBE_EXIT"
