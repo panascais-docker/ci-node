@@ -3,107 +3,173 @@
 # Usage: ./scripts/probe-version.sh 12
 set -eu
 
-VER="${1:?usage: probe-version.sh <12|14|...|26|latest|lts>}"
+VER="${1:?usage: probe-version.sh <distribution>}"
 OUT="/tmp/ci-node-probe-${VER}.txt"
 
-case "$VER" in
-  12) NODE_TAG=12.22.12; PNPM=6; SETUP=legacy12 ;;
-  14) NODE_TAG=14.21.3; PNPM=7; SETUP=legacy14 ;;
-  15) NODE_TAG=15.14.0; PNPM=7; SETUP=legacy15 ;;
-  16) NODE_TAG=16.20.2; PNPM=8; SETUP=legacy16 ;;
-  17) NODE_TAG=17.9.1; PNPM=8; SETUP=legacy17 ;;
-  18) NODE_TAG=18.20.8; PNPM=10; SETUP=extended18 ;;
-  19) NODE_TAG=19.9.0; PNPM=10; SETUP=extended19 ;;
-  20) NODE_TAG=20.20.2; PNPM=10; SETUP=extended20 ;;
-  21) NODE_TAG=21.7.3; PNPM=10; SETUP=extended21 ;;
-  22) NODE_TAG=22.22.3; PNPM=11; SETUP=modern ;;
-  23) NODE_TAG=23.11.1; PNPM=11; SETUP=modern ;;
-  24) NODE_TAG=24.15.0; PNPM=11; SETUP=modern ;;
-  25) NODE_TAG=25.9.0; PNPM=11; SETUP=modern ;;
-  26) NODE_TAG=26.1.0; PNPM=11; SETUP=modern ;;
-  latest) NODE_TAG=24.15.0; PNPM=11; SETUP=modern ;;
-  lts) NODE_TAG=22.22.3; PNPM=11; SETUP=modern ;;
-  *) echo "unknown: $VER" >&2; exit 2 ;;
+VERSIONS_URL='https://raw.githubusercontent.com/panascais-docker/node/master/configuration/versions.json'
+PNPM_URL='https://raw.githubusercontent.com/panascais-docker/node/master/configuration/pnpm.json'
+
+json_string() {
+  _file=$1
+  _key=$2
+  _val=$(sed -n 's/^[[:space:]]*"'"${_key}"'":[[:space:]]*"\([^"]*\)".*/\1/p' "$_file" | sed -n '1p')
+  if [ -z "$_val" ]; then
+    echo "missing key '${_key}' in ${_file}" >&2
+    return 1
+  fi
+  printf '%s\n' "$_val"
+}
+
+OWN_VERSIONS=0
+OWN_PNPM=0
+DOCKER_LOG=""
+cleanup() {
+  if [ "$OWN_VERSIONS" -eq 1 ]; then
+    rm -f "$CI_NODE_VERSIONS_FILE"
+  fi
+  if [ "$OWN_PNPM" -eq 1 ]; then
+    rm -f "$CI_NODE_PNPM_FILE"
+  fi
+  if [ -n "$DOCKER_LOG" ]; then
+    rm -f "$DOCKER_LOG"
+  fi
+}
+trap cleanup EXIT
+
+if [ -z "${CI_NODE_VERSIONS_FILE:-}" ] || [ ! -f "${CI_NODE_VERSIONS_FILE}" ]; then
+  CI_NODE_VERSIONS_FILE=$(mktemp)
+  OWN_VERSIONS=1
+  curl -fsSL "$VERSIONS_URL" > "$CI_NODE_VERSIONS_FILE"
+fi
+if [ -z "${CI_NODE_PNPM_FILE:-}" ] || [ ! -f "${CI_NODE_PNPM_FILE}" ]; then
+  CI_NODE_PNPM_FILE=$(mktemp)
+  OWN_PNPM=1
+  curl -fsSL "$PNPM_URL" > "$CI_NODE_PNPM_FILE"
+fi
+
+NODE_TAG=$(json_string "$CI_NODE_VERSIONS_FILE" "$VER")
+PNPM=$(json_string "$CI_NODE_PNPM_FILE" "$VER")
+NODE_MAJOR=${NODE_TAG%%.*}
+
+case "$NODE_MAJOR" in
+  12) SETUP=legacy12 ;;
+  14) SETUP=legacy14 ;;
+  15) SETUP=legacy15 ;;
+  16) SETUP=legacy16 ;;
+  17) SETUP=legacy17 ;;
+  18) SETUP=extended18 ;;
+  19) SETUP=extended19 ;;
+  20) SETUP=extended20 ;;
+  21) SETUP=extended21 ;;
+  22|23|24|25|26) SETUP=modern ;;
+  *)
+    echo "unsupported node major: ${NODE_MAJOR} (tag ${NODE_TAG})" >&2
+    exit 2
+    ;;
+esac
+
+case "$PNPM" in
+  6|7|8|12) ;;
+  *)
+    echo "unsupported pnpm major: ${PNPM}" >&2
+    exit 2
+    ;;
 esac
 
 IMAGE="node:${NODE_TAG}-alpine"
 : > "$OUT"
 echo "=== probe ${VER} node:${NODE_TAG} pnpm:${PNPM} setup:${SETUP} ===" | tee "$OUT"
 
-docker run --rm -i -e SETUP="$SETUP" -e PNPM_VERSION="$PNPM" "$IMAGE" sh -s <<'SCRIPT' 2>&1 | tee -a "$OUT"
+DOCKER_LOG=$(mktemp)
+PROBE_EXIT=0
+docker run --rm -i -e SETUP="$SETUP" -e PNPM_VERSION="$PNPM" "$IMAGE" sh -s <<'SCRIPT' >"$DOCKER_LOG" 2>&1 || PROBE_EXIT=$?
 set -eu
 apk add --no-cache curl >/dev/null
 curl -fsSL https://get.pnpm.io/v6.js | node - add --global "pnpm@${PNPM_VERSION}"
 export NPM_CONFIG_PACKAGE_IMPORT_METHOD=copy
 
-MODERN_PKGS='@babel/cli @babel/core @biomejs/biome @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg ava esbuild eslint@10 knip prettier rollup stylelint ts-node tsup tsx turbo typescript vite wrangler yarn zx'
-MODERN_INSTALL='pnpm add -g --allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn'
-LEGACY_EXT_INSTALL='pnpm i -g'
+MODERN_PKGS='@babel/cli @babel/core @biomejs/biome @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg ava esbuild eslint@10 knip prettier rollup stylelint ts-node tsup tsx turbo typescript@6 vite wrangler yarn zx'
+MODERN_BUILDABLE='--allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn'
+EXTENDED_BUILDABLE='--allow-build=@biomejs/biome --allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn'
 
 case "$SETUP" in
   legacy12)
-    export PATH="/usr/local/bin:$PATH"
-    PKGS='@babel/cli @babel/core @types/node ava@3 esbuild@0.17 eslint@8 pnpm@'"${PNPM_VERSION}"' prettier@2 rollup@2 stylelint@14 ts-node@10 tsx@3 typescript@4 vite@2 yarn'
-    INSTALL="pnpm i -g"
+    PKGS='@babel/cli@7 @babel/core@7 @types/node ava@3 esbuild@0.17 eslint@8 prettier@2 rollup@2 stylelint@14 ts-node@10 tsx@3 typescript@4 vite@2 yarn'
+    BUILDABLE=""
     ;;
   legacy14)
-    export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
-    mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli@0.5.9 @rspack/core@0.5.9 @types/node @yao-pkg/pkg@5 ava@4 esbuild@0.17 eslint@8 pnpm@'"${PNPM_VERSION}"' prettier@3 rollup@2 stylelint@14 ts-node@10 tsx@3 turbo@1 typescript@4 vite@3 yarn zx@5'
-    INSTALL="$LEGACY_EXT_INSTALL"
+    PKGS='@babel/cli@7 @babel/core@7 @biomejs/biome@1 @rspack/cli@0.5.9 @rspack/core@0.5.9 @types/node @yao-pkg/pkg@5 ava@4 esbuild@0.17 eslint@8 prettier@3 rollup@2 stylelint@14 ts-node@10 tsx@3 turbo@1 typescript@4 vite@3 yarn zx@5'
+    BUILDABLE=""
     ;;
   legacy15)
-    export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
-    mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @types/node @yao-pkg/pkg@5 ava@4 esbuild@0.17 eslint@8 pnpm@'"${PNPM_VERSION}"' prettier@3 rollup@2 stylelint@14 ts-node@10 tsx@3 turbo@1 typescript@4 vite@3 yarn zx@5'
-    INSTALL="$LEGACY_EXT_INSTALL"
+    PKGS='@babel/cli@7 @babel/core@7 @biomejs/biome@1 @types/node @yao-pkg/pkg@5 ava@4 esbuild@0.17 eslint@8 prettier@3 rollup@2 stylelint@14 ts-node@10 tsx@3 turbo@1 typescript@4 vite@3 yarn zx@5'
+    BUILDABLE=""
     ;;
   legacy16)
-    export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
-    mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli@0.7.5 @rspack/core@0.7.5 @types/node @yao-pkg/pkg@5 ava@5 esbuild@0.19 eslint@8 pnpm@'"${PNPM_VERSION}"' prettier@3 rollup@3 stylelint@15 ts-node@10 tsx@3 turbo@1 typescript@5 vite@3 yarn zx@6'
-    INSTALL="$LEGACY_EXT_INSTALL"
+    PKGS='@babel/cli@7 @babel/core@7 @biomejs/biome@1 @rspack/cli@0.7.5 @rspack/core@0.7.5 @types/node @yao-pkg/pkg@5 ava@5 esbuild@0.19 eslint@8 prettier@3 rollup@3 stylelint@15 ts-node@10 tsx@3 turbo@1 typescript@5 vite@3 yarn zx@6'
+    BUILDABLE=""
     ;;
   legacy17)
-    export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
-    mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli@0.7.5 @rspack/core@0.7.5 @types/node @yao-pkg/pkg@5 ava@5 esbuild@0.19 eslint@8 pnpm@'"${PNPM_VERSION}"' prettier@3 rollup@3 stylelint@15 ts-node@10 tsx@3 turbo@1 typescript@5 vite@3 wrangler@3 yarn zx@7'
-    INSTALL="$LEGACY_EXT_INSTALL"
+    PKGS='@babel/cli@7 @babel/core@7 @biomejs/biome@1 @rspack/cli@0.7.5 @rspack/core@0.7.5 @types/node @yao-pkg/pkg@5 ava@5 esbuild@0.19 eslint@8 prettier@3 rollup@3 stylelint@15 ts-node@10 tsx@3 turbo@1 typescript@5 vite@3 wrangler@3 yarn zx@7'
+    BUILDABLE=""
     ;;
   extended18)
-    export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
-    mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@5 esbuild eslint@10 knip@5 pnpm@'"${PNPM_VERSION}"' prettier rollup stylelint@16 ts-node tsup tsx turbo typescript vite@6 wrangler@3 yarn zx@7'
-    INSTALL="pnpm i -g --allow-build=@biomejs/biome --allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn"
+    PKGS='@babel/cli@7 @babel/core@7 @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@5 esbuild eslint@10 knip@5 prettier rollup stylelint@16 ts-node tsup tsx turbo typescript@6 vite@6 wrangler@3 yarn zx@7'
+    BUILDABLE="$EXTENDED_BUILDABLE"
     ;;
   extended19)
-    export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
-    mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 pnpm@'"${PNPM_VERSION}"' prettier rollup stylelint@16 ts-node tsup tsx turbo typescript vite@6 wrangler@3 yarn zx@7'
-    INSTALL="pnpm i -g --allow-build=@biomejs/biome --allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn"
+    PKGS='@babel/cli@7 @babel/core@7 @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 prettier rollup stylelint@16 ts-node tsup tsx turbo typescript@6 vite@6 wrangler@3 yarn zx@7'
+    BUILDABLE="$EXTENDED_BUILDABLE"
     ;;
   extended20)
-    export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
-    mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg ava@6 esbuild eslint@10 knip pnpm@'"${PNPM_VERSION}"' prettier rollup stylelint ts-node tsup tsx turbo typescript vite wrangler@3 yarn zx@8'
-    INSTALL="pnpm i -g --allow-build=@biomejs/biome --allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn"
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg ava@6 esbuild eslint@10 knip prettier rollup stylelint ts-node tsup tsx turbo typescript@6 vite wrangler@3 yarn zx@8'
+    BUILDABLE="$EXTENDED_BUILDABLE"
     ;;
   extended21)
-    export PNPM_HOME=/root/.local/share/pnpm/bin PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
-    mkdir -p /root/.local/share/pnpm/bin
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 pnpm@'"${PNPM_VERSION}"' prettier rollup stylelint@16 ts-node tsup tsx turbo typescript vite@6 wrangler@3 yarn zx@8'
-    INSTALL="pnpm i -g --allow-build=@biomejs/biome --allow-build=@swc/core --allow-build=esbuild --allow-build=oxc-resolver --allow-build=sharp --allow-build=workerd --allow-build=yarn"
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 prettier rollup stylelint@16 ts-node tsup tsx turbo typescript@6 vite@6 wrangler@3 yarn zx@8'
+    BUILDABLE="$EXTENDED_BUILDABLE"
     ;;
   modern)
-    export PNPM_HOME=/root/.local/share/pnpm PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
-    mkdir -p /root/.local/share/pnpm/bin
     PKGS="$MODERN_PKGS"
-    INSTALL="$MODERN_INSTALL"
+    BUILDABLE="$MODERN_BUILDABLE"
+    ;;
+  *)
+    echo "unknown setup: $SETUP" >&2
+    exit 2
+    ;;
+esac
+
+case "$PNPM_VERSION" in
+  6)
+    export PATH="/usr/local/bin:$PATH"
+    PNPM_CMD="pnpm i -g"
+    ;;
+  7|8)
+    export PNPM_HOME=/root/.local/share/pnpm/bin
+    export PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
+    mkdir -p /root/.local/share/pnpm/bin
+    PNPM_CMD="pnpm i -g"
+    ;;
+  12)
+    export PNPM_HOME=/root/.local/share/pnpm
+    export PATH="/usr/local/bin:/root/.local/share/pnpm/bin:$PATH"
+    mkdir -p /root/.local/share/pnpm/bin
+    PNPM_CMD="pnpm add -g"
+    ;;
+  *)
+    echo "unsupported pnpm major: ${PNPM_VERSION}" >&2
+    exit 2
     ;;
 esac
 
 echo "--- INSTALL ---"
-if ! sh -c "$INSTALL $PKGS" 2>&1 | tail -12; then
+install_log=/tmp/ci-node-install.log
+set +e
+sh -c "$PNPM_CMD $PKGS $BUILDABLE" >"$install_log" 2>&1
+install_exit=$?
+set -e
+tail -12 "$install_log"
+if [ "$install_exit" -ne 0 ]; then
   echo "INSTALL_FAILED"
   exit 1
 fi
@@ -114,7 +180,7 @@ smoke() {
   name="$1"
   shift
   if "$@" >/dev/null 2>&1; then
-    out=$("$@" 2>&1 | head -1)
+    out=$("$@" 2>&1 | sed -n '1p')
     echo "OK  $name  $out"
   else
     echo "FAIL $name"
@@ -202,6 +268,6 @@ esac
 exit $FAIL
 SCRIPT
 
-PROBE_EXIT=${PIPESTATUS[0]:-$?}
+tee -a "$OUT" < "$DOCKER_LOG"
 echo "=== exit: $PROBE_EXIT ===" | tee -a "$OUT"
-exit $PROBE_EXIT
+exit "$PROBE_EXIT"

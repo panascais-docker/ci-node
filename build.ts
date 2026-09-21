@@ -1,4 +1,4 @@
-import { $ } from 'bun'
+import { $ } from 'bun';
 
 // constants
 
@@ -15,11 +15,11 @@ const fetchJson = async <T>(url: string) => {
     }
 
     const json = await response.json();
-    return json as T
+    return json as T;
 };
 
 const getPnpmVersion = async () => {
-    const json = await fetchJson<Record<string, string>>(pnpmFile)
+    const json = await fetchJson<Record<string, string>>(pnpmFile);
 
     const version = json[distribution] as string;
     if (typeof version !== 'string' || !version?.length) {
@@ -27,10 +27,10 @@ const getPnpmVersion = async () => {
     }
 
     return version;
-}
+};
 
 const getImageTag = async () => {
-    const json = await fetchJson<Record<string, string>>(versionsFile)
+    const json = await fetchJson<Record<string, string>>(versionsFile);
 
     const tag = json[distribution] as string;
     if (typeof tag !== 'string' || !tag?.length) {
@@ -38,37 +38,37 @@ const getImageTag = async () => {
     }
 
     return tag;
-}
+};
 
 const getDockerfilePath = () => {
-    return `./${distribution}/Dockerfile`
-}
+    return `./${distribution}/Dockerfile`;
+};
 
 const getDockerfile = async () => {
     const dockerfile = await Bun.file(getDockerfilePath()).text();
     return dockerfile;
-}
+};
 
 const setDockerfile = async (dockerfile: string) => {
     return Bun.write(getDockerfilePath(), dockerfile);
-}
+};
 
 // business logic
 
-const [tag, dockerfile] = await Promise.all([getImageTag(), getDockerfile()]);
+const [imageTag, pnpmVersion, dockerfile] = await Promise.all([getImageTag(), getPnpmVersion(), getDockerfile()]);
 
 const updated = dockerfile.replace(
     /^FROM ghcr\.io\/panascais-docker\/node\/node:[^\n]+$/m,
-    `FROM ghcr.io/panascais-docker/node/node:${tag}`,
+    `FROM ghcr.io/panascais-docker/node/node:${imageTag}`,
 );
 
 if (updated !== dockerfile) {
     await setDockerfile(updated);
 }
 
-const [major, min, pat] = tag.split('.')
-const minor = `${major}.${min}`
-const patch = `${minor}.${pat}`
+const [major, min, pat] = imageTag.split('.');
+const minor = `${major}.${min}`;
+const patch = `${minor}.${pat}`;
 
 if (Bun.env.GITHUB_ACTIONS === 'true') {
     const {
@@ -84,6 +84,7 @@ if (Bun.env.GITHUB_ACTIONS === 'true') {
     await $`docker buildx build \
         --build-arg BUILD_DATE=${await $`date -u +"%Y-%m-%dT%H:%M:%SZ"`.text()} \
         --build-arg NODE_VERSION=${patch} \
+        --build-arg PNPM_VERSION=${pnpmVersion} \
         --build-arg VCS_REF=${await $`git rev-parse --short HEAD`.text()} \
         --platform linux/amd64,linux/arm64 \
         --progress=plain \
@@ -96,6 +97,7 @@ if (Bun.env.GITHUB_ACTIONS === 'true') {
     await $`docker buildx build \
         --build-arg BUILD_DATE=${await $`date -u +"%Y-%m-%dT%H:%M:%SZ"`.text()} \
         --build-arg NODE_VERSION=${patch} \
+        --build-arg PNPM_VERSION=${pnpmVersion} \
         --build-arg VCS_REF=${await $`git rev-parse --short HEAD`.text()} \
         --push \
         --platform linux/amd64,linux/arm64 \
@@ -121,6 +123,7 @@ if (Bun.env.GITHUB_ACTIONS === 'true') {
     await $`docker buildx build \
         --build-arg BUILD_DATE=${await $`date -u +"%Y-%m-%dT%H:%M:%SZ"`.text()} \
         --build-arg NODE_VERSION=${patch} \
+        --build-arg PNPM_VERSION=${pnpmVersion} \
         --build-arg VCS_REF=${await $`git rev-parse --short HEAD`.text()} \
         --load \
         --platform linux/arm64 \

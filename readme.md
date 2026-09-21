@@ -10,8 +10,10 @@
 
 | **Tag:** | **Command:**                        | **Node Version:** | **Supported:** | **Labels:**                                                                                                   |
 | -------- | ----------------------------------- | ----------------- | -------------- | ------------------------------------------------------------------------------------------------------------- |
-| `lts`    | `docker pull panascais/ci-node:lts` | `v22.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/lts.svg?style=flat-square)    |
-| `latest` | `docker pull panascais/ci-node`     | `v24.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/latest.svg?style=flat-square) |
+| `lts`    | `docker pull panascais/ci-node:lts` | `v24.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/lts.svg?style=flat-square)    |
+| `latest` | `docker pull panascais/ci-node`     | `v26.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/latest.svg?style=flat-square) |
+| `26`     | `docker pull panascais/ci-node:26`  | `v26.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/26.svg?style=flat-square)     |
+| `25`     | `docker pull panascais/ci-node:25`  | `v25.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/25.svg?style=flat-square)     |
 | `24`     | `docker pull panascais/ci-node:24`  | `v24.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/24.svg?style=flat-square)     |
 | `23`     | `docker pull panascais/ci-node:23`  | `v23.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/23.svg?style=flat-square)     |
 | `22`     | `docker pull panascais/ci-node:22`  | `v22.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/22.svg?style=flat-square)     |
@@ -86,6 +88,7 @@
 ```sh
 docker build \
     --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+    --build-arg PNPM_VERSION=12 \
     --build-arg VCS_REF=`git rev-parse --short HEAD` \
     -t panascais/ci-node:24 \
     ./24
@@ -96,6 +99,7 @@ docker build \
 ```fish
 docker build \
     --build-arg BUILD_DATE=(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+    --build-arg PNPM_VERSION=12 \
     --build-arg VCS_REF=(git rev-parse --short HEAD) \
     -t panascais/ci-node:24 \
     ./24
@@ -120,38 +124,41 @@ Alpine 3.24 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-
 
 ### pnpm
 
-**pnpm v11 (Node 22+):** the base `node` image disables the global virtual store (`enableGlobalVirtualStore: false` in `/root/.config/pnpm/config.yaml`) so global installs behave like pnpm v10. A single `pnpm add -g` pass cache-mounts the store at `/root/.local/share/pnpm/store` (`id=ci-node-pnpm-11-${TARGETARCH},sharing=locked`). Without that setting, mounting the store cache breaks global CLIs at runtime (ae38d12).
+Node patch tags and the pnpm major come from the base image repository: [`configuration/versions.json`](https://github.com/panascais-docker/node/blob/master/configuration/versions.json) and [`configuration/pnpm.json`](https://github.com/panascais-docker/node/blob/master/configuration/pnpm.json). `build.ts` fetches both and passes `--build-arg PNPM_VERSION=<upstream major>`. ci-node does not keep a local pnpm config copy, and it does not reinstall `pnpm@N` in the global package list — every supported base already ships that executable.
 
-**pnpm v10 and below (Node 21 and older):** single-pass global install with the store cache-mounted at pnpm’s default path for that image (no `--store-dir` override). Measure with the same `ENV` as the Dockerfile (`pnpm store path`).
+**pnpm 12 (Node 18+):** global binaries live under `$PNPM_HOME/bin`. ci-node sets `PNPM_HOME=/root/.local/share/pnpm` and puts `/root/.local/share/pnpm/bin` on `PATH` (Node 22+ inherit the same layout from the base image). Install with `pnpm add -g`. Cache-mount the store at `/root/.local/share/pnpm/store`. Node 22+ inherit `enableGlobalVirtualStore: false` from the base image (`/root/.config/pnpm/config.yaml`); without that setting, a store cache mount can break global CLIs at runtime (ae38d12).
 
-| pnpm | `PNPM_HOME` in ci-node | `pnpm store path` | Cache mount `target=` | Cache id |
-|------|------------------------|-------------------|------------------------|----------|
-| 6 (Node 12) | (none; bins in `/usr/local/bin`) | `/root/.pnpm-store/v3` | `/root/.pnpm-store` | `ci-node-pnpm-6-${TARGETARCH}` |
-| 7–10 (Node 14–21) | `.../pnpm/bin` | `.../pnpm/bin/store/v3` or `.../v10` | `/root/.local/share/pnpm/bin/store` | `ci-node-pnpm-${TARGETARCH}` |
-| 11 (Node 22+) | `/root/.local/share/pnpm` | `.../pnpm/store/v10` | `/root/.local/share/pnpm/store` | `ci-node-pnpm-11-${TARGETARCH}` |
+**pnpm 8 and below (Node 17 and older):** single-pass `pnpm i -g` with the store cache-mounted at pnpm’s default path for that image (no `--store-dir` override). Measure with the same `ENV` as the Dockerfile (`pnpm store path`).
+
+Cache IDs are `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` so the pnpm major is not checked in.
+
+| pnpm | Node | `PNPM_HOME` in ci-node | `pnpm store path` | Cache mount `target=` | Cache id |
+|------|------|------------------------|-------------------|------------------------|----------|
+| 6 | 12 | (none; bins in `/usr/local/bin`) | `/root/.pnpm-store/v3` | `/root/.pnpm-store` | `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` |
+| 7–8 | 14–17 | `.../pnpm/bin` | `.../pnpm/bin/store/v3` | `/root/.local/share/pnpm/bin/store` | `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` |
+| 12 | 18+ | `/root/.local/share/pnpm` | `.../pnpm/store/v10` | `/root/.local/share/pnpm/store` | `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` |
 
 ```dockerfile
 # Node 12 (pnpm 6; store at ~/.pnpm-store, global bins in /usr/local/bin)
-RUN --mount=type=cache,id=ci-node-pnpm-6-${TARGETARCH},sharing=locked,target=/root/.pnpm-store \
+RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=locked,target=/root/.pnpm-store \
     packages=" ... " \
     && pnpm i -g $packages
 
-# Node 14–21 (pnpm 7–10)
-RUN --mount=type=cache,id=ci-node-pnpm-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
+# Node 14–17 (pnpm 7–8)
+RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/bin/store \
     packages=" ... " \
-    buildable=" --allow-build=... " \
     && mkdir -p /root/.local/share/pnpm/bin \
-    && pnpm i -g $packages $buildable
+    && pnpm i -g $packages
 
-# Node 22+ (pnpm 11; inherits enableGlobalVirtualStore: false from base node image)
-RUN --mount=type=cache,id=ci-node-pnpm-11-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
+# Node 18+ (pnpm 12; Node 22+ inherit enableGlobalVirtualStore: false from the base node image)
+RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
     packages=" ... " \
     buildable=" --allow-build=... " \
     && mkdir -p /root/.local/share/pnpm/bin \
     && pnpm add -g $packages $buildable
 ```
 
-Mount the parent directory (pnpm creates `v3` / `v10` subdirs inside). `${TARGETARCH}` and `sharing=locked` avoid cross-arch mixing and parallel-build store corruption.
+Mount the parent directory (pnpm creates `v3` / `v10` subdirs inside). `${TARGETARCH}` and `sharing=locked` avoid cross-arch mixing and parallel-build store corruption. Layout commands stay explicit per known pnpm major; a future major is not inferred from the number alone.
 
 When building application images on top of `ci-node`, use a separate project store ([pnpm Docker docs](https://pnpm.io/docker)):
 
