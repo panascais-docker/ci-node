@@ -5,17 +5,17 @@ ARG TARGETARCH
 ARG FLYCTL_VERSION=latest
 
 RUN set -eu \
-  && echo "flyctl:${BUILD_DATE}" \
-  && download_architecture=x86_64 \
-  && if [ "${TARGETARCH}" = "arm64" ]; then download_architecture=arm64; fi \
-  && download_version="${FLYCTL_VERSION}" \
-  && if [ "$download_version" = "latest" ]; then \
+    && echo "flyctl:${BUILD_DATE}" \
+    && download_architecture=x86_64 \
+    && if [ "${TARGETARCH}" = "arm64" ]; then download_architecture=arm64; fi \
+    && download_version="${FLYCTL_VERSION}" \
+    && if [ "$download_version" = "latest" ]; then \
     location=$(wget -qSO- "https://github.com/superfly/flyctl/releases/latest/download/flyctl_Linux_$(echo "$download_architecture").tar.gz" 2>&1 \
-      | awk '/^[[:space:]]*Location:/{gsub(/\r/,""); print $2; exit}'); \
+    | awk '/^[[:space:]]*Location:/{gsub(/\r/,""); print $2; exit}'); \
     download_version=$(echo "$location" | sed -n 's|.*/download/v\([^/]*\)/.*|\1|p'); \
-  fi \
-  && wget -qO- "https://github.com/superfly/flyctl/releases/download/v$(echo "$download_version")/flyctl_$(echo "$download_version")_Linux_$(echo "$download_architecture").tar.gz" \
-  | tar -xz -C / flyctl
+    fi \
+    && wget -qO- "https://github.com/superfly/flyctl/releases/download/v$(echo "$download_version")/flyctl_$(echo "$download_version")_Linux_$(echo "$download_architecture").tar.gz" \
+    | tar -xz -C / flyctl
 
 
 FROM ghcr.io/panascais-docker/node/node:17.9.1
@@ -125,7 +125,7 @@ RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=loc
     && pnpm i -g $packages
 
 RUN export BUN_INSTALL=/usr/local \
-    && curl -fsSL https://bun.com/install | bash -s -- canary
+    && curl -fsSL https://bun.com/install | bash
 
 RUN curl -fsSL https://nubjs.com/install.sh | bash
 

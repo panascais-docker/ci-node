@@ -31,32 +31,32 @@
 
 ## Included CLIs
 
-| **Name:**    | **GitHub:**                                                                  | **npm:**                                                                         |
-| ------------ | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `fly`        | [github.com/superfly/flyctl](https://github.com/superfly/flyctl)             | ×                                                                                |
-| `npm`        | [github.com/npm/cli](https://github.com/npm/cli)                             | [npmjs.com/package/npm](https://www.npmjs.com/package/npm)                       |
-| `pnpm`       | [github.com/pnpm/pnpm](https://github.com/pnpm/pnpm)                         | [npmjs.com/package/pnpm](https://www.npmjs.com/package/pnpm)                     |
-| `yarn`       | [github.com/yarnpkg/yarn](https://github.com/yarnpkg/yarn)                   | [npmjs.com/package/yarn](https://www.npmjs.com/package/yarn)                     |
-| `typescript` | [github.com/microsoft/typescript](https://github.com/microsoft/typescript)   | [npmjs.com/package/typescript](https://www.npmjs.com/package/typescript)         |
-| `biome`      | [github.com/biomejs/biome](https://github.com/biomejs/biome)                 | [npmjs.com/package/@biomejs/biome](https://www.npmjs.com/package/@biomejs/biome) |
-| `eslint`     | [github.com/eslint/eslint](https://github.com/eslint/eslint)                 | [npmjs.com/package/eslint](https://www.npmjs.com/package/eslint)                 |
-| `stylelint`  | [github.com/stylelint/stylelint](https://github.com/stylelint/stylelint)     | [npmjs.com/package/stylelint](https://www.npmjs.com/package/stylelint)           |
-| `prettier`   | [github.com/prettier/prettier](https://github.com/prettier/prettier)         | [npmjs.com/package/prettier](https://www.npmjs.com/package/prettier)             |
-| `ava`        | [github.com/avajs/ava](https://github.com/avajs/ava)                         | [npmjs.com/package/ava](https://www.npmjs.com/package/ava)                       |
-| `babel`      | [github.com/babel/babel](https://github.com/babel/babel)                     | [npmjs.com/package/@babel/cli](https://www.npmjs.com/package/@babel/cli)         |
-| `esbuild`    | [github.com/evanw/esbuild](https://github.com/evanw/esbuild)                 | [npmjs.com/package/esbuild](https://www.npmjs.com/package/esbuild)               |
-| `swc`        | [github.com/swc-project/swc](https://github.com/swc-project/swc)             | [npmjs.com/package/swc](https://www.npmjs.com/package/swc)                       |
-| `rspack`     | [github.com/web-infra-dev/rspack](https://github.com/web-infra-dev/rspack)   | [npmjs.com/package/rspack](https://www.npmjs.com/package/rspack)                 |
-| `turbo`      | [github.com/vercel/turbo](https://github.com/vercel/turbo)                   | [npmjs.com/package/turbo](https://www.npmjs.com/package/turbo)                   |
-| `vite`       | [github.com/vitejs/vite](https://github.com/vitejs/vite)                     | [npmjs.com/package/vite](https://www.npmjs.com/package/vite)                     |
-| `wrangler`   | [github.com/cloudflare/wrangler2](https://github.com/cloudflare/wrangler2)   | [npmjs.com/package/wrangler](https://www.npmjs.com/package/wrangler)             |
-| `ts-node`    | [github.com/typestrong/ts-node](https://github.com/typestrong/ts-node)       | [npmjs.com/package/ts-node](https://www.npmjs.com/package/ts-node)               |
-| `tsup`       | [github.com/egoist/tsup](https://github.com/egoist/tsup)                     | [npmjs.com/package/tsup](https://www.npmjs.com/package/tsup)                     |
-| `zx`         | [github.com/google/zx](https://github.com/google/zx)                         | [npmjs.com/package/zx](https://www.npmjs.com/package/zx)                         |
-| `pkg`        | [github.com/yao-pkg/pkg](https://github.com/yao-pkg/pkg)                     | [npmjs.com/package/pkg](https://www.npmjs.com/package/@yao-pkg/pkg)              |
-| `rollup`     | [github.com/rollup/rollup](https://github.com/rollup/rollup)                 | [npmjs.com/package/rollup](https://www.npmjs.com/package/rollup)                 |
-| `knip`       | [github.com/webpro-nl/knip](https://github.com/webpro-nl/knip)               | [npmjs.com/package/knip](https://www.npmjs.com/package/knip)                     |
-| `tsx`        | [github.com/privatenumber/tsx](https://github.com/privatenumber/tsx)         | [npmjs.com/package/tsx](https://www.npmjs.com/package/tsx)                       |
+| **Name:**    | **GitHub:**                                                                | **npm:**                                                                         |
+| ------------ | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `fly`        | [github.com/superfly/flyctl](https://github.com/superfly/flyctl)           | ×                                                                                |
+| `npm`        | [github.com/npm/cli](https://github.com/npm/cli)                           | [npmjs.com/package/npm](https://www.npmjs.com/package/npm)                       |
+| `pnpm`       | [github.com/pnpm/pnpm](https://github.com/pnpm/pnpm)                       | [npmjs.com/package/pnpm](https://www.npmjs.com/package/pnpm)                     |
+| `yarn`       | [github.com/yarnpkg/yarn](https://github.com/yarnpkg/yarn)                 | [npmjs.com/package/yarn](https://www.npmjs.com/package/yarn)                     |
+| `typescript` | [github.com/microsoft/typescript](https://github.com/microsoft/typescript) | [npmjs.com/package/typescript](https://www.npmjs.com/package/typescript)         |
+| `biome`      | [github.com/biomejs/biome](https://github.com/biomejs/biome)               | [npmjs.com/package/@biomejs/biome](https://www.npmjs.com/package/@biomejs/biome) |
+| `eslint`     | [github.com/eslint/eslint](https://github.com/eslint/eslint)               | [npmjs.com/package/eslint](https://www.npmjs.com/package/eslint)                 |
+| `stylelint`  | [github.com/stylelint/stylelint](https://github.com/stylelint/stylelint)   | [npmjs.com/package/stylelint](https://www.npmjs.com/package/stylelint)           |
+| `prettier`   | [github.com/prettier/prettier](https://github.com/prettier/prettier)       | [npmjs.com/package/prettier](https://www.npmjs.com/package/prettier)             |
+| `ava`        | [github.com/avajs/ava](https://github.com/avajs/ava)                       | [npmjs.com/package/ava](https://www.npmjs.com/package/ava)                       |
+| `babel`      | [github.com/babel/babel](https://github.com/babel/babel)                   | [npmjs.com/package/@babel/cli](https://www.npmjs.com/package/@babel/cli)         |
+| `esbuild`    | [github.com/evanw/esbuild](https://github.com/evanw/esbuild)               | [npmjs.com/package/esbuild](https://www.npmjs.com/package/esbuild)               |
+| `swc`        | [github.com/swc-project/swc](https://github.com/swc-project/swc)           | [npmjs.com/package/swc](https://www.npmjs.com/package/swc)                       |
+| `rspack`     | [github.com/web-infra-dev/rspack](https://github.com/web-infra-dev/rspack) | [npmjs.com/package/rspack](https://www.npmjs.com/package/rspack)                 |
+| `turbo`      | [github.com/vercel/turbo](https://github.com/vercel/turbo)                 | [npmjs.com/package/turbo](https://www.npmjs.com/package/turbo)                   |
+| `vite`       | [github.com/vitejs/vite](https://github.com/vitejs/vite)                   | [npmjs.com/package/vite](https://www.npmjs.com/package/vite)                     |
+| `wrangler`   | [github.com/cloudflare/wrangler2](https://github.com/cloudflare/wrangler2) | [npmjs.com/package/wrangler](https://www.npmjs.com/package/wrangler)             |
+| `ts-node`    | [github.com/typestrong/ts-node](https://github.com/typestrong/ts-node)     | [npmjs.com/package/ts-node](https://www.npmjs.com/package/ts-node)               |
+| `tsup`       | [github.com/egoist/tsup](https://github.com/egoist/tsup)                   | [npmjs.com/package/tsup](https://www.npmjs.com/package/tsup)                     |
+| `zx`         | [github.com/google/zx](https://github.com/google/zx)                       | [npmjs.com/package/zx](https://www.npmjs.com/package/zx)                         |
+| `pkg`        | [github.com/yao-pkg/pkg](https://github.com/yao-pkg/pkg)                   | [npmjs.com/package/pkg](https://www.npmjs.com/package/@yao-pkg/pkg)              |
+| `rollup`     | [github.com/rollup/rollup](https://github.com/rollup/rollup)               | [npmjs.com/package/rollup](https://www.npmjs.com/package/rollup)                 |
+| `knip`       | [github.com/webpro-nl/knip](https://github.com/webpro-nl/knip)             | [npmjs.com/package/knip](https://www.npmjs.com/package/knip)                     |
+| `tsx`        | [github.com/privatenumber/tsx](https://github.com/privatenumber/tsx)       | [npmjs.com/package/tsx](https://www.npmjs.com/package/tsx)                       |
 
 ## Included Packages
 
@@ -126,17 +126,17 @@ Alpine 3.24 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-
 
 Node patch tags and the pnpm major come from the base image repository: [`configuration/versions.json`](https://github.com/panascais-docker/node/blob/master/configuration/versions.json) and [`configuration/pnpm.json`](https://github.com/panascais-docker/node/blob/master/configuration/pnpm.json). `build.ts` fetches both and passes `--build-arg PNPM_VERSION=<upstream major>`. ci-node does not keep a local pnpm config copy, and it does not reinstall `pnpm@N` in the global package list — every supported base already ships that executable.
 
-**pnpm 12 (Node 18+):** global binaries live under `$PNPM_HOME/bin`. Every Node 18+ image inherits `PNPM_HOME=/root/.local/share/pnpm`, `/root/.local/share/pnpm/bin` on `PATH`, and `enableGlobalVirtualStore: false` (`/root/.config/pnpm/config.yaml`) from the authoritative base image. Install with `pnpm add -g`. Cache-mount the store at `/root/.local/share/pnpm/store`. Without that setting, a store cache mount can break global CLIs at runtime (ae38d12).
+**pnpm 10+ (Node 18+):** global binaries live under `$PNPM_HOME/bin`. Every Node 18+ image inherits `PNPM_HOME=/root/.local/share/pnpm`, `/root/.local/share/pnpm/bin` on `PATH`, and `enableGlobalVirtualStore: false` (`/root/.config/pnpm/config.yaml`) from the authoritative base image. pnpm 10 ignores `globalBinDir` in that yaml file and falls back to `PNPM_HOME`, which is not on `PATH` ([pnpm#11205](https://github.com/pnpm/pnpm/issues/11205)). `pnpm config set global-bin-dir /root/.local/share/pnpm/bin` writes the `rc` file those versions read, then install with `pnpm add -g`. Cache-mount the store at `/root/.local/share/pnpm/store`. Without `enableGlobalVirtualStore: false`, a store cache mount can break global CLIs at runtime (ae38d12).
 
 **pnpm 8 and below (Node 17 and older):** single-pass `pnpm i -g` with the store cache-mounted at pnpm’s default path for that image (no `--store-dir` override). Measure with the same `ENV` as the Dockerfile (`pnpm store path`).
 
 Cache IDs are `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` so the pnpm major is not checked in.
 
-| pnpm | Node | `PNPM_HOME` in ci-node | `pnpm store path` | Cache mount `target=` | Cache id |
-|------|------|------------------------|-------------------|------------------------|----------|
-| 6 | 12 | (none; bins in `/usr/local/bin`) | `/root/.pnpm-store/v3` | `/root/.pnpm-store` | `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` |
-| 7–8 | 14–17 | `.../pnpm/bin` | `.../pnpm/bin/store/v3` | `/root/.local/share/pnpm/bin/store` | `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` |
-| 12 | 18+ | `/root/.local/share/pnpm` | `.../pnpm/store/v10` | `/root/.local/share/pnpm/store` | `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` |
+| pnpm | Node  | `PNPM_HOME` in ci-node           | `pnpm store path`       | Cache mount `target=`               | Cache id                                     |
+| ---- | ----- | -------------------------------- | ----------------------- | ----------------------------------- | -------------------------------------------- |
+| 6    | 12    | (none; bins in `/usr/local/bin`) | `/root/.pnpm-store/v3`  | `/root/.pnpm-store`                 | `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` |
+| 7–8  | 14–17 | `.../pnpm/bin`                   | `.../pnpm/bin/store/v3` | `/root/.local/share/pnpm/bin/store` | `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` |
+| 10+  | 18+   | `/root/.local/share/pnpm`        | `.../pnpm/store/v10`    | `/root/.local/share/pnpm/store`     | `ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH}` |
 
 ```dockerfile
 # Node 12 (pnpm 6; store at ~/.pnpm-store, global bins in /usr/local/bin)
@@ -150,11 +150,12 @@ RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=loc
     && mkdir -p /root/.local/share/pnpm/bin \
     && pnpm i -g $packages
 
-# Node 18+ (pnpm 12; inherit PNPM_HOME/bin PATH and enableGlobalVirtualStore: false from the base node image)
+# Node 18+ (pnpm 10+; inherit PNPM_HOME/bin PATH and enableGlobalVirtualStore: false from the base node image)
 RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
     packages=" ... " \
     buildable=" --allow-build=... " \
     && mkdir -p /root/.local/share/pnpm/bin \
+    && pnpm config set global-bin-dir /root/.local/share/pnpm/bin \
     && pnpm add -g $packages $buildable
 ```
 
