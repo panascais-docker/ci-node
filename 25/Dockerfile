@@ -18,10 +18,41 @@ RUN set -eu \
   | tar -xz -C / flyctl
 
 
+FROM alpine:3.24 AS deno
+
+ARG BUILD_DATE
+ARG TARGETARCH
+ARG DENO_VERSION=latest
+
+# deno only ships glibc builds, so it gets an isolated glibc that does not clash with musl or gcompat
+COPY --from=gcr.io/distroless/cc-debian12 /lib/*-linux-gnu/ /usr/local/lib/glibc/
+
+RUN set -eu \
+  && echo "deno:${BUILD_DATE}" \
+  && apk add --no-cache patchelf \
+  && download_architecture=x86_64 \
+  && interpreter=ld-linux-x86-64.so.2 \
+  && if [ "${TARGETARCH}" = "arm64" ]; then download_architecture=aarch64; interpreter=ld-linux-aarch64.so.1; fi \
+  && download_version="${DENO_VERSION}" \
+  && if [ "$download_version" = "latest" ]; then download_version=$(wget -qO- https://dl.deno.land/release-latest.txt); fi \
+  && download_file="deno-${download_architecture}-unknown-linux-gnu.zip" \
+  && download_url="https://dl.deno.land/release/v${download_version#v}/${download_file}" \
+  && wget -qO "/${download_file}" "$download_url" \
+  && wget -qO "/${download_file}.sha256sum" "${download_url}.sha256sum" \
+  && cd / \
+  && sha256sum -c "${download_file}.sha256sum" \
+  && unzip -q "$download_file" deno \
+  && patchelf --set-interpreter "/usr/local/lib/glibc/${interpreter}" --set-rpath /usr/local/lib/glibc /deno \
+  && /deno --version
+
+
 FROM ghcr.io/panascais-docker/node/node:25.9.0
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
+
+COPY --from=deno /usr/local/lib/glibc /usr/local/lib/glibc
+COPY --from=deno /deno /usr/local/bin/deno
 
 ARG BUILD_DATE
 ARG NODE_VERSION
@@ -86,13 +117,6 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
   simdutf \
   vips \
   && update-ca-certificates
-
-RUN --mount=type=cache,id=ci-node-apk-edge-${TARGETARCH},sharing=locked,target=/apk/cache \
-  apk update --cache-dir /apk/cache \
-  && apk add --cache-dir /apk/cache --cache-predownload \
-  --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main \
-  --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
-  deno
 
 RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=locked,target=/root/.local/share/pnpm/store \
   packages=" \
