@@ -46,7 +46,7 @@ RUN set -eu \
   && /deno --version
 
 
-FROM ghcr.io/panascais-docker/node/node:20.20.2
+FROM ghcr.io/panascais-docker/node/node:20.20.2 AS image
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
@@ -159,7 +159,8 @@ RUN export BUN_INSTALL=/usr/local \
 
 RUN curl -fsSL https://nubjs.com/install.sh | bash
 
-# smoke tests
+FROM image AS smoke
+
 RUN ava --version \
   && babel --version \
   && biome --version \
@@ -186,5 +187,7 @@ RUN ava --version \
   && turbo --version \
   && vite --version \
   && wrangler --version \
-  && zx --version \
-  && rm -rf /root/.cache/biome /root/.cache/deno /root/.cache/goimports /root/.cache/swc-native-0 /root/.config/.wrangler /root/.fly /tmp/*
+  && zx --version
+
+
+FROM image

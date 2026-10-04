@@ -58,7 +58,7 @@ const setDockerfile = async (dockerfile: string) => {
 const [imageTag, pnpmVersion, dockerfile] = await Promise.all([getImageTag(), getPnpmVersion(), getDockerfile()]);
 
 const updated = dockerfile.replace(
-    /^FROM ghcr\.io\/panascais-docker\/node\/node:[^\n]+$/m,
+    /^FROM ghcr\.io\/panascais-docker\/node\/node:\S+/m,
     `FROM ghcr.io/panascais-docker/node/node:${imageTag}`,
 );
 
@@ -69,6 +69,10 @@ if (updated !== dockerfile) {
 const [major, min, pat] = imageTag.split('.');
 const minor = `${major}.${min}`;
 const patch = `${minor}.${pat}`;
+
+// the same BUILD_DATE must be passed to every build of one run, otherwise the RUN layers never hit the cache
+const buildDate = (await $`date -u +"%Y-%m-%dT%H:%M:%SZ"`.text()).trim();
+const vcsRef = (await $`git rev-parse --short HEAD`.text()).trim();
 
 if (Bun.env.GITHUB_ACTIONS === 'true') {
     const {
@@ -81,13 +85,15 @@ if (Bun.env.GITHUB_ACTIONS === 'true') {
     } = Bun.env;
 
     // hack to pull first without authentication to avoid even more rate limits
+    // the smoke stage is a side target so its test run never becomes a layer of the published image
     await $`docker buildx build \
-        --build-arg BUILD_DATE=${await $`date -u +"%Y-%m-%dT%H:%M:%SZ"`.text()} \
+        --build-arg BUILD_DATE=${buildDate} \
         --build-arg NODE_VERSION=${patch} \
         --build-arg PNPM_VERSION=${pnpmVersion} \
-        --build-arg VCS_REF=${await $`git rev-parse --short HEAD`.text()} \
+        --build-arg VCS_REF=${vcsRef} \
         --platform linux/amd64,linux/arm64 \
         --progress=plain \
+        --target smoke \
         ./${distribution}`;
 
     await $`echo ${CONTAINER_REGISTRY_TOKEN} | docker login ghcr.io -u ${CONTAINER_REGISTRY_USERNAME} --password-stdin`;
@@ -95,10 +101,10 @@ if (Bun.env.GITHUB_ACTIONS === 'true') {
     await $`echo ${QUAY_REGISTRY_TOKEN} | docker login quay.io -u ${QUAY_REGISTRY_USERNAME} --password-stdin`;
 
     await $`docker buildx build \
-        --build-arg BUILD_DATE=${await $`date -u +"%Y-%m-%dT%H:%M:%SZ"`.text()} \
+        --build-arg BUILD_DATE=${buildDate} \
         --build-arg NODE_VERSION=${patch} \
         --build-arg PNPM_VERSION=${pnpmVersion} \
-        --build-arg VCS_REF=${await $`git rev-parse --short HEAD`.text()} \
+        --build-arg VCS_REF=${vcsRef} \
         --push \
         --platform linux/amd64,linux/arm64 \
         --progress=plain \
@@ -121,10 +127,20 @@ if (Bun.env.GITHUB_ACTIONS === 'true') {
     await $`docker buildx install &> /dev/null || true`;
 
     await $`docker buildx build \
-        --build-arg BUILD_DATE=${await $`date -u +"%Y-%m-%dT%H:%M:%SZ"`.text()} \
+        --build-arg BUILD_DATE=${buildDate} \
         --build-arg NODE_VERSION=${patch} \
         --build-arg PNPM_VERSION=${pnpmVersion} \
-        --build-arg VCS_REF=${await $`git rev-parse --short HEAD`.text()} \
+        --build-arg VCS_REF=${vcsRef} \
+        --platform linux/arm64 \
+        --progress=plain \
+        --target smoke \
+        ./${distribution}`;
+
+    await $`docker buildx build \
+        --build-arg BUILD_DATE=${buildDate} \
+        --build-arg NODE_VERSION=${patch} \
+        --build-arg PNPM_VERSION=${pnpmVersion} \
+        --build-arg VCS_REF=${vcsRef} \
         --load \
         --platform linux/arm64 \
         --progress=plain \
