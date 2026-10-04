@@ -96,9 +96,6 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
   git \
   git-lfs \
   gzip \
-  icu \
-  icu-data-full \
-  icu-libs \
   jo \
   jq \
   libc6-compat \
@@ -148,15 +145,14 @@ RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=loc
   buildable=" \
   --allow-build=@biomejs/biome \
   --allow-build=@swc/core \
-  --allow-build=esbuild \
   --allow-build=oxc-resolver \
   --allow-build=sharp \
-  --allow-build=workerd \
   --allow-build=yarn \
   " \
   && mkdir -p /root/.local/share/pnpm/bin \
   && pnpm config set global-bin-dir /root/.local/share/pnpm/bin \
-  && pnpm add -g $packages $buildable
+  && pnpm add -g $packages $buildable \
+  && rm -rf /root/.cache/pnpm
 
 RUN export BUN_INSTALL=/usr/local \
   && curl -fsSL https://bun.com/install | bash
@@ -169,11 +165,14 @@ RUN ava --version \
   && biome --version \
   && bun --version \
   && deno --version \
+  && deno eval 'console.log(await (await fetch("https://dl.deno.land/release-latest.txt")).text())' \
+  && [ "$(deno eval 'console.log(new Intl.DateTimeFormat("de", { month: "long" }).format(new Date(0)))')" = "Januar" ] \
   && esbuild --version \
   && eslint --version \
   && fly --version \
   && knip --version \
   && node --version \
+  && [ "$(node -p 'new Intl.DateTimeFormat("de", { month: "long" }).format(new Date(0))')" = "Januar" ] \
   && pkg --version \
   && pnpm --version \
   && prettier --version \
@@ -187,4 +186,5 @@ RUN ava --version \
   && turbo --version \
   && vite --version \
   && wrangler --version \
-  && zx --version
+  && zx --version \
+  && rm -rf /root/.cache/biome /root/.cache/deno /root/.cache/goimports /root/.cache/swc-native-0 /root/.config/.wrangler /root/.fly /tmp/*

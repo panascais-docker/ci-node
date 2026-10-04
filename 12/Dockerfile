@@ -98,9 +98,6 @@ RUN --mount=type=cache,id=ci-node-apk-${TARGETARCH},sharing=locked,target=/apk/c
     git \
     git-lfs \
     gzip \
-    icu \
-    icu-data-full \
-    icu-libs \
     jo \
     jq \
     libc6-compat \
@@ -137,7 +134,8 @@ RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=loc
     vite@2 \
     yarn \
     " \
-    && pnpm i -g $packages
+    && pnpm i -g $packages \
+    && rm -rf /root/.cache/pnpm
 
 RUN export BUN_INSTALL=/usr/local \
     && curl -fsSL https://bun.com/install | bash
@@ -149,6 +147,8 @@ RUN ava --version \
     && babel --version \
     && bun --version \
     && deno --version \
+    && deno eval 'console.log(await (await fetch("https://dl.deno.land/release-latest.txt")).text())' \
+    && [ "$(deno eval 'console.log(new Intl.DateTimeFormat("de", { month: "long" }).format(new Date(0)))')" = "Januar" ] \
     && esbuild --version \
     && eslint --version \
     && fly --version \
@@ -159,4 +159,5 @@ RUN ava --version \
     && stylelint --version \
     && tsc --version \
     && tsx --version \
-    && vite --version
+    && vite --version \
+    && rm -rf /root/.cache/biome /root/.cache/deno /root/.cache/goimports /root/.cache/swc-native-0 /root/.config/.wrangler /root/.fly /tmp/*
