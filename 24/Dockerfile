@@ -46,7 +46,7 @@ RUN set -eu \
   && /deno --version
 
 
-FROM ghcr.io/panascais-docker/node/node:24.21.0 AS image
+FROM ghcr.io/panascais-docker/node/node:24.22.0 AS image
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
