@@ -132,7 +132,7 @@ RUN --mount=type=cache,id=ci-node-pnpm-${PNPM_VERSION}-${TARGETARCH},sharing=loc
   rollup \
   stylelint@16 \
   ts-node \
-  tsup \
+  tsup@8 \
   tsx \
   turbo \
   typescript@6 \

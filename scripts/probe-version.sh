@@ -121,19 +121,19 @@ case "$SETUP" in
     BUILDABLE=""
     ;;
   extended18)
-    PKGS='@babel/cli@7 @babel/core@7 @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@5 esbuild eslint@10 knip@5 prettier rollup stylelint@16 ts-node tsup tsx turbo typescript@6 vite@6 wrangler@3 yarn zx@7'
+    PKGS='@babel/cli@7 @babel/core@7 @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@5 esbuild eslint@10 knip@5 prettier rollup stylelint@16 ts-node tsup@8 tsx turbo typescript@6 vite@6 wrangler@3 yarn zx@7'
     BUILDABLE="$EXTENDED_BUILDABLE"
     ;;
   extended19)
-    PKGS='@babel/cli@7 @babel/core@7 @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 prettier rollup stylelint@16 ts-node tsup tsx turbo typescript@6 vite@6 wrangler@3 yarn zx@7'
+    PKGS='@babel/cli@7 @babel/core@7 @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 prettier rollup stylelint@16 ts-node tsup@8 tsx turbo typescript@6 vite@6 wrangler@3 yarn zx@7'
     BUILDABLE="$EXTENDED_BUILDABLE"
     ;;
   extended20)
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg ava@6 esbuild eslint@10 knip prettier rollup stylelint ts-node tsup tsx turbo typescript@6 vite wrangler@3 yarn zx@8'
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @rspack/cli @swc/cli @swc/core @types/node @yao-pkg/pkg ava@6 esbuild eslint@10 knip prettier rollup stylelint ts-node tsup@8 tsx turbo typescript@6 vite wrangler@3 yarn zx@8'
     BUILDABLE="$EXTENDED_BUILDABLE"
     ;;
   extended21)
-    PKGS='@babel/cli @babel/core @biomejs/biome@1 @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 prettier rollup stylelint@16 ts-node tsup tsx turbo typescript@6 vite@6 wrangler@3 yarn zx@8'
+    PKGS='@babel/cli @babel/core @biomejs/biome@1 @swc/cli @swc/core @types/node @yao-pkg/pkg@5 ava@6 esbuild eslint@10 knip@5 prettier rollup stylelint@16 ts-node tsup@8 tsx turbo typescript@6 vite@6 wrangler@3 yarn zx@8'
     BUILDABLE="$EXTENDED_BUILDABLE"
     ;;
   modern)
