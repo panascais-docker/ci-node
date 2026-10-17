@@ -88,6 +88,7 @@
 ```sh
 docker build \
     --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+    --build-arg NODE_VERSION=24.22.0 \
     --build-arg PNPM_VERSION=12 \
     --build-arg VCS_REF=`git rev-parse --short HEAD` \
     -t panascais/ci-node:24 \
@@ -99,6 +100,7 @@ docker build \
 ```fish
 docker build \
     --build-arg BUILD_DATE=(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+    --build-arg NODE_VERSION=24.22.0 \
     --build-arg PNPM_VERSION=12 \
     --build-arg VCS_REF=(git rev-parse --short HEAD) \
     -t panascais/ci-node:24 \
@@ -124,7 +126,7 @@ Alpine 3.24 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-
 
 ### pnpm
 
-Node patch tags and the pnpm major come from the base image repository: [`configuration/versions.json`](https://github.com/panascais-docker/node/blob/master/configuration/versions.json) and [`configuration/pnpm.json`](https://github.com/panascais-docker/node/blob/master/configuration/pnpm.json). `build.ts` fetches both and passes `--build-arg PNPM_VERSION=<upstream major>`. ci-node does not keep a local pnpm config copy, and it does not reinstall `pnpm@N` in the global package list — every supported base already ships that executable.
+Node patch tags and the pnpm major come from the base image repository: [`configuration/versions.json`](https://github.com/panascais-docker/node/blob/master/configuration/versions.json) and [`configuration/pnpm.json`](https://github.com/panascais-docker/node/blob/master/configuration/pnpm.json). `build.ts` fetches both and passes `--build-arg NODE_VERSION=<upstream tag>` (the base image tag in `FROM`) and `--build-arg PNPM_VERSION=<upstream major>`. Nothing is written back to the repository, so the matrix jobs never push to `master`. ci-node does not keep a local pnpm config copy, and it does not reinstall `pnpm@N` in the global package list — every supported base already ships that executable.
 
 **pnpm 10+ (Node 18+):** global binaries live under `$PNPM_HOME/bin`. Every Node 18+ image inherits `PNPM_HOME=/root/.local/share/pnpm`, `/root/.local/share/pnpm/bin` on `PATH`, and `enableGlobalVirtualStore: false` (`/root/.config/pnpm/config.yaml`) from the authoritative base image. pnpm 10 ignores `globalBinDir` in that yaml file and falls back to `PNPM_HOME`, which is not on `PATH` ([pnpm#11205](https://github.com/pnpm/pnpm/issues/11205)). `pnpm config set global-bin-dir /root/.local/share/pnpm/bin` writes the `rc` file those versions read, then install with `pnpm add -g`. Cache-mount the store at `/root/.local/share/pnpm/store`. Without `enableGlobalVirtualStore: false`, a store cache mount can break global CLIs at runtime (ae38d12).
 

@@ -40,31 +40,9 @@ const getImageTag = async () => {
     return tag;
 };
 
-const getDockerfilePath = () => {
-    return `./${distribution}/Dockerfile`;
-};
-
-const getDockerfile = async () => {
-    const dockerfile = await Bun.file(getDockerfilePath()).text();
-    return dockerfile;
-};
-
-const setDockerfile = async (dockerfile: string) => {
-    return Bun.write(getDockerfilePath(), dockerfile);
-};
-
 // business logic
 
-const [imageTag, pnpmVersion, dockerfile] = await Promise.all([getImageTag(), getPnpmVersion(), getDockerfile()]);
-
-const updated = dockerfile.replace(
-    /^FROM ghcr\.io\/panascais-docker\/node\/node:\S+/m,
-    `FROM ghcr.io/panascais-docker/node/node:${imageTag}`,
-);
-
-if (updated !== dockerfile) {
-    await setDockerfile(updated);
-}
+const [imageTag, pnpmVersion] = await Promise.all([getImageTag(), getPnpmVersion()]);
 
 const [major, min, pat] = imageTag.split('.');
 const minor = `${major}.${min}`;

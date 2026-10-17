@@ -1,3 +1,6 @@
+# check=skip=InvalidDefaultArgInFrom
+ARG NODE_VERSION
+
 FROM alpine:3.24 AS flyctl
 
 ARG BUILD_DATE
@@ -46,7 +49,7 @@ RUN set -eu \
   && /deno --version
 
 
-FROM ghcr.io/panascais-docker/node/node:18.20.8 AS image
+FROM ghcr.io/panascais-docker/node/node:${NODE_VERSION} AS image
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
