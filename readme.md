@@ -83,29 +83,24 @@
 
 ## Build
 
-**Example for bash and node version 24:**
+Every numeric directory is a line named after its node major version. `configuration/` pins the published [`panascais/node`](https://github.com/panascais-docker/node) image digest, node release and pnpm major per line, the `mirror.gcr.io` alpine digest, and the `latest` and `lts` aliases.
+
+**Smoke test, build and load node 24 for the local platform:**
 
 ```sh
-docker build \
-    --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-    --build-arg NODE_VERSION=24.22.0 \
-    --build-arg PNPM_VERSION=12 \
-    --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    -t panascais/ci-node:24 \
-    ./24
+go run ./scripts build 24
 ```
 
-**Example for fish and node version 24:**
+Locally the build starts from `ghcr.io/panascais-docker/node/node:<release>` in the local image store, so run `go run ./scripts build 24` in a checkout of [`panascais-docker/node`](https://github.com/panascais-docker/node) first to test both images together. `./scripts/build-all-parallel.sh [line...]` builds every line at once in either repository and logs each build to `$TMPDIR/<repository>-builds`.
 
-```fish
-docker build \
-    --build-arg BUILD_DATE=(date -u +"%Y-%m-%dT%H:%M:%SZ") \
-    --build-arg NODE_VERSION=24.22.0 \
-    --build-arg PNPM_VERSION=12 \
-    --build-arg VCS_REF=(git rev-parse --short HEAD) \
-    -t panascais/ci-node:24 \
-    ./24
+**Refresh the pins from the node repository (or a local checkout of it):**
+
+```sh
+go run ./scripts update
+go run ./scripts update --node ../node/configuration
 ```
+
+On GitHub Actions, the node repository starts the `update` workflow after every publish. `plan` compares each line's fingerprint with the annotation on the published image, `build` smoke tests and pushes the stale lines by digest per architecture and `publish` tags them as multi-platform images.
 
 ## pnpm and Docker cache mounts
 
@@ -126,7 +121,7 @@ Alpine 3.24 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-
 
 ### pnpm
 
-Node patch tags and the pnpm major come from the base image repository: [`configuration/versions.json`](https://github.com/panascais-docker/node/blob/master/configuration/versions.json) and [`configuration/pnpm.json`](https://github.com/panascais-docker/node/blob/master/configuration/pnpm.json). `build.ts` fetches both and passes `--build-arg NODE_VERSION=<upstream tag>` (the base image tag in `FROM`) and `--build-arg PNPM_VERSION=<upstream major>`. Nothing is written back to the repository, so the matrix jobs never push to `master`. ci-node does not keep a local pnpm config copy, and it does not reinstall `pnpm@N` in the global package list — every supported base already ships that executable.
+Node patch tags and the pnpm major come from the base image repository: [`configuration/versions.json`](https://github.com/panascais-docker/node/blob/master/configuration/versions.json) and [`configuration/pnpm.json`](https://github.com/panascais-docker/node/blob/master/configuration/pnpm.json). `go run ./scripts update` pins them in this repository together with the published image digest, and the build passes `--build-arg NODE_IMAGE=<image@digest>` (the base image in `FROM`) and `--build-arg PNPM_VERSION=<upstream major>`. ci-node does not keep a local pnpm config copy, and it does not reinstall `pnpm@N` in the global package list — every supported base already ships that executable.
 
 **pnpm 10+ (Node 18+):** global binaries live under `$PNPM_HOME/bin`. Every Node 18+ image inherits `PNPM_HOME=/root/.local/share/pnpm`, `/root/.local/share/pnpm/bin` on `PATH`, and `enableGlobalVirtualStore: false` (`/root/.config/pnpm/config.yaml`) from the authoritative base image. pnpm 10 ignores `globalBinDir` in that yaml file and falls back to `PNPM_HOME`, which is not on `PATH` ([pnpm#11205](https://github.com/pnpm/pnpm/issues/11205)). `pnpm config set global-bin-dir /root/.local/share/pnpm/bin` writes the `rc` file those versions read, then install with `pnpm add -g`. Cache-mount the store at `/root/.local/share/pnpm/store`. Without `enableGlobalVirtualStore: false`, a store cache mount can break global CLIs at runtime (ae38d12).
 

@@ -1,7 +1,8 @@
 # check=skip=InvalidDefaultArgInFrom
-ARG NODE_VERSION
+ARG ALPINE_IMAGE=mirror.gcr.io/library/alpine:3.24
+ARG NODE_IMAGE
 
-FROM alpine:3.24 AS flyctl
+FROM ${ALPINE_IMAGE} AS flyctl
 
 ARG BUILD_DATE
 ARG TARGETARCH
@@ -21,7 +22,7 @@ RUN set -eu \
   | tar -xz -C / flyctl
 
 
-FROM alpine:3.24 AS deno
+FROM ${ALPINE_IMAGE} AS deno
 
 ARG BUILD_DATE
 ARG TARGETARCH
@@ -49,7 +50,7 @@ RUN set -eu \
   && /deno --version
 
 
-FROM ghcr.io/panascais-docker/node/node:${NODE_VERSION} AS image
+FROM ${NODE_IMAGE} AS image
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly

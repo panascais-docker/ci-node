@@ -1,0 +1,175 @@
+name: update
+on:
+    workflow_dispatch:
+    schedule:
+        - cron: '0 */6 * * *'
+
+concurrency:
+    group: ci-node
+    cancel-in-progress: false
+
+jobs:
+    update:
+        name: update
+        runs-on: ubuntu-latest
+        steps:
+            - name: pull repository
+              id: repository
+              uses: actions/checkout@v6
+
+            - name: install go
+              id: go
+              uses: actions/setup-go@v6
+              with:
+                  go-version-file: go.mod
+                  cache: true
+
+            - name: run update script
+              id: update
+              run: |
+                  go run ./scripts update
+
+            - name: commit the changes
+              id: commit
+              run: |
+                  git config user.name 'github-actions[bot]'
+                  git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+                  git add configuration/
+
+                  if git diff --cached --quiet; then
+                    echo "No changes in configuration files, skipping…"
+                  else
+                    git commit -m "Update configuration files [skip ci]"
+                    git push origin master
+                  fi
+
+    plan:
+        name: plan
+        needs: [update]
+        runs-on: ubuntu-latest
+        outputs:
+            lines: ${{ steps.plan.outputs.lines }}
+        steps:
+            - name: pull repository
+              uses: actions/checkout@v6
+              id: repository
+
+            - name: update repository
+              id: update-repository
+              run: |
+                  git pull origin master
+
+            - name: install go
+              id: go
+              uses: actions/setup-go@v6
+              with:
+                  go-version-file: go.mod
+                  cache: true
+
+            - name: plan the stale lines
+              id: plan
+              run: |
+                  go run ./scripts plan >> $GITHUB_OUTPUT
+              env:
+                  CONTAINER_REGISTRY_TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+                  CONTAINER_REGISTRY_USERNAME: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+
+    build:
+        name: ${{ matrix.line }} (${{ matrix.architecture }})
+        needs: [plan]
+        if: needs.plan.outputs.lines != '[]'
+        runs-on: ${{ matrix.architecture == 'arm64' && 'blacksmith-4vcpu-ubuntu-2404-arm' || 'blacksmith-2vcpu-ubuntu-2404' }}
+        timeout-minutes: 360
+        strategy:
+            fail-fast: false
+            max-parallel: 32
+            matrix:
+                line: ${{ fromJSON(needs.plan.outputs.lines) }}
+                architecture: [amd64, arm64]
+        steps:
+            - name: pull repository
+              uses: actions/checkout@v6
+              id: repository
+
+            - name: setup docker builder
+              uses: docker/setup-buildx-action@v4
+              with:
+                  driver-opts: image=mirror.gcr.io/moby/buildkit:buildx-stable-1
+
+            - name: update repository
+              id: update-repository
+              run: |
+                  git pull origin master
+
+            - name: install go
+              id: go
+              uses: actions/setup-go@v6
+              with:
+                  go-version-file: go.mod
+                  cache: true
+
+            - name: smoke test, build and push the docker container image by digest
+              id: build
+              run: |
+                  go run ./scripts build ${{ matrix.line }}
+              env:
+                  CONTAINER_REGISTRY_TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+                  CONTAINER_REGISTRY_USERNAME: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+                  DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+                  DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+                  QUAY_REGISTRY_TOKEN: ${{ secrets.QUAY_REGISTRY_TOKEN }}
+                  QUAY_REGISTRY_USERNAME: ${{ secrets.QUAY_REGISTRY_USERNAME }}
+
+            - name: upload the pushed digests
+              uses: actions/upload-artifact@v7
+              with:
+                  name: digests-${{ matrix.line }}-${{ matrix.architecture }}
+                  path: digests/
+                  if-no-files-found: error
+
+    publish:
+        name: publish
+        needs: [plan, build]
+        if: ${{ !failure() && !cancelled() && needs.plan.outputs.lines != '[]' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: pull repository
+              uses: actions/checkout@v6
+              id: repository
+
+            - name: setup docker builder
+              uses: docker/setup-buildx-action@v4
+              with:
+                  driver-opts: image=mirror.gcr.io/moby/buildkit:buildx-stable-1
+
+            - name: update repository
+              id: update-repository
+              run: |
+                  git pull origin master
+
+            - name: install go
+              id: go
+              uses: actions/setup-go@v6
+              with:
+                  go-version-file: go.mod
+                  cache: true
+
+            - name: download the pushed digests
+              uses: actions/download-artifact@v8
+              with:
+                  pattern: digests-*
+                  path: digests/
+                  merge-multiple: true
+
+            - name: tag the multi-platform docker container images
+              id: publish
+              run: |
+                  go run ./scripts publish
+              env:
+                  CONTAINER_REGISTRY_TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+                  CONTAINER_REGISTRY_USERNAME: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+                  DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+                  DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+                  QUAY_REGISTRY_TOKEN: ${{ secrets.QUAY_REGISTRY_TOKEN }}
+                  QUAY_REGISTRY_USERNAME: ${{ secrets.QUAY_REGISTRY_USERNAME }}
