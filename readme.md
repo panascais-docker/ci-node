@@ -83,7 +83,7 @@
 
 ## Build
 
-Every numeric directory is a line named after its node major version. `configuration/` pins the published [`panascais/node`](https://github.com/panascais-docker/node) image digest, node release and pnpm major per line, the `mirror.gcr.io` alpine digest, and the `latest` and `lts` aliases.
+Every numeric directory is a line named after its node major version. `configuration/` pins the published [`panascais/node`](https://github.com/panascais-docker/node) image digest, node release and pnpm major per line, the Docker Hub alpine digest, and the `latest` and `lts` aliases.
 
 **Smoke test, build and load node 24 for the local platform:**
 
@@ -101,6 +101,8 @@ go run ./scripts update --node ../node/configuration
 ```
 
 On GitHub Actions, the node repository starts the `update` workflow after every publish. `plan` compares each line's fingerprint with the annotation on the published image, `build` smoke tests and pushes the stale lines by digest per architecture and `publish` tags them as multi-platform images.
+
+Every job pulls Docker Hub images, BuildKit included, through `mirror.gcr.io` to stay clear of Docker Hub rate limits, and falls back to Docker Hub only when the mirror has not cached an image yet.
 
 ## pnpm and Docker cache mounts
 

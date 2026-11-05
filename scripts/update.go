@@ -92,7 +92,7 @@ func update(ctx context.Context, node string) error {
 	for image, pinned := range before.builders {
 		name, tag, _ := strings.Cut(image, ":")
 
-		digest, err := fetchDigest(ctx, mirror+name, tag, pinned)
+		digest, err := fetchDigest(ctx, library+name, tag, pinned)
 		if err != nil {
 			return err
 		}

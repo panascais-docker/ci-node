@@ -20,7 +20,7 @@ const (
 	digestsFile  = "configuration/digests.json"
 	pnpmFile     = "configuration/pnpm.json"
 	versionsFile = "configuration/versions.json"
-	mirror       = "mirror.gcr.io/library/"
+	library      = "docker.io/library/"
 	repository   = "ghcr.io/panascais-docker/node/node"
 )
 
