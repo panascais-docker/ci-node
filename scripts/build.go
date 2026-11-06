@@ -29,7 +29,7 @@ type registry struct {
 
 var (
 	registries = []registry{
-		{host: "ghcr.io", image: "ghcr.io/panascais-docker/node/ci-node", secrets: "CONTAINER"},
+		{host: "ghcr.io", image: "ghcr.io/panascais-docker/ci-node/ci-node", secrets: "CONTAINER"},
 		{image: "panascais/ci-node", secrets: "DOCKER"},
 		{host: "quay.io", image: "quay.io/panascais/ci-node", secrets: "QUAY"},
 	}
