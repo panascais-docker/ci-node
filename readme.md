@@ -10,15 +10,15 @@
 
 | **Tag:** | **Command:**                        | **Node Version:** | **Supported:** | **Labels:**                                                                                                   |
 | -------- | ----------------------------------- | ----------------- | -------------- | ------------------------------------------------------------------------------------------------------------- |
-| `lts`    | `docker pull panascais/ci-node:lts` | `v24.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/lts.svg?style=flat-square)    |
+| `lts`    | `docker pull panascais/ci-node:lts` | `v26.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/lts.svg?style=flat-square)    |
 | `latest` | `docker pull panascais/ci-node`     | `v26.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/latest.svg?style=flat-square) |
 | `26`     | `docker pull panascais/ci-node:26`  | `v26.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/26.svg?style=flat-square)     |
-| `25`     | `docker pull panascais/ci-node:25`  | `v25.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/25.svg?style=flat-square)     |
+| `25`     | `docker pull panascais/ci-node:25`  | `v25.x.x`         | ×              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/25.svg?style=flat-square)     |
 | `24`     | `docker pull panascais/ci-node:24`  | `v24.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/24.svg?style=flat-square)     |
-| `23`     | `docker pull panascais/ci-node:23`  | `v23.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/23.svg?style=flat-square)     |
+| `23`     | `docker pull panascais/ci-node:23`  | `v23.x.x`         | ×              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/23.svg?style=flat-square)     |
 | `22`     | `docker pull panascais/ci-node:22`  | `v22.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/22.svg?style=flat-square)     |
-| `21`     | `docker pull panascais/ci-node:21`  | `v21.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/21.svg?style=flat-square)     |
-| `20`     | `docker pull panascais/ci-node:20`  | `v20.x.x`         | ✓              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/20.svg?style=flat-square)     |
+| `21`     | `docker pull panascais/ci-node:21`  | `v21.x.x`         | ×              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/21.svg?style=flat-square)     |
+| `20`     | `docker pull panascais/ci-node:20`  | `v20.x.x`         | ×              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/20.svg?style=flat-square)     |
 | `19`     | `docker pull panascais/ci-node:19`  | `v19.x.x`         | ×              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/19.svg?style=flat-square)     |
 | `18`     | `docker pull panascais/ci-node:18`  | `v18.x.x`         | ×              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/18.svg?style=flat-square)     |
 | `17`     | `docker pull panascais/ci-node:17`  | `v17.x.x`         | ×              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/17.svg?style=flat-square)     |
@@ -212,4 +212,4 @@ Interested in contributing to **CI-Node**? Contributions are welcome, and are ac
 
 ## License
 
-Code licensed under [MIT](license.md), documentation under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+Code licensed under [MIT](license), documentation under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
