@@ -31,15 +31,15 @@
 
 ## Variants
 
-Every line is built on Alpine and on Debian (`debian:trixie-slim`), each from the matching [`panascais/node`](https://github.com/panascais-docker/node) variant. The Alpine images own the unsuffixed tags, as before, and also carry an `-alpine` suffix; the Debian images only carry a `-debian` suffix. `latest` becomes the bare variant name:
+Every line is built on Alpine and on Debian (`debian:trixie-slim`), each from the matching [`panascais/node`](https://github.com/panascais-docker/node) variant. The Alpine images own the unsuffixed tags, as before, and also carry an `-alpine` suffix; the Debian images only carry a `-debian` suffix. `latest` becomes the bare variant name and `latest-<variant>`:
 
-| Alpine                      | Debian           |
-| --------------------------- | ---------------- |
-| `26`, `26-alpine`           | `26-debian`      |
-| `26.13`, `26.13-alpine`     | `26.13-debian`   |
-| `26.13.1`, `26.13.1-alpine` | `26.13.1-debian` |
-| `latest`, `alpine`          | `debian`         |
-| `lts`, `lts-alpine`         | `lts-debian`     |
+| Alpine                              | Debian                    |
+| ----------------------------------- | ------------------------- |
+| `26`, `26-alpine`                   | `26-debian`               |
+| `26.13`, `26.13-alpine`             | `26.13-debian`            |
+| `26.13.1`, `26.13.1-alpine`         | `26.13.1-debian`          |
+| `latest`, `alpine`, `latest-alpine` | `debian`, `latest-debian` |
+| `lts`, `lts-alpine`                 | `lts-debian`              |
 
 ## Included CLIs
 
