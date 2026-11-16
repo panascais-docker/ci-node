@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"maps"
 	"net/http"
 	"path/filepath"
 	"slices"
@@ -27,7 +28,7 @@ func updateCommand() *cobra.Command {
 
 	command := &cobra.Command{
 		Use:   "update",
-		Short: "Pin the published node image digest, version and pnpm major per line from the node repository",
+		Short: "Pin the published node image digest per variant and the version and pnpm major per line from the node repository",
 		Args:  cobra.NoArgs,
 		RunE:  func(command *cobra.Command, _ []string) error { return update(command.Context(), node) },
 	}
@@ -59,28 +60,28 @@ func update(ctx context.Context, node string) error {
 
 	after := pins{aliases: configuration{}, builders: configuration{}, digests: configuration{}, pnpm: configuration{}, versions: configuration{}}
 	for _, line := range lines {
-		version, digest, pnpm := before.versions[line], before.digests[line], before.pnpm[line]
-		if candidate := upstream["versions.json"][line]; candidate != "" {
-			pinned := ""
-			if candidate == version {
-				pinned = digest
-			}
+		version, digests, pnpm := before.versions[line], configuration{}, before.pnpm[line]
+		for _, variant := range variants {
+			digests[line+"-"+variant.name] = before.digests[line+"-"+variant.name]
+		}
 
-			resolved, err := fetchDigest(ctx, repository, candidate, pinned)
+		if candidate := upstream["versions.json"][line]; candidate != "" {
+			resolved, err := fetchVariantDigests(ctx, line, candidate, version, before.digests)
 			if err != nil {
 				return err
 			}
 
-			if resolved != "" {
-				version, digest, pnpm = candidate, resolved, cmp.Or(upstream["pnpm.json"][line], pnpm)
+			if resolved != nil {
+				version, digests, pnpm = candidate, resolved, cmp.Or(upstream["pnpm.json"][line], pnpm)
 			}
 		}
 
-		if version == "" || digest == "" || pnpm == "" {
+		if version == "" || pnpm == "" || slices.Contains(slices.Collect(maps.Values(digests)), "") {
 			return fmt.Errorf("no published node image found for line %s", line)
 		}
 
-		after.versions[line], after.digests[line], after.pnpm[line] = version, digest, pnpm
+		after.versions[line], after.pnpm[line] = version, pnpm
+		maps.Copy(after.digests, digests)
 	}
 
 	for alias, line := range upstream["aliases.json"] {
@@ -134,6 +135,26 @@ func readUpstream(ctx context.Context, node, file string) (configuration, error)
 	}
 
 	return value, nil
+}
+
+// fetchVariantDigests resolves a release's image digest for every variant, or nil while one is unpublished.
+func fetchVariantDigests(ctx context.Context, line, candidate, version string, digests configuration) (configuration, error) {
+	resolved := configuration{}
+	for _, variant := range variants {
+		key, pinned := line+"-"+variant.name, ""
+		if candidate == version {
+			pinned = digests[key]
+		}
+
+		digest, err := fetchDigest(ctx, repository, candidate+"-"+variant.upstream, pinned)
+		if err != nil || digest == "" {
+			return nil, err
+		}
+
+		resolved[key] = digest
+	}
+
+	return resolved, nil
 }
 
 func fetchDigest(ctx context.Context, image, tag, pinned string) (string, error) {

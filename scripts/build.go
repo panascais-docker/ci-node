@@ -38,6 +38,7 @@ var (
 
 type build struct {
 	line        string
+	variant     variant
 	version     string
 	pnpm        string
 	image       string
@@ -50,8 +51,8 @@ func buildCommand() *cobra.Command {
 	var platform string
 
 	command := &cobra.Command{
-		Use:   "build <line>",
-		Short: "Smoke test and build a line, pushing by digest on GitHub Actions and loading onto the locally built node image otherwise",
+		Use:   "build <line>[-<variant>]",
+		Short: "Smoke test and build a line's variant (alpine by default), pushing by digest on GitHub Actions and loading onto the locally built node image otherwise",
 		Args:  cobra.ExactArgs(1),
 		RunE:  func(_ *cobra.Command, arguments []string) error { return buildLine(arguments[0], platform) },
 	}
@@ -60,13 +61,18 @@ func buildCommand() *cobra.Command {
 	return command
 }
 
-func buildLine(line, platform string) error {
+func buildLine(target, platform string) error {
+	line, variant, err := parseTarget(target)
+	if err != nil {
+		return err
+	}
+
 	pins, err := readPins()
 	if err != nil {
 		return err
 	}
 
-	build, err := planBuild(line, pins)
+	build, err := planBuild(line, variant, pins)
 	if err != nil {
 		return err
 	}
@@ -78,32 +84,50 @@ func buildLine(line, platform string) error {
 	return buildLocally(build, platform)
 }
 
-func planBuild(line string, pins pins) (build, error) {
-	version, digest, pnpm := pins.versions[line], pins.digests[line], pins.pnpm[line]
+// parseTarget splits a <line>[-<variant>] target, defaulting to the first variant.
+func parseTarget(target string) (string, variant, error) {
+	line, name, found := strings.Cut(target, "-")
+	if !found {
+		return line, variants[0], nil
+	}
+
+	for _, variant := range variants {
+		if variant.name == name {
+			return line, variant, nil
+		}
+	}
+
+	return "", variant{}, fmt.Errorf("unknown variant %q in %s", name, target)
+}
+
+func planBuild(line string, variant variant, pins pins) (build, error) {
+	key := line + "-" + variant.name
+	version, digest, pnpm := pins.versions[line], pins.digests[key], pins.pnpm[line]
 	if !regexp.MustCompile(`^` + regexp.QuoteMeta(line) + `\.\d+\.\d+$`).MatchString(version) {
 		return build{}, fmt.Errorf("invalid node version %q for line %s", version, line)
 	}
 
 	if !digestPattern.MatchString(digest) {
-		return build{}, fmt.Errorf("invalid node digest %q for line %s", digest, line)
+		return build{}, fmt.Errorf("invalid node digest %q for %s", digest, key)
 	}
 
 	if pnpm == "" {
 		return build{}, fmt.Errorf("no pnpm version for line %s", line)
 	}
 
-	builders, err := builderImages(pins.builders)
+	builders, err := builderImages(pins.builders, variant)
 	if err != nil {
 		return build{}, err
 	}
 
 	planned := build{
 		line:     line,
+		variant:  variant,
 		version:  version,
 		pnpm:     pnpm,
-		image:    repository + ":" + version + "@" + digest,
+		image:    repository + ":" + version + "-" + variant.upstream + "@" + digest,
 		builders: builders,
-		names:    resolveNames(line, version, pins.aliases),
+		names:    resolveNames(line, version, variant.name, pins.aliases),
 	}
 
 	planned.fingerprint, err = lineFingerprint(planned)
@@ -111,20 +135,36 @@ func planBuild(line string, pins pins) (build, error) {
 	return planned, err
 }
 
-func resolveNames(line, version string, aliases configuration) []string {
+// resolveNames lists the tags of a line's variant, canonical tag first. Every variant gets suffixed tags
+// ("latest" becomes the bare variant name) and the default variant also owns the unsuffixed ones.
+func resolveNames(line, version, variant string, aliases configuration) []string {
 	minor, _, _ := strings.Cut(strings.TrimPrefix(version, line+"."), ".")
 
-	names := []string{line, line + "." + minor, version}
+	bases := []string{line, line + "." + minor, version}
 	for _, alias := range sortedKeys(aliases) {
 		if aliases[alias] == line {
-			names = append(names, alias)
+			bases = append(bases, alias)
+		}
+	}
+
+	var names []string
+	if variant == variants[0].name {
+		names = append(names, bases...)
+	}
+
+	for _, base := range bases {
+		if base == "latest" {
+			names = append(names, variant)
+		} else {
+			names = append(names, base+"-"+variant)
 		}
 	}
 
 	return names
 }
 
-func builderImages(builders configuration) (map[string]string, error) {
+// builderImages pins the base images of a variant as <NAME>_IMAGE build arguments.
+func builderImages(builders configuration, variant variant) (map[string]string, error) {
 	images := map[string]string{}
 	for image, digest := range builders {
 		name, _, found := strings.Cut(image, ":")
@@ -132,7 +172,9 @@ func builderImages(builders configuration) (map[string]string, error) {
 			return nil, fmt.Errorf("invalid builder %s@%s", image, digest)
 		}
 
-		images[strings.ToUpper(name)+"_IMAGE"] = library + image + "@" + digest
+		if name == variant.name {
+			images[strings.ToUpper(name)+"_IMAGE"] = library + image + "@" + digest
+		}
 	}
 
 	return images, nil
@@ -145,6 +187,15 @@ func (build build) tags(registry registry) []string {
 	}
 
 	return tags
+}
+
+func (build build) key() string {
+	return build.line + "-" + build.variant.name
+}
+
+// source selects the variant's Dockerfile within the line's build context.
+func (build build) source() []string {
+	return []string{"--file", filepath.Join(build.line, "Dockerfile."+build.variant.name), build.line}
 }
 
 func (build build) arguments(image, revision string) []string {
@@ -172,7 +223,7 @@ func push(build build, platform string) error {
 	}
 
 	arguments := build.arguments(build.image, revision)
-	if err := command("docker", slices.Concat([]string{"buildx", "build", "--platform", platform, "--progress=plain", "--target", "smoke"}, arguments, []string{build.line})...).Run(); err != nil {
+	if err := command("docker", slices.Concat([]string{"buildx", "build", "--platform", platform, "--progress=plain", "--target", "smoke"}, arguments, build.source())...).Run(); err != nil {
 		return err
 	}
 
@@ -191,7 +242,7 @@ func push(build build, platform string) error {
 			[]string{"buildx", "build", "--platform", platform, "--progress=plain", "--metadata-file", metadataFile},
 			[]string{"--output", `type=image,"name=` + strings.Join(images, ",") + `",push-by-digest=true,name-canonical=true,push=true`},
 			arguments,
-			[]string{build.line},
+			build.source(),
 		)...)
 	}); err != nil {
 		return err
@@ -208,7 +259,7 @@ func push(build build, platform string) error {
 
 	_, architecture, _ := strings.Cut(platform, "/")
 
-	return writeConfiguration(filepath.Join(digestsDirectory, build.line+"-"+architecture+".json"), configuration{build.line: digest})
+	return writeConfiguration(filepath.Join(digestsDirectory, build.key()+"-"+architecture+".json"), configuration{build.key(): digest})
 }
 
 func readPushedDigest(metadataFile string) (string, error) {
@@ -233,8 +284,8 @@ func buildLocally(build build, platform string) error {
 		return err
 	}
 
-	arguments := build.arguments(repository+":"+build.version, "local")
-	if err := command("docker", slices.Concat([]string{"buildx", "build", "--builder", builder, "--platform", platform, "--progress=plain", "--target", "smoke"}, arguments, []string{build.line})...).Run(); err != nil {
+	arguments := build.arguments(repository+":"+build.version+"-"+build.variant.upstream, "local")
+	if err := command("docker", slices.Concat([]string{"buildx", "build", "--builder", builder, "--platform", platform, "--progress=plain", "--target", "smoke"}, arguments, build.source())...).Run(); err != nil {
 		return err
 	}
 
@@ -245,11 +296,11 @@ func buildLocally(build build, platform string) error {
 		}
 	}
 
-	if err := command("docker", slices.Concat([]string{"buildx", "build", "--builder", builder, "--platform", platform, "--progress=plain", "--load"}, tags, arguments, []string{build.line})...).Run(); err != nil {
+	if err := command("docker", slices.Concat([]string{"buildx", "build", "--builder", builder, "--platform", platform, "--progress=plain", "--load"}, tags, arguments, build.source())...).Run(); err != nil {
 		return err
 	}
 
-	image := registries[0].image + ":" + build.version
+	image := registries[0].image + ":" + build.version + "-" + build.variant.name
 
 	version, err := output("docker", "run", "--rm", image, "node", "--version")
 	if err != nil {

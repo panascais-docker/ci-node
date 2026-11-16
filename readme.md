@@ -29,6 +29,18 @@
 | `10`     | `docker pull panascais/ci-node:10`  | `v10.x.x`         | ×              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/10.svg?style=flat-square)     |
 | `8`      | `docker pull panascais/ci-node:8`   | `v8.x.x`          | ×              | ![Docker Image Size](https://img.shields.io/docker/image-size/panascais/ci-node/8.svg?style=flat-square)      |
 
+## Variants
+
+Every line is built on Alpine and on Debian (`debian:trixie-slim`), each from the matching [`panascais/node`](https://github.com/panascais-docker/node) variant. The Alpine images own the unsuffixed tags, as before, and also carry an `-alpine` suffix; the Debian images only carry a `-debian` suffix. `latest` becomes the bare variant name:
+
+| Alpine                      | Debian           |
+| --------------------------- | ---------------- |
+| `26`, `26-alpine`           | `26-debian`      |
+| `26.13`, `26.13-alpine`     | `26.13-debian`   |
+| `26.13.1`, `26.13.1-alpine` | `26.13.1-debian` |
+| `latest`, `alpine`          | `debian`         |
+| `lts`, `lts-alpine`         | `lts-debian`     |
+
 ## Included CLIs
 
 | **Name:**    | **GitHub:**                                                                | **npm:**                                                                         |
@@ -60,38 +72,39 @@
 
 ## Included Packages
 
-| **Name:**           | **Registry:**                                                                                                             |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `bash`              | [pkgs.alpinelinux.org/package/bash](https://pkgs.alpinelinux.org/package/edge/main/x86_64/bash)                           |
-| `g++`               | [pkgs.alpinelinux.org/package/g++](https://pkgs.alpinelinux.org/package/edge/main/x86_64/g++)                             |
-| `gcc`               | [pkgs.alpinelinux.org/package/gcc](https://pkgs.alpinelinux.org/package/edge/main/x86_64/gcc)                             |
-| `git`               | [pkgs.alpinelinux.org/package/git](https://pkgs.alpinelinux.org/package/edge/main/x86_64/git)                             |
-| `git-lfs`           | [pkgs.alpinelinux.org/package/git-lfs](https://pkgs.alpinelinux.org/package/edge/community/x86_64/git-lfs)                |
-| `openssl`           | [pkgs.alpinelinux.org/package/openssl](https://pkgs.alpinelinux.org/package/edge/main/x86_64/openssl)                     |
-| `ffmpeg`            | [pkgs.alpinelinux.org/package/ffmpeg](https://pkgs.alpinelinux.org/package/edge/community/x86_64/ffmpeg)                  |
-| `gzip`              | [pkgs.alpinelinux.org/package/gzip](https://pkgs.alpinelinux.org/package/edge/main/x86_64/gzip)                           |
-| `make`              | [pkgs.alpinelinux.org/package/make](https://pkgs.alpinelinux.org/package/edge/main/x86_64/make)                           |
-| `python3`           | [pkgs.alpinelinux.org/package/python3](https://pkgs.alpinelinux.org/package/edge/main/x86_64/python3)                     |
-| `jo`                | [pkgs.alpinelinux.org/package/jo](https://pkgs.alpinelinux.org/package/edge/community/x86_64/jo)                          |
-| `jq`                | [pkgs.alpinelinux.org/package/jq](https://pkgs.alpinelinux.org/package/edge/main/x86_64/jq)                               |
-| `autoconf`          | [pkgs.alpinelinux.org/package/autoconf](https://pkgs.alpinelinux.org/package/edge/main/x86_64/autoconf)                   |
-| `automake`          | [pkgs.alpinelinux.org/package/automake](https://pkgs.alpinelinux.org/package/edge/main/x86_64/automake)                   |
-| `curl-dev`          | [pkgs.alpinelinux.org/package/curl-dev](https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl-dev)                   |
-| `curl`              | [pkgs.alpinelinux.org/package/curl](https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl)                           |
-| `vips`              | [pkgs.alpinelinux.org/package/vips](https://pkgs.alpinelinux.org/package/edge/testing/x86_64/vips)                        |
-| `libjpeg-turbo-dev` | [pkgs.alpinelinux.org/package/libjpeg-turbo-dev](https://pkgs.alpinelinux.org/package/edge/main/x86_64/libjpeg-turbo-dev) |
+| **Alpine:**                                                                                    | **Debian:**                                                                       |
+| ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| [`bash`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/bash)                           | [`bash`](https://packages.debian.org/trixie/bash)                                 |
+| [`g++`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/g++)                             | [`g++`](https://packages.debian.org/trixie/g++)                                   |
+| [`gcc`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/gcc)                             | [`gcc`](https://packages.debian.org/trixie/gcc)                                   |
+| [`git`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/git)                             | [`git`](https://packages.debian.org/trixie/git)                                   |
+| [`git-lfs`](https://pkgs.alpinelinux.org/package/edge/community/x86_64/git-lfs)                | [`git-lfs`](https://packages.debian.org/trixie/git-lfs)                           |
+| [`openssl`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/openssl)                     | [`openssl`](https://packages.debian.org/trixie/openssl)                           |
+| [`ffmpeg`](https://pkgs.alpinelinux.org/package/edge/community/x86_64/ffmpeg)                  | [`ffmpeg`](https://packages.debian.org/trixie/ffmpeg)                             |
+| [`gzip`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/gzip)                           | [`gzip`](https://packages.debian.org/trixie/gzip)                                 |
+| [`make`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/make)                           | [`make`](https://packages.debian.org/trixie/make)                                 |
+| [`python3`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/python3)                     | [`python3`](https://packages.debian.org/trixie/python3)                           |
+| [`jo`](https://pkgs.alpinelinux.org/package/edge/community/x86_64/jo)                          | [`jo`](https://packages.debian.org/trixie/jo)                                     |
+| [`jq`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/jq)                               | [`jq`](https://packages.debian.org/trixie/jq)                                     |
+| [`autoconf`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/autoconf)                   | [`autoconf`](https://packages.debian.org/trixie/autoconf)                         |
+| [`automake`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/automake)                   | [`automake`](https://packages.debian.org/trixie/automake)                         |
+| [`curl-dev`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl-dev)                   | [`libcurl4-openssl-dev`](https://packages.debian.org/trixie/libcurl4-openssl-dev) |
+| [`curl`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/curl)                           | [`curl`](https://packages.debian.org/trixie/curl)                                 |
+| [`vips`](https://pkgs.alpinelinux.org/package/edge/testing/x86_64/vips)                        | [`libvips42t64`](https://packages.debian.org/trixie/libvips42t64)                 |
+| [`libjpeg-turbo-dev`](https://pkgs.alpinelinux.org/package/edge/main/x86_64/libjpeg-turbo-dev) | [`libjpeg62-turbo-dev`](https://packages.debian.org/trixie/libjpeg62-turbo-dev)   |
 
 ## Build
 
-Every numeric directory is a line named after its node major version. `configuration/` pins the published [`panascais/node`](https://github.com/panascais-docker/node) image digest, node release and pnpm major per line, the Docker Hub alpine digest, and the `latest` and `lts` aliases.
+Every numeric directory is a line named after its node major version, with a `Dockerfile.alpine` and a `Dockerfile.debian` sharing the line's build context. A build target is `<line>-<variant>`. `configuration/` pins the node release and pnpm major per line, the published [`panascais/node`](https://github.com/panascais-docker/node) `<release>-debian` and `<release>-alpine` digests per target, the Debian and Alpine base images, and the `latest` and `lts` aliases.
 
 **Smoke test, build and load node 24 for the local platform:**
 
 ```sh
 go run ./scripts build 24
+go run ./scripts build 24-debian
 ```
 
-Locally the build starts from `ghcr.io/panascais-docker/node/node:<release>` in the local image store, so run `go run ./scripts build 24` in a checkout of [`panascais-docker/node`](https://github.com/panascais-docker/node) first to test both images together. `./scripts/build-all-parallel.sh [line...]` builds every line at once in either repository and logs each build to `$TMPDIR/<repository>-builds`.
+A bare line builds the Alpine variant. Locally the build starts from `ghcr.io/panascais-docker/node/node:<release>-<variant>` in the local image store, so run the same `go run ./scripts build` in a checkout of [`panascais-docker/node`](https://github.com/panascais-docker/node) first to test both images together. `./scripts/build-all-parallel.sh [target...]` builds every target at once in either repository and logs each build to `$TMPDIR/<repository>-builds`.
 
 **Refresh the pins from the node repository (or a local checkout of it):**
 
@@ -100,13 +113,29 @@ go run ./scripts update
 go run ./scripts update --node ../node/configuration
 ```
 
-On GitHub Actions, the node repository starts the `update` workflow after every publish. `plan` compares each line's fingerprint with the annotation on the published image, `build` smoke tests and pushes the stale lines by digest per architecture and `publish` tags them as multi-platform images.
+On GitHub Actions, the node repository starts the `update` workflow after every publish. `plan` compares each target's fingerprint with the annotation on the published image, `build` smoke tests and pushes the stale targets by digest per architecture and `publish` tags them as multi-platform images.
 
 Every job pulls Docker Hub images, BuildKit included, through `mirror.gcr.io` to stay clear of Docker Hub rate limits, and falls back to Docker Hub only when the mirror has not cached an image yet.
 
 ## pnpm and Docker cache mounts
 
-BuildKit cache mounts speed up rebuilds by reusing downloaded packages between builds. Both apk and pnpm use them in this image.
+BuildKit cache mounts speed up rebuilds by reusing downloaded packages between builds. apt (Debian), apk (Alpine) and pnpm use them in this image.
+
+### apt
+
+The apt install layers mount `/var/cache/apt` and `/var/lib/apt/lists` under `ci-node-apt-*-${TARGETARCH}` IDs. The image stage moves Debian's `docker-clean` apt hook aside only for its install, so images built on top keep the stock apt behavior. The `flyctl` and `deno` download stages share one Debian `downloader` stage; deno ships glibc builds, so on Debian it runs as is.
+
+```dockerfile
+RUN --mount=type=cache,id=ci-node-apt-cache-${TARGETARCH},sharing=locked,target=/var/cache/apt \
+  --mount=type=cache,id=ci-node-apt-lists-${TARGETARCH},sharing=locked,target=/var/lib/apt/lists \
+  mv /etc/apt/apt.conf.d/docker-clean /etc/apt/docker-clean \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends \
+  ...
+  && mv /etc/apt/docker-clean /etc/apt/apt.conf.d/docker-clean
+```
+
+Alpine's `gcompat`, `libc6-compat`, `musl*` and `linux-headers` have no Debian counterpart to install (`build-essential` brings the kernel headers), and trixie does not package `simdutf`.
 
 ### apk
 
@@ -123,7 +152,7 @@ Alpine 3.24 ships **apk-tools 3.x**, where `--update` / `-U` means `--cache-max-
 
 ### pnpm
 
-Node patch tags and the pnpm major come from the base image repository: [`configuration/versions.json`](https://github.com/panascais-docker/node/blob/master/configuration/versions.json) and [`configuration/pnpm.json`](https://github.com/panascais-docker/node/blob/master/configuration/pnpm.json). `go run ./scripts update` pins them in this repository together with the published image digest, and the build passes `--build-arg NODE_IMAGE=<image@digest>` (the base image in `FROM`) and `--build-arg PNPM_VERSION=<upstream major>`. ci-node does not keep a local pnpm config copy, and it does not reinstall `pnpm@N` in the global package list — every supported base already ships that executable.
+Node patch tags and the pnpm major come from the base image repository: [`configuration/versions.json`](https://github.com/panascais-docker/node/blob/master/configuration/versions.json) and [`configuration/pnpm.json`](https://github.com/panascais-docker/node/blob/master/configuration/pnpm.json). `go run ./scripts update` pins them in this repository together with the published `-debian` and `-alpine` image digests once both are published, and the build passes `--build-arg NODE_IMAGE=<image@digest>` (the base image in `FROM`) and `--build-arg PNPM_VERSION=<upstream major>`. ci-node does not keep a local pnpm config copy, and it does not reinstall `pnpm@N` in the global package list — every supported base already ships that executable.
 
 **pnpm 10+ (Node 18+):** global binaries live under `$PNPM_HOME/bin`. Every Node 18+ image inherits `PNPM_HOME=/root/.local/share/pnpm`, `/root/.local/share/pnpm/bin` on `PATH`, and `enableGlobalVirtualStore: false` (`/root/.config/pnpm/config.yaml`) from the authoritative base image. pnpm 10 ignores `globalBinDir` in that yaml file and falls back to `PNPM_HOME`, which is not on `PATH` ([pnpm#11205](https://github.com/pnpm/pnpm/issues/11205)). `pnpm config set global-bin-dir /root/.local/share/pnpm/bin` writes the `rc` file those versions read, then install with `pnpm add -g`. Cache-mount the store at `/root/.local/share/pnpm/store`. Without `enableGlobalVirtualStore: false`, a store cache mount can break global CLIs at runtime (ae38d12).
 
