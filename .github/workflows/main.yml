@@ -148,3 +148,18 @@ jobs:
                   DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
                   QUAY_REGISTRY_TOKEN: ${{ secrets.QUAY_REGISTRY_TOKEN }}
                   QUAY_REGISTRY_USERNAME: ${{ secrets.QUAY_REGISTRY_USERNAME }}
+
+    trigger:
+        name: trigger
+        needs: [publish]
+        if: ${{ needs.publish.result == 'success' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: start the ci-node-internal pipeline on the new images
+              id: trigger
+              run: |
+                  curl --fail --silent --show-error --request POST \
+                    --form "token=$TRIGGER_TOKEN" --form ref=master \
+                    "https://lab.panascais.net/api/v4/projects/internal%2Fbuildscripts%2Fci-node-internal/trigger/pipeline" > /dev/null
+              env:
+                  TRIGGER_TOKEN: ${{ secrets.CI_NODE_INTERNAL_TRIGGER_TOKEN }}
