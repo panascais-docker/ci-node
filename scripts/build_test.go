@@ -1,9 +1,39 @@
 package main
 
 import (
+	"maps"
 	"slices"
+	"strings"
 	"testing"
 )
+
+func TestBuilderImages(t *testing.T) {
+	alpine, debian, docker := "sha256:"+strings.Repeat("a", 64), "sha256:"+strings.Repeat("b", 64), "sha256:"+strings.Repeat("c", 64)
+	builders := configuration{"alpine:3.24": alpine, "debian:trixie-slim": debian, "docker:29-cli": docker}
+
+	for _, testCase := range []struct {
+		variant  variant
+		expected map[string]string
+	}{
+		{variants[0], map[string]string{
+			"ALPINE_IMAGE": library + "alpine:3.24@" + alpine,
+			"DOCKER_IMAGE": library + "docker:29-cli@" + docker,
+		}},
+		{variants[1], map[string]string{
+			"DEBIAN_IMAGE": library + "debian:trixie-slim@" + debian,
+			"DOCKER_IMAGE": library + "docker:29-cli@" + docker,
+		}},
+	} {
+		actual, err := builderImages(builders, testCase.variant)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if !maps.Equal(actual, testCase.expected) {
+			t.Errorf("builderImages(%s) = %v, expected %v", testCase.variant.name, actual, testCase.expected)
+		}
+	}
+}
 
 func TestResolveNames(t *testing.T) {
 	aliases := configuration{"latest": "26", "lts": "26"}

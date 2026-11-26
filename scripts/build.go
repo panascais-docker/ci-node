@@ -164,7 +164,7 @@ func resolveNames(line, version, variant string, aliases configuration) []string
 }
 
 // builderImages pins the base images of a variant as <NAME>_IMAGE build arguments.
-func builderImages(builders configuration, variant variant) (map[string]string, error) {
+func builderImages(builders configuration, target variant) (map[string]string, error) {
 	images := map[string]string{}
 	for image, digest := range builders {
 		name, _, found := strings.Cut(image, ":")
@@ -172,7 +172,8 @@ func builderImages(builders configuration, variant variant) (map[string]string, 
 			return nil, fmt.Errorf("invalid builder %s@%s", image, digest)
 		}
 
-		if name == variant.name {
+		base := slices.ContainsFunc(variants, func(other variant) bool { return other.name == name })
+		if name == target.name || !base {
 			images[strings.ToUpper(name)+"_IMAGE"] = library + image + "@" + digest
 		}
 	}

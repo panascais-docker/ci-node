@@ -45,6 +45,7 @@ Every line is built on Alpine and on Debian (`debian:trixie-slim`), each from th
 
 | **Name:**    | **GitHub:**                                                                | **npm:**                                                                         |
 | ------------ | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `docker`     | [github.com/docker/cli](https://github.com/docker/cli)                     | ×                                                                                |
 | `fly`        | [github.com/superfly/flyctl](https://github.com/superfly/flyctl)           | ×                                                                                |
 | `npm`        | [github.com/npm/cli](https://github.com/npm/cli)                           | [npmjs.com/package/npm](https://www.npmjs.com/package/npm)                       |
 | `pnpm`       | [github.com/pnpm/pnpm](https://github.com/pnpm/pnpm)                       | [npmjs.com/package/pnpm](https://www.npmjs.com/package/pnpm)                     |
@@ -69,6 +70,8 @@ Every line is built on Alpine and on Debian (`debian:trixie-slim`), each from th
 | `rollup`     | [github.com/rollup/rollup](https://github.com/rollup/rollup)               | [npmjs.com/package/rollup](https://www.npmjs.com/package/rollup)                 |
 | `knip`       | [github.com/webpro-nl/knip](https://github.com/webpro-nl/knip)             | [npmjs.com/package/knip](https://www.npmjs.com/package/knip)                     |
 | `tsx`        | [github.com/privatenumber/tsx](https://github.com/privatenumber/tsx)       | [npmjs.com/package/tsx](https://www.npmjs.com/package/tsx)                       |
+
+`docker` is the client with the `buildx` plugin, without a daemon. A job reaches the daemon of its runner through the Docker socket the runner mounts.
 
 ## Included Packages
 
@@ -95,7 +98,7 @@ Every line is built on Alpine and on Debian (`debian:trixie-slim`), each from th
 
 ## Build
 
-Every numeric directory is a line named after its node major version, with a `Dockerfile.alpine` and a `Dockerfile.debian` sharing the line's build context. A build target is `<line>-<variant>`. `configuration/` pins the node release and pnpm major per line, the published [`panascais/node`](https://github.com/panascais-docker/node) `<release>-debian` and `<release>-alpine` digests per target, the Debian and Alpine base images, and the `latest` and `lts` aliases.
+Every numeric directory is a line named after its node major version, with a `Dockerfile.alpine` and a `Dockerfile.debian` sharing the line's build context. A build target is `<line>-<variant>`. `configuration/` pins the node release and pnpm major per line, the published [`panascais/node`](https://github.com/panascais-docker/node) `<release>-debian` and `<release>-alpine` digests per target, the Debian and Alpine base images and the `docker` image the client comes from, and the `latest` and `lts` aliases.
 
 **Smoke test, build and load node 24 for the local platform:**
 

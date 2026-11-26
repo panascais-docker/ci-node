@@ -1,5 +1,6 @@
 # check=skip=InvalidDefaultArgInFrom
 ARG DEBIAN_IMAGE=docker.io/library/debian:trixie-slim
+ARG DOCKER_IMAGE=docker.io/library/docker:29-cli
 ARG NODE_IMAGE
 
 FROM ${DEBIAN_IMAGE} AS downloader
@@ -55,12 +56,16 @@ RUN set -eu \
   && /deno --version
 
 
+FROM ${DOCKER_IMAGE} AS docker
+
 FROM ${NODE_IMAGE} AS image
 
 COPY --from=flyctl /flyctl /usr/local/bin/flyctl
 RUN ln -s /usr/local/bin/flyctl /usr/local/bin/fly
 
 COPY --from=deno /deno /usr/local/bin/deno
+COPY --from=docker /usr/local/bin/docker /usr/local/bin/docker
+COPY --from=docker /usr/local/libexec/docker/cli-plugins/docker-buildx /usr/local/libexec/docker/cli-plugins/docker-buildx
 
 ARG BUILD_DATE
 ARG NODE_VERSION
@@ -171,6 +176,8 @@ RUN ava --version \
   && deno --version \
   && deno eval 'console.log(await (await fetch("https://dl.deno.land/release-latest.txt")).text())' \
   && [ "$(deno eval 'console.log(new Intl.DateTimeFormat("de", { month: "long" }).format(new Date(0)))')" = "Januar" ] \
+  && docker --version \
+  && docker buildx version \
   && esbuild --version \
   && eslint --version \
   && fly --version \

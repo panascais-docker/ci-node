@@ -1,4 +1,5 @@
 {
     "alpine:3.24": "sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf",
-    "debian:trixie-slim": "sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0"
+    "debian:trixie-slim": "sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0",
+    "docker:29-cli": "sha256:4e60c31615e83523afbb59773b25d055c0da9edcd5f80a4c6a6eebad49de1a25"
 }
